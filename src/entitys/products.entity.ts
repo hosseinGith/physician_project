@@ -9,13 +9,15 @@ export class Products {
  @Column()
  slug: string;
  @Column()
+ description: string;
+ @Column()
  price: number;
  @Column({ default: null })
- stock: number;
+ stock?: number;
  @Column({ default: null })
- discount: number;
+ discount?: number;
  @Column({ default: null })
- old_price: number;
+ old_price?: number;
  @Column()
  category_id: number;
 }

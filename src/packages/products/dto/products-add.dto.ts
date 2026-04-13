@@ -4,18 +4,20 @@ export class ProductsAdd {
  @IsString()
  title: string;
  @IsString()
- slug: string;
+ slug: string;;
  @IsString()
+ description: string;
+ @IsNumber()
  price: number;
  @IsNumber()
  @IsOptional()
- stock: number;
+ stock?: number
  @IsNumber()
  @IsOptional()
- discount: number;
+ discount?: number
  @IsOptional()
  @IsNumber()
- old_price: number;
+ old_price?: number
  @IsNumber()
  category_id: number;
 }
