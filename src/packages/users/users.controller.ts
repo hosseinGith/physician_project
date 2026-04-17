@@ -20,7 +20,7 @@ import { AccessType } from 'src/types';
 import UserUpdateDto from './dtos/user-update.dto';
 
 @Controller('users')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.Admin, AccessType.Managment]))
+@UseGuards(AuthGuard, new AccessGuard([AccessType.Admin]))
 @ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
 export class UsersController {

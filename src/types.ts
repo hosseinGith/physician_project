@@ -1,8 +1,7 @@
 export enum AccessType {
- User = 'user',
- Managment = 'managment',
+ Patient = 'patient',
+ Doctor = 'doctor',
  Admin = 'admin',
- Public = 'public',
 }
 export interface TokenType {
  username: string;

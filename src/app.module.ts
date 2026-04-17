@@ -8,9 +8,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './packages/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entitys/users.entity';
-import { ProductsModule } from './packages/products/products.module';
 import dotenv from 'dotenv';
-import { Products } from './entitys/products.entity';
+import { Appointments } from './entitys/appointments.entity';
+import { AuditLogs_Medical } from './entitys/auditLogs_Medical.entity';
+import { MedicalRecords } from './entitys/medicalRecords.entity';
+import { Prescriptions } from './entitys/prescriptions.entity';
+import { AppointmentsModule } from './packages/appointments/appointments.module';
 dotenv.config();
 
 @Module({
@@ -34,10 +37,16 @@ dotenv.config();
    username: process.env?.db_user,
    password: process.env?.db_password,
    database: process.env?.db_database,
-   entities: [Users, Products],
+   entities: [
+    Users,
+    Appointments,
+    AuditLogs_Medical,
+    MedicalRecords,
+    Prescriptions,
+   ],
    synchronize: true,
   }),
-  ProductsModule,
+  AppointmentsModule,
  ],
  controllers: [AppController],
  providers: [
