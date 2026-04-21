@@ -16,7 +16,7 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 import { AccessType } from 'src/types';
 import AuditLogs_MedicalDtoAdd from './dtos/auditLogs_Medical-add.dto';
 @Controller('appointments')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.Admin]))
+@UseGuards(AuthGuard, new AccessGuard([AccessType.ADMIN]))
 @ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
 export class AuditLogs_MedicalController {
