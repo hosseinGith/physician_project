@@ -4,7 +4,6 @@ import {
  Injectable,
  NotFoundException,
 } from '@nestjs/common';
-import UserDtoAdd from './dtos/appointments-add.dto';
 import { FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
 import { Appointments } from 'src/entitys/appointments.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -27,25 +26,10 @@ export class AppointmentsService {
   if (res) return res;
   throw new NotFoundException();
  }
- async add(body: UserDtoAdd) {
-  try {
-   const create_status = this.AppointmentsRep.create(body);
-   const user = await this.AppointmentsRep.save(create_status);
-   return user;
-  } catch (error) {
-   if (
-    error instanceof QueryFailedError &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    error.driverError?.code === 'ER_DUP_ENTRY'
-   ) {
-    throw new ConflictException(
-     'این نام کاربری قبلاً استفاده شده است. لطفاً نام کاربری دیگری انتخاب کنید.',
-     'username',
-    );
-   } else {
-    throw error;
-   }
-  }
+ async add(body: AppointmentsDtoAdd) {
+  const create_status = this.AppointmentsRep.create(body);
+  const appointments = await this.AppointmentsRep.save(create_status);
+  return appointments;
  }
  async update(id: number, body: AppointmentsDtoAdd) {
   try {

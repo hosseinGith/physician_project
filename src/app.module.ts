@@ -15,6 +15,11 @@ import { MedicalRecords } from './entitys/medicalRecords.entity';
 import { Prescriptions } from './entitys/prescriptions.entity';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { AuditLogs_MedicalModule } from './modules/auditLogs_Medical/auditLogs_Medical.module';
+import { \src\modules\prescriptions\prescriptionsService } from './src/modules/prescriptions/prescriptions.service';
+import { Modules\prescriptions\prescriptionsService } from './modules/prescriptions/prescriptions.service';
+import { Modules\prescriptions\prescriptionsController } from './modules/prescriptions/prescriptions.controller';
+import { Modules\prescriptions\prescriptionsModule } from './modules/prescriptions/prescriptions.module';
+import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
 dotenv.config();
 
 @Module({
@@ -49,14 +54,16 @@ dotenv.config();
   }),
   AppointmentsModule,
   AuditLogs_MedicalModule,
+  Modules\prescriptions\prescriptionsModule, PrescriptionsModule,
  ],
- controllers: [AppController],
+ controllers: [AppController, Modules\prescriptions\prescriptionsController],
  providers: [
   AppService,
   {
    provide: APP_GUARD,
    useClass: ThrottlerGuard,
   },
+  \src\modules\prescriptions\prescriptionsService, Modules\prescriptions\prescriptionsService,
  ],
 })
 export class AppModule {}
