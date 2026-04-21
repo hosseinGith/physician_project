@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 export enum AccessTypeAuditLogs_MedicalEnum {
  VIEW = 'view',
  EDIT = 'edit',
@@ -28,6 +28,6 @@ export class AuditLogs_Medical {
  @Column({ length: 45 })
  ipAddress: string;
  // زمان دسترسی
- @Column({ type: 'datetime' })
- accessedAt: string;
+ @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+ accessedAt: Date;
 }

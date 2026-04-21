@@ -1,6 +1,12 @@
 import { IsEnum } from 'class-validator';
 import { AccessType } from 'src/types';
-import { Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm';
+import {
+ Entity,
+ PrimaryGeneratedColumn,
+ Column,
+ Unique,
+ CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Users {
@@ -18,6 +24,6 @@ export class Users {
  access: AccessType;
  @Column({ default: true, type: 'boolean' })
  isActive: boolean;
- @Column({ type: 'datetime' })
- createdAt: string;
+ @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+ createdAt: Date;
 }

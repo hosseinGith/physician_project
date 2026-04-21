@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+ Entity,
+ PrimaryGeneratedColumn,
+ Column,
+ CreateDateColumn,
+} from 'typeorm';
 export enum FileTypeEnum {
  TEXT = 'text',
  IMAGE = 'image',
@@ -22,8 +27,8 @@ export class Messages {
  fileSize: string;
  @Column({ default: null })
  replyToId: number;
- @Column({ type: 'datetime' })
- createdAt: string;
- @Column({ type: 'datetime', default: null })
- updatedAt: string;
+ @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+ createdAt: Date;
+ @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+ updatedAt: Date;
 }

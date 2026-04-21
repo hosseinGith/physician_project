@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 export enum StatusAppointmentsEnum {
  SCHEDULED = 'scheduled',
  COMPLETED = 'completed',
@@ -42,8 +42,8 @@ export class Appointments {
  @Column()
  symptoms: string;
  // زمان ثبت نوبت
- @Column({ type: 'datetime' })
- createdAt: string;
+ @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+ createdAt: Date;
  // یادآوری ارسال شده؟
  @Column({ type: 'bit' })
  reminderSent: number;
