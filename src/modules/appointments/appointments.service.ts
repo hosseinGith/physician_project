@@ -8,6 +8,7 @@ import { FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
 import { Appointments } from 'src/entitys/appointments.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import AppointmentsDtoAdd from './dtos/appointments-add.dto';
+import AppointmentsUpdateDto from './dtos/appointments-update.dto';
 
 @Injectable()
 export class AppointmentsService {
@@ -31,7 +32,7 @@ export class AppointmentsService {
   const appointments = await this.AppointmentsRep.save(create_status);
   return appointments;
  }
- async update(id: number, body: AppointmentsDtoAdd) {
+ async update(id: number, body: AppointmentsUpdateDto) {
   try {
    if (!id) throw new BadRequestException('', 'id');
 
