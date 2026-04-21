@@ -19,7 +19,7 @@ import { AccessType } from 'src/types';
 import AppointmentsDtoAdd from './dtos/appointments-add.dto';
 import AppointmentsUpdateDto from './dtos/appointments-update.dto';
 @Controller('appointments')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.Admin]))
+@UseGuards(AuthGuard, new AccessGuard([AccessType.ADMIN]))
 @ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
 export class AppointmentsController {

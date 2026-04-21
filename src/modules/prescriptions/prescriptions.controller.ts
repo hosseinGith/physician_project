@@ -20,7 +20,7 @@ import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
 import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
 
 @Controller('prescriptions')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.Admin]))
+@UseGuards(AuthGuard, new AccessGuard([AccessType.ADMIN]))
 @ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
 export class PrescriptionsController {
