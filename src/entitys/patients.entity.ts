@@ -1,13 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Users } from './users.entity';
 
 @Entity()
-export class Patient {
+export class Patients {
  @PrimaryGeneratedColumn()
  id: number;
  // ارجاع به Users
  @Column()
  user_id: number;
-
+ @OneToMany(() => Users, (user) => user.patients)
+ @Column()
+ users: Users;
  // شماره پرونده (یکتا، مثل MR-۱۴۰۴-۱۲۳۴)
  @Column({ unique: true, default: () => 'gen_random_uuid()' })
  medical_record_number: string;

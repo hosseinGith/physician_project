@@ -6,17 +6,27 @@ import {
  Column,
  Unique,
  CreateDateColumn,
+ OneToMany,
 } from 'typeorm';
+import { Doctors } from './doctors.entity';
+import { Patients } from './patients.entity';
+import { Rates } from './rates.entity';
 
 @Entity()
 export class Users {
  @PrimaryGeneratedColumn()
  id: number;
+ @OneToMany(() => Doctors, (doctor) => doctor.users)
+ doctors: Doctors;
+ @OneToMany(() => Patients, (patient) => patient.users)
+ patients: Patients;
+ @Column()
+ @OneToMany(() => Rates, (rate) => rate.users)
+ rates: Rates;
  @Column()
  first_name: string;
  @Column()
  last_name: string;
-
  @Column()
  @Unique('username', [])
  username: string;
