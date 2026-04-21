@@ -11,15 +11,15 @@ export class MedicalRecords {
  id: number;
  // ارجاع به Patients
  @Column()
- patientId: number;
+ patient_id: number;
  // پزشک ثبت‌کننده (NULL اگر بیمار خودش آپلود کند)
  @Column({ default: null })
- doctorId: number;
+ doctor_id: number;
  @Column({
   type: 'enum',
   enum: RecordTypeMedicalRecordsEnum,
  })
- recordType: string;
+ record_type: string;
  // عنوان (مثلاً "آزمایش خون آبان ۱۴۰۴")
  @Column({ length: 200 })
  title: string;
@@ -28,14 +28,14 @@ export class MedicalRecords {
  description: string;
  // مسیر فایل در S3/MinIO (PDF, JPG, DICOM)
  @Column({ length: 500 })
- filePath: string;
+ file_path: string;
  // هش فایل برای یکپارچگی
  @Column({ length: 100 })
- fileHash: string;
+ file_hash: string;
  // زمان آپلود
  @Column({ type: 'date' })
- uploadedAt: string;
+ uploaded_at: string;
  // تایید شده توسط پزشک؟
  @Column({ type: 'bit' })
- isVerified: number;
+ is_verified: number;
 }

@@ -12,22 +12,22 @@ export class AuditLogs_Medical {
  id: number;
  // چه کسی دسترسی داشته
  @Column()
- accessedByUserId: number;
+ accessed_by_user_id: number;
  // پرونده چه بیماری دیده شده
  @Column()
- patientId: number;
+ patient_id: number;
  @Column({
   type: 'enum',
   enum: AccessTypeAuditLogs_MedicalEnum,
  })
- accessType: string;
+ access_type: string;
  // دلیل دسترسی (مثلاً "ویزیت پزشک")
  @Column({ length: 200 })
- accessReason: string;
+ access_reason: string;
  // IP کاربر
  @Column({ length: 45 })
- ipAddress: string;
+ ip_address: string;
  // زمان دسترسی
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- accessedAt: Date;
+ accessed_at: Date;
 }

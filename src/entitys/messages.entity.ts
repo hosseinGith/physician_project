@@ -28,7 +28,7 @@ export class Messages {
  @Column({ default: null })
  replyToId: number;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- createdAt: Date;
+ created_at: Date;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- updatedAt: Date;
+ updated_at: Date;
 }

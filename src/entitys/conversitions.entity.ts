@@ -4,9 +4,9 @@ export class Conversitions {
  @PrimaryGeneratedColumn()
  id: number;
  @Column()
- creatorId: number;
+ creator_id: number;
  @Column()
- doctorId: number;
+ doctor_id: number;
  @Column()
- patientId: number;
+ patient_id: number;
 }

@@ -16,7 +16,7 @@ export class Files {
   default: UseTypeEnum.CONVERSITION,
  })
  @Column()
- useType: string;
+ use_type: string;
  @Column()
  type: string;
 }

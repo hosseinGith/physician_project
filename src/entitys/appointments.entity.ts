@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import {
+ Entity,
+ PrimaryGeneratedColumn,
+ Column,
+ CreateDateColumn,
+} from 'typeorm';
 export enum StatusAppointmentsEnum {
  SCHEDULED = 'scheduled',
  COMPLETED = 'completed',
@@ -16,16 +21,16 @@ export class Appointments {
  id: number;
  // ارجاع به Patients
  @Column()
- patientId: number;
+ patient_id: number;
  // ارجاع به Doctors
  @Column()
- doctorId: number;
+ doctor_id: number;
  // تاریخ نوبت
  @Column({ type: 'date' })
- appointmentDate: string;
+ appointment_date: string;
  // ساعت نوبت
  @Column({ type: 'timestamp' })
- appointmentTime: string;
+ appointment_time: string;
  @Column({
   type: 'enum',
   enum: StatusAppointmentsEnum,
@@ -37,14 +42,14 @@ export class Appointments {
   type: 'enum',
   enum: VisitTypeAppointmentsEnum,
  })
- visitType: string;
+ visit_type: string;
  // شرح علائم (قبل از ویزیت)
  @Column()
  symptoms: string;
  // زمان ثبت نوبت
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- createdAt: Date;
+ created_at: Date;
  // یادآوری ارسال شده؟
  @Column({ type: 'bit' })
- reminderSent: number;
+ reminder_sent: number;
 }

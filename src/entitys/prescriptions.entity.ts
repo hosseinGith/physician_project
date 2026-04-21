@@ -11,19 +11,19 @@ export class Prescriptions {
  id: number;
  // ارجاع به Patients
  @Column()
- patientId: number;
+ patien_i: number;
  // ارجاع به Doctors
  @Column()
- doctorId: number;
+ doctor_id: number;
  // ارجاع به Appointments (NULL اگر مشاوره آنلاین)
  @Column()
- appointmentId: number;
+ appointment_id: number;
  // تاریخ تجویز
  @Column({ type: 'date' })
- issueDate: string;
+ issue_date: string;
  // تاریخ اعتبار
  @Column({ type: 'date' })
- validUntil: string;
+ valid_until: string;
  // تشخیص پزشک
  @Column()
  diagnosis: string;
@@ -32,7 +32,7 @@ export class Prescriptions {
  medications: string;
  // امضای دیجیتال پزشک (برای اعتبار قانونی)
  @Column()
- doctorDigitalSignature: string;
+ doctor_digital_signature: string;
  @Column({
   type: 'enum',
   enum: StatusPrescriptions,
