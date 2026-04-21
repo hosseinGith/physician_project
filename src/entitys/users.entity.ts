@@ -16,6 +16,8 @@ export class Users {
  @Column({ default: 'user' })
  @IsEnum(AccessType)
  access: AccessType;
- @Column({ default: true, type: 'bit' })
- isActive: number;
+ @Column({ default: true, type: 'boolean' })
+ isActive: boolean;
+ @Column({ type: 'datetime' })
+ createdAt: string;
 }

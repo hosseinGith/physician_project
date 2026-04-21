@@ -21,7 +21,7 @@ export class UsersService {
  async findActiveDoctors() {
   return await this.usersRepository.findOneBy({
    access: AccessType.DOCTOR,
-   isActive: 1,
+   isActive:true,
   });
  }
  async get(id?: number) {

@@ -20,8 +20,8 @@ import { AccessType } from 'src/types';
 import UserUpdateDto from './dtos/user-update.dto';
 
 @Controller('users')
-@UseGuards(AuthGuard)
-@ApiBearerAuth()
+// @UseGuards(AuthGuard)
+// @ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
 export class UsersController {
  constructor(private readonly users: UsersService) {}
@@ -40,7 +40,7 @@ export class UsersController {
   return this.users.get();
  }
 
- @UseGuards(new AccessGuard([AccessType.ADMIN]))
+//  @UseGuards(new AccessGuard([AccessType.ADMIN]))
  @Post()
  add(@Body(PasswordPipe) body: UserDtoAdd) {
   return this.users.add(body);
