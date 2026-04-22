@@ -18,11 +18,11 @@ export default class AppointmentsDtoAdd {
  status?: string;
  @IsString()
  @IsEnum(VisitTypeAppointmentsEnum)
- visitType?: string;
+ visit_type?: string;
  @IsString()
  symptoms?: string;
  @IsString()
- createdAt?: string;
+ created_at?: string;
  @IsNumber()
  reminderSent?: number;
 }

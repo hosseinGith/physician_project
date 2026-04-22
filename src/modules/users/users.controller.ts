@@ -20,37 +20,28 @@ import { AccessType } from 'src/types';
 import UserUpdateDto from './dtos/user-update.dto';
 
 @Controller('users')
-// @UseGuards(AuthGuard)
-// @ApiBearerAuth()
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
+@UseGuards(new AccessGuard([AccessType.ADMIN]))
 export class UsersController {
  constructor(private readonly users: UsersService) {}
- @Get('/active_doctors')
- findActiveDoctors() {
-  return this.users.findActiveDoctors();
- }
- @UseGuards(new AccessGuard([AccessType.ADMIN]))
  @Get(':id')
  findOne(@Param('id') id: number) {
   return this.users.get(id);
  }
- @UseGuards(new AccessGuard([AccessType.ADMIN]))
  @Get()
  findAll() {
   return this.users.get();
  }
-
- //  @UseGuards(new AccessGuard([AccessType.ADMIN]))
  @Post()
  add(@Body(PasswordPipe) body: UserDtoAdd) {
   return this.users.add(body);
  }
  @Patch(':id')
- //  @UseGuards(new AccessGuard([AccessType.ADMIN]))
  update(@Param('id') id: number, @Body(PasswordPipe) body: UserUpdateDto) {
   return this.users.update(id, body);
  }
- @UseGuards(new AccessGuard([AccessType.ADMIN]))
  @Delete(':id')
  delete(@Param('id') id: number) {
   return this.users.delete(id);

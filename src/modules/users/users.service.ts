@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entitys/users.entity';
-import { FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import UserDtoAdd from './dtos/user-add.dto';
 import UserUpdateDto from './dtos/user-update.dto';
 import { AccessType } from 'src/types';
@@ -19,7 +19,7 @@ export class UsersService {
  async findActiveDoctors() {
   return await this.usersRepository.findOneBy({
    access: AccessType.DOCTOR,
-   isActive: true,
+   is_active: true,
   });
  }
  async get(id?: number) {

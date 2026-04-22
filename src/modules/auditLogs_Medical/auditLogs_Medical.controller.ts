@@ -15,23 +15,23 @@ import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import { AccessType } from 'src/types';
 import AuditLogs_MedicalDtoAdd from './dtos/auditLogs_Medical-add.dto';
-@Controller('appointments')
+@Controller('auditLogs_Medical')
 @UseGuards(AuthGuard, new AccessGuard([AccessType.ADMIN]))
 @ApiBearerAuth()
 @UseInterceptors(PasswordInterceptor)
 export class AuditLogs_MedicalController {
- constructor(private readonly appointments: AuditLogs_MedicalService) {}
+ constructor(private readonly auditLogs_Medical: AuditLogs_MedicalService) {}
 
  @Get(':id')
  findOne(@Param('id') id: number) {
-  return this.appointments.get(id);
+  return this.auditLogs_Medical.get(id);
  }
  @Get()
  findAll() {
-  return this.appointments.get();
+  return this.auditLogs_Medical.get();
  }
  @Post()
  add(@Body(PasswordPipe) body: AuditLogs_MedicalDtoAdd) {
-  return this.appointments.add(body);
+  return this.auditLogs_Medical.add(body);
  }
 }

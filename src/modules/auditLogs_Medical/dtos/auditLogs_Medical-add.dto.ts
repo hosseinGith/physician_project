@@ -13,5 +13,5 @@ export default class AuditLogs_MedicalDtoAdd {
  @IsString()
  ipAddress: string;
  @IsString()
- accessedAt: string;
+ accessed_at: string;
 }
