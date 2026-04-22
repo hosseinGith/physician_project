@@ -13,10 +13,10 @@ export class Prescriptions {
  @PrimaryGeneratedColumn()
  id: number;
  // ارجاع به Patients
- @ManyToOne(() => Patients, (patient) => patient.prescriptions)
+ @ManyToOne(() => Patients)
  patient: Patients;
  // ارجاع به Doctors
- @ManyToOne(() => Doctors, (doctor) => doctor.prescriptions)
+ @ManyToOne(() => Doctors)
  doctor: Doctors;
 
  // ارجاع به Appointments (NULL اگر مشاوره آنلاین)

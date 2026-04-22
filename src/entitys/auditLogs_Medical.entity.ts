@@ -19,11 +19,11 @@ export class AuditLogs_Medical {
  @PrimaryGeneratedColumn()
  id: number;
  // چه کسی دسترسی داشته
- @ManyToOne(() => Users, (user) => user.auditLogs_Medicals)
+ @ManyToOne(() => Users)
  accessed_by: Users;
 
  // پرونده چه بیماری دیده شده
- @ManyToOne(() => Patients, (patient) => patient.auditLogs_Medical)
+ @ManyToOne(() => Patients)
  patient: Patients;
  // ارجاع به Doctors
 

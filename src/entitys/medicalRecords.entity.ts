@@ -12,10 +12,10 @@ export class MedicalRecords {
  @PrimaryGeneratedColumn()
  id: number;
  // ارجاع به Patients
- @ManyToOne(() => Patients, (patient) => patient.medicalRecords)
+ @ManyToOne(() => Patients)
  patient: Patients;
  // پزشک ثبت‌کننده (NULL اگر بیمار خودش آپلود کند)
- @ManyToOne(() => Doctors, (doctor) => doctor.medicalRecords)
+ @ManyToOne(() => Doctors)
  doctor: Doctors;
  @Column({
   type: 'enum',

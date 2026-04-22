@@ -6,9 +6,9 @@ import { Patients } from './patients.entity';
 export class Rates {
  @PrimaryGeneratedColumn()
  id: number;
- @ManyToOne(() => Doctors, (doctor) => doctor.rates)
+ @ManyToOne(() => Doctors)
  doctor: Doctors;
- @ManyToOne(() => Patients, (patient) => patient.rates)
+ @ManyToOne(() => Patients)
  patient: Patients;
  @Column()
  rate: number;

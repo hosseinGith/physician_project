@@ -19,7 +19,7 @@ export enum FileTypeEnum {
 export class Messages {
  @PrimaryGeneratedColumn()
  id: number;
- @ManyToOne(() => Users, (user) => user.messages)
+ @ManyToOne(() => Users)
  sender: Users;
  @ManyToOne(() => Conversitions, (conversition) => conversition.messages)
  conversition: Conversitions;

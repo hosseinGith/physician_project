@@ -26,10 +26,10 @@ export class Appointments {
  id: number;
  // ارجاع به Patients
 
- @ManyToOne(() => Patients, (patient) => patient.appointments)
+ @ManyToOne(() => Patients)
  patient: Patients;
  // ارجاع به Doctors
- @ManyToOne(() => Doctors, (doctor) => doctor.appointments)
+ @ManyToOne(() => Doctors)
  doctor: Doctors;
  @OneToMany(() => Prescriptions, (prescription) => prescription.appointment)
  prescriptions: Prescriptions[];

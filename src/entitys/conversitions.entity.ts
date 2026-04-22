@@ -7,11 +7,11 @@ import { Messages } from './messages.entity';
 export class Conversitions {
  @PrimaryGeneratedColumn()
  id: number;
- @ManyToOne(() => Users, (user) => user.conversition)
+ @ManyToOne(() => Users)
  creator: Users;
- @ManyToOne(() => Patients, (patient) => patient.conversitions)
+ @ManyToOne(() => Patients)
  patient: Patients;
- @ManyToOne(() => Doctors, (doctor) => doctor.conversitions)
+ @ManyToOne(() => Doctors)
  doctor: Doctors;
  @OneToMany(() => Messages, (message) => message.conversition)
  messages: Messages[];

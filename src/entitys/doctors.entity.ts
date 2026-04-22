@@ -2,16 +2,10 @@ import {
  Entity,
  PrimaryGeneratedColumn,
  Column,
- OneToMany,
  OneToOne,
  JoinColumn,
 } from 'typeorm';
 import { Users } from './users.entity';
-import { Rates } from './rates.entity';
-import { MedicalRecords } from './medicalRecords.entity';
-import { Prescriptions } from './prescriptions.entity';
-import { Appointments } from './appointments.entity';
-import { Conversitions } from './conversitions.entity';
 
 @Entity()
 export class Doctors {
@@ -19,20 +13,9 @@ export class Doctors {
  id: number;
 
  // ارجاع به Users
- @OneToOne(() => Users, (user) => user.doctor)
+ @OneToOne(() => Users)
  @JoinColumn()
  user: Users;
- // ارجاع به rates
- @OneToMany(() => Rates, (rate) => rate.doctor)
- rates: Rates[];
- @OneToMany(() => Prescriptions, (prescription) => prescription.doctor)
- prescriptions: Prescriptions[];
- @OneToMany(() => MedicalRecords, (medicalRecord) => medicalRecord.doctor)
- medicalRecords: MedicalRecords[];
- @OneToMany(() => Appointments, (appointment) => appointment.doctor)
- appointments: Appointments[];
- @OneToMany(() => Conversitions, (conversition) => conversition.doctor)
- conversitions: Conversitions[];
 
  // تخصص (قلب، پوست، داخلی، ...)
  @Column()
