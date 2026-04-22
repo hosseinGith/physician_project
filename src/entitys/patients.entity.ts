@@ -2,8 +2,9 @@ import {
  Entity,
  PrimaryGeneratedColumn,
  Column,
- ManyToOne,
  OneToMany,
+ OneToOne,
+ JoinColumn,
 } from 'typeorm';
 import { Users } from './users.entity';
 import { Rates } from './rates.entity';
@@ -15,7 +16,8 @@ export class Patients {
  // ارجاع به Users
  @OneToMany(() => Rates, (rate) => rate.patient)
  rates: Rates[];
- @ManyToOne(() => Users, (user) => user.patients)
+ @OneToOne(() => Users, (user) => user.patient)
+ @JoinColumn()
  user: Users;
  // شماره پرونده (یکتا، مثل MR-۱۴۰۴-۱۲۳۴)
  @Column({ unique: true, default: () => 'UUID()' })

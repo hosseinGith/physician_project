@@ -3,7 +3,8 @@ import {
  PrimaryGeneratedColumn,
  Column,
  OneToMany,
- ManyToOne,
+ OneToOne,
+ JoinColumn,
 } from 'typeorm';
 import { Users } from './users.entity';
 import { Rates } from './rates.entity';
@@ -13,7 +14,8 @@ export class Doctors {
  @PrimaryGeneratedColumn()
  id: number;
 
- @ManyToOne(() => Users, (user) => user.doctors)
+ @OneToOne(() => Users, (user) => user.doctor)
+ @JoinColumn()
  user: Users;
  @OneToMany(() => Rates, (rate) => rate.doctor)
  rates: Rates[];
