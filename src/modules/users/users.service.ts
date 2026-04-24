@@ -48,11 +48,6 @@ export class UsersService {
    );
   }
 
-  const hashedPass = await bcrypt.hash(
-   body.user.password,
-   await bcrypt.genSalt(7),
-  );
-
   const is_active = body.user.access === AccessType.PATIENT;
 
   const queryRunner =
@@ -62,7 +57,6 @@ export class UsersService {
 
   try {
    const user = this.usersRepository.create({
-    password: hashedPass,
     number: body.user.number,
     is_active,
     access: body.user.access,

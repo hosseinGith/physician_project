@@ -24,9 +24,6 @@ export class Users {
  first_name: string;
  @Column()
  last_name: string;
-
- @Column()
- password: string;
  @Column({ length: 10, nullable: true, unique: true })
  national_id: string;
  @Column({ nullable: true })
