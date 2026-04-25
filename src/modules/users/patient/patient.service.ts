@@ -15,6 +15,7 @@ import { Appointments } from 'src/entitys/appointments.entity';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Patients } from 'src/entitys/patients.entity';
+import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 
 @Injectable()
 export class PatientService {
@@ -122,5 +123,15 @@ export class PatientService {
   });
 
   return new_appointment;
+ }
+ async getUserData(request: Request) {
+  const token = getDataFromUserToken(request);
+  if (!token) throw new UnauthorizedException();
+  const user = await this.users.findOne({
+   where: { id: token.id },
+   select: ['doctor'],
+  });
+  if (!user) throw new NotFoundException();
+  return user;
  }
 }

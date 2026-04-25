@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import find from 'src/shared/utils/find';
 import { Users } from 'src/entitys/users.entity';
+import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 
 @Injectable()
 export class HoursService {
@@ -31,13 +32,9 @@ export class HoursService {
   return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
  }
  async add(body: AddHourDto, request: Request) {
-  const token = String(request.headers?.authorization).split(' ')[1];
-
+  const token = getDataFromUserToken(request);
   if (!token) throw new UnauthorizedException();
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-  const de_user = this.jwt.decode(String(token)) as TokenType;
-  if (!de_user) return;
-  const userId = de_user.id;
+  const userId = token.id;
   const user = await this.user.findOneBy({ id: userId });
   if (!user) throw new NotFoundException('', 'User');
   const doctor = await this.doctors.findOneBy({ user: { id: user.id } });
@@ -66,4 +63,3 @@ export class HoursService {
   return Boolean((await this.doctorHours.delete(id)).affected);
  }
 }
-

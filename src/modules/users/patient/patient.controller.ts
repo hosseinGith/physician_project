@@ -22,7 +22,7 @@ import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.inter
 @ApiBearerAuth()
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
-@UseGuards(new AccessGuard([AccessType.DOCTOR]))
+@UseGuards(new AccessGuard([AccessType.PATIENT]))
 export class PatientController {
  constructor(private readonly service: PatientService) {}
 
@@ -33,6 +33,11 @@ export class PatientController {
  @Get('/search/doctors')
  search(@Query('q') q: string, @Query('specialty') specialty?: string) {
   return this.service.search(q, specialty);
+ }
+ @UseGuards(new AccessGuard([AccessType.PATIENT]))
+ @Get('getUserData')
+ getUserData(@Req() request: Request) {
+  return this.service.getUserData(request);
  }
  @Post('/turn/active')
  activeTurn(@Body() body: ActiveTurn, @Req() request: Request) {
