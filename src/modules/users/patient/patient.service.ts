@@ -33,9 +33,12 @@ export class PatientService {
  ) {}
 
  async findActiveDoctors() {
-  return await this.users.findOneBy({
-   access: AccessType.DOCTOR,
-   is_active: true,
+  return await this.users.find({
+   where: {
+    access: AccessType.DOCTOR,
+    is_active: true,
+   },
+   select: ['doctor'],
   });
  }
  // public.service.ts
