@@ -28,13 +28,9 @@ export class UserDtoAdd {
  @IsEnum(AccessType)
  access: AccessType;
 
- @IsNotEmpty()
- @IsString({
-  validateIf: (ob, val) => {
-   return String(val).length > 9;
-  },
- })
- national_id: string;
+ @IsString()
+ @Matches(/^\d{10}$/)
+ national_id?: string;
 }
 export class PatientsDto extends OmitType(Patients, [
  'user',

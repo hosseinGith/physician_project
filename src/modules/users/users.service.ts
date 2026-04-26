@@ -56,6 +56,7 @@ export class UsersService {
     number: body.user.number,
     is_active,
     access: body.user.access,
+    national_id: body.user.national_id,
    });
 
    const savedUser = await queryRunner.manager.save(user);
