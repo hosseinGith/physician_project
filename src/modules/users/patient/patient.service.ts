@@ -66,7 +66,7 @@ export class PatientService {
  }
 
  // taking turns
- async activeTurn(body: ActiveTurn, request: Request) {
+ async appointment(body: ActiveTurn, request: Request) {
   const doctor = await this.doctors.findOneBy({ id: body.doctorId });
   if (!doctor)
    throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
@@ -124,7 +124,55 @@ export class PatientService {
   const new_appointment = this.appointments.save(save_appointment);
   return Boolean(new_appointment);
  }
- async getUserData(request: Request) {
+ async get_appointments(request: Request) {
+  const token = request.headers.authorization?.split(' ')[1];
+  if (!token) throw new UnauthorizedException();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const de_patient = this.jwt.decode(String(token));
+
+  if (!de_patient) throw new UnauthorizedException();
+  const userId = (de_patient as TokenType).id;
+  const user = await this.users.findOne({
+   where: { id: userId },
+   relations: ['patient'],
+  });
+
+  const appointment = await this.appointments.find({
+   where: {
+    patient: { id: user?.patient.id },
+   },
+   select: {
+    id: true,
+    appointment_date: true,
+    created_at: true,
+    doctor: {
+     bio: true,
+     consultation_fee: true,
+     id: true,
+     medical_license_number: true,
+     specialty: true,
+    },
+    hour: { hour: true },
+    prescriptions: {
+     diagnosis: true,
+     doctor_digital_signature: true,
+     issue_date: true,
+     medications: true,
+     status: true,
+     valid_until: true,
+    },
+    reminder_sent: true,
+    status: true,
+    symptoms: true,
+    visit_type: true,
+   },
+   relations: ['doctor', 'hour', 'prescriptions'],
+  });
+
+  return appointment;
+ }
+ async profile(request: Request) {
   const token = getDataFromUserToken(request);
   if (!token) throw new UnauthorizedException();
   const user = await this.users.findOne({

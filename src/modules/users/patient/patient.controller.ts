@@ -35,12 +35,18 @@ export class PatientController {
   return this.service.search(q, specialty);
  }
  @UseGuards(new AccessGuard([AccessType.PATIENT]))
- @Get('getUserData')
- getUserData(@Req() request: Request) {
-  return this.service.getUserData(request);
+ @Get('profile')
+ profile(@Req() request: Request) {
+  return this.service.profile(request);
  }
+ @UseGuards(new AccessGuard([AccessType.PATIENT]))
  @Post('/appointment/active')
- activeTurn(@Body() body: ActiveTurn, @Req() request: Request) {
-  return this.service.activeTurn(body, request);
+ appointment(@Body() body: ActiveTurn, @Req() request: Request) {
+  return this.service.appointment(body, request);
+ }
+ @UseGuards(new AccessGuard([AccessType.PATIENT]))
+ @Post('/appointments')
+ get_appointments(@Req() request: Request) {
+  return this.service.get_appointments(request);
  }
 }
