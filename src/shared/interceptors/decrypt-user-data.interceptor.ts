@@ -42,12 +42,16 @@ export class DecryptUserData implements NestInterceptor {
      if (typeof value === 'string' && hashedUserCol.includes(key)) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       result[key] = new CryptoHash().decrypt(value);
-     } else if (typeof value === 'object' && value !== null) {
+     } else if (
+      typeof value === 'object' &&
+      value !== null &&
+      !('getTime' in value)
+     ) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       result[key] = this.deepSearchAndDecrypt(value);
      } else if (typeof value === 'string') {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      result[key] = new CryptoHash().decrypt(value);
+      result[key] = value;
      }
     } catch {
      /* empty */

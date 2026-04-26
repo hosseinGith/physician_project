@@ -23,12 +23,15 @@ export class HashUserData implements PipeTransform {
 
    for (const [key, value] of Object.entries(result)) {
     try {
-     if (key !== 'date')
-      if (typeof value === 'string' && hashedUserCol.includes(key)) {
-       result[key] = new CryptoHash().encrypt(value);
-      } else if (typeof value === 'object' && value !== null) {
-       result[key] = this.deepSearchAndEncrypt(value);
-      }
+     if (typeof value === 'string' && hashedUserCol.includes(key)) {
+      result[key] = new CryptoHash().encrypt(value);
+     } else if (
+      typeof value === 'object' &&
+      value !== null &&
+      !('getTime' in value)
+     ) {
+      result[key] = this.deepSearchAndEncrypt(value);
+     }
     } catch {
      /* empty */
      result[key] = value;
