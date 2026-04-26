@@ -23,12 +23,11 @@ export class AuthGuard implements CanActivate {
 
  async canActivate(context: ExecutionContext): Promise<boolean> {
   const request = context.switchToHttp().getRequest<Request>();
-  return true;
   if (request.url.split('/')[1] === 'auth') return true;
   const token = String(request.headers?.authorization).split(' ')[1];
 
   try {
-   if (!token) throw new Error();
+   if (!token) throw new UnauthorizedException();
    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
    const res = (await this.jwtService.verify(token)) as TokenType;
    if (res?.number) {
@@ -41,7 +40,7 @@ export class AuthGuard implements CanActivate {
     request['userAccess'] = user?.access || '';
 
     return true;
-   } else return Boolean(res);
+   } else throw new UnauthorizedException();
   } catch {
    throw new UnauthorizedException();
   }
