@@ -16,7 +16,7 @@ export class Rates {
  id: string;
  @BeforeInsert()
  private generateId() {
-  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+  this.id = nanoid();
  }
  @ManyToOne(() => Doctors)
  doctor: Doctors;

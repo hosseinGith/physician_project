@@ -23,7 +23,7 @@ export class AuditLogs_Medical {
  id: string;
  @BeforeInsert()
  private generateId() {
-  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+  this.id = nanoid();
  }
  // چه کسی دسترسی داشته
  @ManyToOne(() => Users)

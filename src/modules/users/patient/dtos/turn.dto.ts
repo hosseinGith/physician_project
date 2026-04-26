@@ -1,10 +1,10 @@
-import { IsDate, IsEnum, IsNumber } from 'class-validator';
+import { IsDate, IsEnum, IsString } from 'class-validator';
 import { VisitTypeAppointmentsEnum } from 'src/entitys/appointments.entity';
 
 export default class ActiveTurn {
- @IsNumber()
+ @IsString()
  hourId: string;
- @IsNumber()
+ @IsString()
  doctorId: string;
  @IsDate()
  date: Date;

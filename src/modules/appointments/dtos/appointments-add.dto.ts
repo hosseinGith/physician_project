@@ -1,13 +1,13 @@
-import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsEnum, IsString } from 'class-validator';
 import {
  StatusAppointmentsEnum,
  VisitTypeAppointmentsEnum,
 } from 'src/entitys/appointments.entity';
 
 export default class AppointmentsDtoAdd {
- @IsNumber()
+ @IsString()
  patientId: string;
- @IsNumber()
+ @IsString()
  doctorId: string;
  @IsDate()
  date: Date;
@@ -19,6 +19,6 @@ export default class AppointmentsDtoAdd {
  symptoms: string;
  @IsBoolean()
  reminderSent: boolean;
- @IsNumber()
+ @IsString()
  hourId: string;
 }
