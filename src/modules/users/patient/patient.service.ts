@@ -69,7 +69,7 @@ export class PatientService {
  async activeTurn(body: ActiveTurn, request: Request) {
   const doctor = await this.doctors.findOneBy({ id: body.doctorId });
   if (!doctor)
-   return new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
+   throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
   const token = request.headers.authorization?.split(' ')[1];
   if (!token) throw new UnauthorizedException();
 
@@ -87,7 +87,7 @@ export class PatientService {
   if (user.access !== AccessType.PATIENT)
    throw new NotFoundException('شما بیمار نیستید.', 'User not found');
 
-  const patient = await this.patients.findOneBy({ id: user?.patient.id });
+  const patient = user?.patient;
   if (!patient)
    throw new NotFoundException('کاربر پیدا نشد.', 'User not found');
 
@@ -96,33 +96,33 @@ export class PatientService {
    doctor: { id: doctor.id },
   });
   if (!doctorHour)
-   return new NotFoundException(
+   throw new NotFoundException(
     'ساعت مورد نظر پیدا نشد.',
     'Doctor hour not found',
    );
 
-  const dateOnly = new Date(body.date).toISOString().split('T')[0];
-
+  const dateOnly_string = new Date(body.date).toISOString().split('T')[0];
+  const dateOnly = new Date(dateOnly_string);
+  dateOnly.setHours(0, 0, 0, 0);
   const appointment = await this.appointments.findOneBy({
    doctor: { id: doctor.id },
-   appointment_date: new Date(dateOnly),
+   appointment_date: dateOnly,
    hour: { id: doctorHour.id },
   });
 
   if (appointment)
-   return new BadRequestException(
+   throw new BadRequestException(
     'در ساعت انتخاب شده دکتر وقت آزاد ندارد.لطفا ساعت دیگری انتخاب کنید.',
-    'Hour problem',
    );
 
-  const new_appointment = await this.appointments.insert({
-   appointment_date: new Date(dateOnly),
+  const save_appointment = this.appointments.create({
+   appointment_date: dateOnly,
    doctor: { id: doctor.id },
    hour: doctorHour,
    patient: { id: patient.id },
   });
-
-  return new_appointment;
+  const new_appointment = this.appointments.save(save_appointment);
+  return Boolean(new_appointment);
  }
  async getUserData(request: Request) {
   const token = getDataFromUserToken(request);

@@ -56,7 +56,7 @@ export class AppointmentsService {
    doctor: { id: doctor.id },
   });
   if (!doctorHour)
-   return new NotFoundException(
+   throw new NotFoundException(
     'ساعت مورد نظر پیدا نشد.',
     'Doctor hour not found',
    );
@@ -69,7 +69,7 @@ export class AppointmentsService {
   });
 
   if (appointment)
-   return new BadRequestException(
+   throw new BadRequestException(
     'در ساعت انتخاب شده دکتر وقت آزاد ندارد.لطفا ساعت دیگری انتخاب کنید.',
     'Hour problem',
    );

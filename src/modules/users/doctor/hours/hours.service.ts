@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { TokenType } from 'src/types';
 import { Doctors } from 'src/entitys/doctors.entity';
 import {
  BadRequestException,
@@ -35,11 +34,21 @@ export class HoursService {
   const token = getDataFromUserToken(request);
   if (!token) throw new UnauthorizedException();
   const userId = token.id;
-  const user = await this.user.findOneBy({ id: userId });
+  const user = await this.user.findOne({
+   where: {
+    id: userId,
+   },
+   select: {
+    doctor: { id: true },
+   },
+   relations: ['doctor'],
+  });
+
   if (!user) throw new NotFoundException('', 'User');
-  const doctor = await this.doctors.findOneBy({ user: { id: user.id } });
+  const doctor = user.doctor;
 
   if (!doctor) throw new NotFoundException('', 'Doctor');
+
   const existing = await this.doctorHours.findOneBy({
    hour: body.hour,
    doctor,

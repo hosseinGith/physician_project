@@ -74,7 +74,7 @@ export class AuthService {
  async verify_otp_code(body: LoginDto) {
   const otp = await this.otpCodes.findOneBy({ number: body.number });
   if (!otp?.code) throw new NotFoundException();
-  if (this.cryptoHash.decrypt(otp.code) !== body.code) {
+  if (otp.code !== body.code) {
    if (otp) {
     await this.otpCodes.delete({ number: body.number });
     throw new BadRequestException(
