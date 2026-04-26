@@ -32,7 +32,7 @@ export class AppointmentsService {
   private users: Repository<Users>,
   private readonly jwt: JwtService,
  ) {}
- async get(id?: number) {
+ async get(id?: string) {
   let res:
    | FindOptionsWhere<Appointments>
    | FindOptionsWhere<Appointments>[]
@@ -88,7 +88,7 @@ export class AppointmentsService {
   const appointments = await this.appointments.save(create_status);
   return appointments;
  }
- async update(id: number, body: AppointmentsUpdateDto) {
+ async update(id: string, body: AppointmentsUpdateDto) {
   try {
    if (!id) throw new BadRequestException('', 'id');
 
@@ -119,7 +119,7 @@ export class AppointmentsService {
    }
   }
  }
- async delete(id: number) {
+ async delete(id: string) {
   if (!id) throw new BadRequestException('id not found', 'id');
   const res = await this.appointments.delete({ id });
   if (!res.affected) throw new NotFoundException();

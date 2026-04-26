@@ -1,6 +1,7 @@
 import {
  Entity,
- PrimaryGeneratedColumn,
+ PrimaryColumn,
+ BeforeInsert,
  Column,
  CreateDateColumn,
  ManyToOne,
@@ -8,6 +9,8 @@ import {
  OneToOne,
  JoinColumn,
 } from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
 import { Prescriptions } from './prescriptions.entity';
@@ -27,8 +30,12 @@ export enum VisitTypeAppointmentsEnum {
 
 @Entity()
 export class Appointments {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  // ارجاع به Patients
 
  @ManyToOne(() => Patients)

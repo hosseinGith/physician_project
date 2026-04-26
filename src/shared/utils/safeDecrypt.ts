@@ -1,6 +1,8 @@
 import { CryptoHash } from './cryptoHash.service';
 
-export default function safeDecrypt(encryptedValue: string | null | undefined): string | null {
+export default function safeDecrypt(
+ encryptedValue: string | null | undefined,
+): string | null {
  const cryptoHash = new CryptoHash();
  if (!encryptedValue) return null;
 

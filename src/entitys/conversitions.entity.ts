@@ -1,12 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+ Entity,
+ PrimaryColumn,
+ BeforeInsert,
+ ManyToOne,
+ OneToMany,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Users } from './users.entity';
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
 import { Messages } from './messages.entity';
 @Entity()
 export class Conversitions {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @ManyToOne(() => Users)
  creator: Users;
  @ManyToOne(() => Patients)

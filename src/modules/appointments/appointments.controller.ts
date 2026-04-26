@@ -24,7 +24,7 @@ export class AppointmentsController {
  constructor(private readonly appointments: AppointmentsService) {}
 
  @Get(':id')
- findOne(@Param('id') id: number) {
+ findOne(@Param('id') id: string) {
   return this.appointments.get(id);
  }
  @Get()
@@ -36,11 +36,11 @@ export class AppointmentsController {
   return this.appointments.add(body, request);
  }
  @Patch(':id')
- update(@Param('id') id: number, @Body() body: AppointmentsUpdateDto) {
+ update(@Param('id') id: string, @Body() body: AppointmentsUpdateDto) {
   return this.appointments.update(id, body);
  }
  @Delete(':id')
- delete(@Param('id') id: number) {
+ delete(@Param('id') id: string) {
   return this.appointments.delete(id);
  }
 }

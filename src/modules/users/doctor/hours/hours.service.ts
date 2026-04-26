@@ -28,7 +28,7 @@ export class HoursService {
 
   private readonly jwt: JwtService,
  ) {}
- async get(id?: number) {
+ async get(id?: string) {
   return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
  }
  async add(body: AddHourDto, request: Request) {
@@ -55,7 +55,7 @@ export class HoursService {
   await this.doctorHours.save(hour);
   return true;
  }
- async delete(id: number) {
+ async delete(id: string) {
   if (typeof id !== 'number') new BadRequestException('id required');
   const existing = await this.doctorHours.findOneBy({ id });
   if (!existing) throw new NotFoundException();

@@ -2,18 +2,25 @@ import { IsEnum } from 'class-validator';
 import { AccessType } from 'src/types';
 import {
  Entity,
- PrimaryGeneratedColumn,
+ PrimaryColumn,
+ BeforeInsert,
  Column,
  CreateDateColumn,
  OneToOne,
 } from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Doctors } from './doctors.entity';
 import { Patients } from './patients.entity';
 
 @Entity()
 export class Users {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @Column({ unique: true })
  number: string;
  @OneToOne(() => Doctors, (doctor) => doctor.user)

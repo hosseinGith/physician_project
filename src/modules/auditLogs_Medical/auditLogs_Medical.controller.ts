@@ -23,7 +23,7 @@ export class AuditLogs_MedicalController {
   type: AuditLogs_Medical,
  })
  @Get(':id')
- findOne(@Param('id') id: number) {
+ findOne(@Param('id') id: string) {
   return this.auditLogs_Medical.get(id);
  }
  @ApiResponse({

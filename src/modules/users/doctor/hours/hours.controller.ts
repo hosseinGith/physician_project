@@ -32,7 +32,7 @@ export class HoursController {
   return this.service.get();
  }
  @Get(':id')
- findOne(@Param('id') id: number) {
+ findOne(@Param('id') id: string) {
   return this.service.get(id);
  }
  @Post()
@@ -40,7 +40,7 @@ export class HoursController {
   return this.service.add(body, request);
  }
  @Delete(':id')
- delete(@Param('id') id: number) {
+ delete(@Param('id') id: string) {
   return this.service.delete(id);
  }
 }

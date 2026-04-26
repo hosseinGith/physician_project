@@ -1,18 +1,23 @@
 import {
  Entity,
- PrimaryGeneratedColumn,
+ PrimaryColumn,
+ BeforeInsert,
  Column,
  OneToOne,
  JoinColumn,
- BeforeInsert,
 } from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Users } from './users.entity';
-import { v3 as uuid } from 'uuid';
-import { randomBytes, randomInt } from 'node:crypto';
+import { randomInt } from 'node:crypto';
 @Entity()
 export class Patients {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  // ارجاع به Users
 
  @OneToOne(() => Users, (user) => user.patient)

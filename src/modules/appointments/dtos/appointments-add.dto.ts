@@ -6,9 +6,9 @@ import {
 
 export default class AppointmentsDtoAdd {
  @IsNumber()
- patientId: number;
+ patientId: string;
  @IsNumber()
- doctorId: number;
+ doctorId: string;
  @IsDate()
  date: Date;
  @IsEnum(StatusAppointmentsEnum)
@@ -20,5 +20,5 @@ export default class AppointmentsDtoAdd {
  @IsBoolean()
  reminderSent: boolean;
  @IsNumber()
- hourId: number;
+ hourId: string;
 }

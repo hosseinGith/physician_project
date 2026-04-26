@@ -31,7 +31,7 @@ export class UsersService {
    is_active: true,
   });
  }
- async get(id?: number) {
+ async get(id?: string) {
   return await find<Users>(this.users, id);
  }
  async add(body: AdminAddUser) {
@@ -89,7 +89,7 @@ export class UsersService {
    await queryRunner.release();
   }
  }
- async update(id: number, body: UserUpdateDto) {
+ async update(id: string, body: UserUpdateDto) {
   if (!id) throw new BadRequestException('', 'id');
   if (body?.number)
    if (await this.users.findOneBy({ number: body?.number }))
@@ -112,7 +112,7 @@ export class UsersService {
    return (await this.users.update({ id: user.id }, body)).affected === 1;
   throw new NotFoundException();
  }
- async delete(id: number) {
+ async delete(id: string) {
   if (!id) throw new BadRequestException('id not found', 'id');
 
   const queryRunner = this.users.manager.connection.createQueryRunner();
@@ -124,7 +124,7 @@ export class UsersService {
 
    if (user?.access === AccessType.DOCTOR) {
     const id = (await this.doctors.findOneBy({ user: { id: user.id } }))?.id;
-    
+
     await queryRunner.manager.delete('doctor_hours', { doctor: { id } });
     await queryRunner.manager.delete('doctors', { id });
    } else if (user?.access === AccessType.PATIENT) {

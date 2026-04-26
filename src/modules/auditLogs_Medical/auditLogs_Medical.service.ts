@@ -16,7 +16,7 @@ export class AuditLogs_MedicalService {
   @InjectRepository(AuditLogs_Medical)
   private AuditLogs_MedicalRep: Repository<AuditLogs_Medical>,
  ) {}
- async get(id?: number) {
+ async get(id?: string) {
   if (!Number.isNaN(id)) {
    return await this.AuditLogs_MedicalRep.findOneBy({ id });
   }
@@ -42,7 +42,7 @@ export class AuditLogs_MedicalService {
    }
   }
  }
- async update(id: number, body: AuditLogs_MedicalDtoAdd) {
+ async update(id: string, body: AuditLogs_MedicalDtoAdd) {
   try {
    if (!id) throw new BadRequestException('', 'id');
 
@@ -73,7 +73,7 @@ export class AuditLogs_MedicalService {
    }
   }
  }
- async delete(id: number) {
+ async delete(id: string) {
   if (!id) throw new BadRequestException('id not found', 'id');
   const res = await this.AuditLogs_MedicalRep.delete({ id });
   if (!res.affected) throw new NotFoundException();

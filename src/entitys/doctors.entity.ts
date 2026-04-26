@@ -1,19 +1,25 @@
 import {
  Entity,
- PrimaryGeneratedColumn,
+ PrimaryColumn,
+ BeforeInsert,
  Column,
  OneToOne,
  JoinColumn,
  OneToMany,
 } from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Users } from './users.entity';
 import { DoctorHours } from './doctorHours.entity';
 
 @Entity()
 export class Doctors {
- @PrimaryGeneratedColumn()
- id: number;
-
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  // ارجاع به Users
  @OneToOne(() => Users, (user) => user.doctor)
  @JoinColumn()

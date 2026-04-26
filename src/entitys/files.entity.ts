@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+ Entity,
+ PrimaryColumn,
+ BeforeInsert,
+ Column,
+ ManyToOne,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Users } from './users.entity';
 enum UseTypeEnum {
  CONVERSITION = 'conversition',
@@ -7,8 +15,12 @@ enum UseTypeEnum {
 
 @Entity()
 export class Files {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @Column()
  url: string;
  @Column({

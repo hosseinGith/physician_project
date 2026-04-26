@@ -23,7 +23,6 @@ export class HashUserData implements PipeTransform {
    const result = { ...data };
 
    for (const [key, value] of Object.entries(result)) {
-
     if (typeof value === 'string' && hashedUserCol.includes(key)) {
      result[key] = new CryptoHash().encrypt(value);
     } else if (typeof value === 'object' && value !== null) {

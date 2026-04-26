@@ -3,11 +3,10 @@ import { ObjectLiteral, Repository } from 'typeorm';
 
 export default async function find<T extends ObjectLiteral>(
  entity: Repository<T>,
- id?: number,
+ id?: string,
  relations?: string[],
  select?: string[],
 ) {
-
  if (!Number.isNaN(Number(id))) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const data = await entity.findOne({

@@ -1,12 +1,15 @@
 import {
  Entity,
- PrimaryGeneratedColumn,
+ PrimaryColumn,
+ BeforeInsert,
  Column,
  CreateDateColumn,
  ManyToOne,
  OneToOne,
  JoinColumn,
 } from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Users } from './users.entity';
 import { Conversitions } from './conversitions.entity';
 import { Files } from './files.entity';
@@ -17,8 +20,12 @@ export enum FileTypeEnum {
 }
 @Entity()
 export class Messages {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @ManyToOne(() => Users)
  sender: Users;
  @ManyToOne(() => Conversitions, (conversition) => conversition.messages)

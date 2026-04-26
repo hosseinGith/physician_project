@@ -1,9 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+ BeforeInsert,
+ Column,
+ Entity,
+ PrimaryColumn,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
 
 @Entity()
 export class OtpCodes {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @Column({ length: process.env.OTP_code_length })
  code: string;
  @Column()

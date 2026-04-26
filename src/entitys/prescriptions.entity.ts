@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+ Entity,
+ PrimaryColumn,
+ Column,
+ ManyToOne,
+ BeforeInsert,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
 import { Appointments } from './appointments.entity';
@@ -10,8 +18,13 @@ export enum StatusPrescriptions {
 
 @Entity()
 export class Prescriptions {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  // ارجاع به Patients
  @ManyToOne(() => Patients)
  patient: Patients;
@@ -43,3 +56,4 @@ export class Prescriptions {
  })
  status: string;
 }
+

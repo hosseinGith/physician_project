@@ -28,7 +28,7 @@ import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.inter
 export class UsersController {
  constructor(private readonly users: UsersService) {}
  @Get(':id')
- findOne(@Param('id') id: number) {
+ findOne(@Param('id') id: string) {
   return this.users.get(id);
  }
  @Get()
@@ -40,11 +40,11 @@ export class UsersController {
   return this.users.add(body);
  }
  @Patch(':id')
- update(@Param('id') id: number, @Body() body: UserUpdateDto) {
+ update(@Param('id') id: string, @Body() body: UserUpdateDto) {
   return this.users.update(id, body);
  }
  @Delete(':id')
- delete(@Param('id') id: number) {
+ delete(@Param('id') id: string) {
   return this.users.delete(id);
  }
 }

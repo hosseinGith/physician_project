@@ -37,12 +37,12 @@ export class DoctorController {
   return this.service.get();
  }
  @Get(':id')
- findOne(@Param('id') id: number) {
+ findOne(@Param('id') id: string) {
   return this.service.get(id);
  }
  @UseGuards(new AccessGuard([AccessType.DOCTOR]))
  @Patch(':id')
- update(@Param() id: number, @Body() body: AddDoctorDto) {
+ update(@Param() id: string, @Body() body: AddDoctorDto) {
   return this.service.update(id, body);
  }
 }

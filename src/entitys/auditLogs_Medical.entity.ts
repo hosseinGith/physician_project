@@ -1,10 +1,13 @@
 import {
  Entity,
- PrimaryGeneratedColumn,
+ PrimaryColumn,
+ BeforeInsert,
  Column,
  CreateDateColumn,
  ManyToOne,
 } from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Patients } from './patients.entity';
 import { Users } from './users.entity';
 export enum AccessTypeAuditLogs_MedicalEnum {
@@ -16,8 +19,12 @@ export enum AccessTypeAuditLogs_MedicalEnum {
 
 @Entity()
 export class AuditLogs_Medical {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  // چه کسی دسترسی داشته
  @ManyToOne(() => Users)
  accessed_by: Users;

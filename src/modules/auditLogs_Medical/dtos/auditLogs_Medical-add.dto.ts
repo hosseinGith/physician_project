@@ -3,9 +3,9 @@ import { AccessTypeAuditLogs_MedicalEnum } from 'src/entitys/auditLogs_Medical.e
 
 export default class AuditLogs_MedicalDtoAdd {
  @IsNumber()
- accessedByUserId: number;
+ accessedByUserid: string;
  @IsNumber()
- patientId: number;
+ patientId: string;
  @IsEnum(AccessTypeAuditLogs_MedicalEnum)
  accessType: string;
  @IsString()

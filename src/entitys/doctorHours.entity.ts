@@ -1,11 +1,23 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+ BeforeInsert,
+ Column,
+ Entity,
+ ManyToOne,
+ PrimaryColumn,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Doctors } from './doctors.entity';
 import { Matches } from 'class-validator';
 
 @Entity()
 export class DoctorHours {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @ManyToOne(() => Doctors, (doctor) => doctor.doctorHours)
  doctor: Doctors;
  @Column()

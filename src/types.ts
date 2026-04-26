@@ -8,7 +8,7 @@ export enum AccessType {
 }
 export interface TokenType {
  number: string;
- id: number;
+ id: string;
  iat: number;
 }
 export const FilesTypePublicAccess = [

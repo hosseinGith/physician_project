@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/swagger';
-import { Users } from 'src/entitys/users.entity';
+import { Doctors } from 'src/entitys/doctors.entity';
 
-export default class AddDoctorDto extends PartialType(Users) {}
+export default class AddDoctorDto extends PartialType(Doctors) {}

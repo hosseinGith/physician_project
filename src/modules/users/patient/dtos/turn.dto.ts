@@ -3,9 +3,9 @@ import { VisitTypeAppointmentsEnum } from 'src/entitys/appointments.entity';
 
 export default class ActiveTurn {
  @IsNumber()
- hourId: number;
+ hourId: string;
  @IsNumber()
- doctorId: number;
+ doctorId: string;
  @IsDate()
  date: Date;
  @IsEnum(VisitTypeAppointmentsEnum)

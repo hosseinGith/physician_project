@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+ Entity,
+ PrimaryColumn,
+ BeforeInsert,
+ Column,
+ ManyToOne,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Doctors } from './doctors.entity';
 import { Patients } from './patients.entity';
 export enum RecordTypeMedicalRecordsEnum {
@@ -9,8 +17,12 @@ export enum RecordTypeMedicalRecordsEnum {
 }
 @Entity()
 export class MedicalRecords {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  // ارجاع به Patients
  @ManyToOne(() => Patients)
  patient: Patients;

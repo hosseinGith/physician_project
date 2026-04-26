@@ -1,11 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+ Entity,
+ PrimaryColumn,
+ BeforeInsert,
+ Column,
+ ManyToOne,
+} from 'typeorm';
+import { nanoid } from 'nanoid';
+
 import { Doctors } from './doctors.entity';
 import { Patients } from './patients.entity';
 
 @Entity()
 export class Rates {
- @PrimaryGeneratedColumn()
- id: number;
+ @PrimaryColumn()
+ id: string;
+ @BeforeInsert()
+ private generateId() {
+  this.id = nanoid(); // 'V1StGXR8_Z5jdHi6B-myT'
+ }
  @ManyToOne(() => Doctors)
  doctor: Doctors;
  @ManyToOne(() => Patients)

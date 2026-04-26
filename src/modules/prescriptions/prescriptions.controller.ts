@@ -24,7 +24,7 @@ export class PrescriptionsController {
  constructor(private readonly prescriptions: PrescriptionsService) {}
 
  @Get(':id')
- findOne(@Param('id') id: number) {
+ findOne(@Param('id') id: string) {
   return this.prescriptions.get(id);
  }
  @Get()
@@ -36,11 +36,11 @@ export class PrescriptionsController {
   return this.prescriptions.add(body);
  }
  @Patch(':id')
- update(@Param('id') id: number, @Body() body: PrescriptionsUpdateDto) {
+ update(@Param('id') id: string, @Body() body: PrescriptionsUpdateDto) {
   return this.prescriptions.update(id, body);
  }
  @Delete(':id')
- delete(@Param('id') id: number) {
+ delete(@Param('id') id: string) {
   return this.prescriptions.delete(id);
  }
 }

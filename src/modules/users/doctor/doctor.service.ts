@@ -22,7 +22,7 @@ export class DoctorService {
   private readonly users: Repository<Users>,
  ) {}
 
- async get(id?: number) {
+ async get(id?: string) {
   return await find<Doctors>(this.doctors, id, ['doctorHours']);
  }
  async getUserData(request: Request) {
@@ -37,7 +37,7 @@ export class DoctorService {
   return user;
  }
 
- async update(id: number, body: AddDoctorDto) {
+ async update(id: string, body: AddDoctorDto) {
   if (!id) throw new BadRequestException('', 'id');
 
   const doctor = await this.doctors.findOneBy({ id });

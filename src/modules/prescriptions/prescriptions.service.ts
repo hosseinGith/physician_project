@@ -15,7 +15,7 @@ export class PrescriptionsService {
   @InjectRepository(Prescriptions)
   private PrescriptionsRep: Repository<Prescriptions>,
  ) {}
- async get(id?: number) {
+ async get(id?: string) {
   let res:
    | FindOptionsWhere<Prescriptions>
    | FindOptionsWhere<Prescriptions>[]
@@ -31,7 +31,7 @@ export class PrescriptionsService {
   const prescriptions = await this.PrescriptionsRep.save(create_status);
   return prescriptions;
  }
- async update(id: number, body: PrescriptionsUpdateDto) {
+ async update(id: string, body: PrescriptionsUpdateDto) {
   if (!id) throw new BadRequestException('', 'id');
 
   const prescriptions = await this.PrescriptionsRep.findOneBy({ id });
@@ -48,7 +48,7 @@ export class PrescriptionsService {
    );
   throw new NotFoundException();
  }
- async delete(id: number) {
+ async delete(id: string) {
   if (!id) throw new BadRequestException('id not found', 'id');
   const res = await this.PrescriptionsRep.delete({ id });
   if (!res.affected) throw new NotFoundException();
