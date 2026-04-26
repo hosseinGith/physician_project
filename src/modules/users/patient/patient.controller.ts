@@ -39,7 +39,7 @@ export class PatientController {
  getUserData(@Req() request: Request) {
   return this.service.getUserData(request);
  }
- @Post('/turn/active')
+ @Post('/appointment/active')
  activeTurn(@Body() body: ActiveTurn, @Req() request: Request) {
   return this.service.activeTurn(body, request);
  }
