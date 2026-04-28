@@ -22,11 +22,12 @@ import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.inter
 import UserUpdatePublicDto from './dtos/user-update-public.dto';
 import type { Request } from 'express';
 import { Access } from 'src/shared/guards/access.decorator';
+import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('users')
 @ApiBearerAuth()
 @UsePipes(HashUserData)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard,AccessGuard)
 @UseInterceptors(DecryptUserData)
 export class UsersController {
  constructor(private readonly users: UsersService) {}

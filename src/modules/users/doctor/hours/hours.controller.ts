@@ -19,13 +19,14 @@ import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
 import { Access } from 'src/shared/guards/access.decorator';
+import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
 @ApiBearerAuth()
 @Controller('doctorhours')
-@Access(AccessType.ADMIN)
-@UseGuards(AuthGuard)
+@Access(AccessType.DOCTOR)
+@UseGuards(AuthGuard, AccessGuard)
 export class HoursController {
  constructor(private readonly service: HoursService) {}
  @Get()

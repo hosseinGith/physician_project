@@ -23,7 +23,7 @@ export class AccessGuard implements CanActivate {
 
   if (
    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-   requiredAccess.includes(userAccess) ||
+   requiredAccess?.includes(userAccess) ||
    userAccess === AccessType.SYSTEM_ADMIN
   )
    return true;

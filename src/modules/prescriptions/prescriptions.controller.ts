@@ -15,10 +15,11 @@ import { PrescriptionsService } from './prescriptions.service';
 import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
 import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
 import { Access } from 'src/shared/guards/access.decorator';
+import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('prescriptions')
 @Access(AccessType.ADMIN)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard,AccessGuard)
 @ApiBearerAuth()
 export class PrescriptionsController {
  constructor(private readonly prescriptions: PrescriptionsService) {}

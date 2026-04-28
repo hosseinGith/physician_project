@@ -17,9 +17,10 @@ import AppointmentsDtoAdd from './dtos/appointments-add.dto';
 import AppointmentsUpdateDto from './dtos/appointments-update.dto';
 import type { Request } from 'express';
 import { Access } from 'src/shared/guards/access.decorator';
+import { AccessGuard } from 'src/shared/guards/access.guard';
 @Controller('appointments')
 @Access(AccessType.ADMIN)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard,AccessGuard)
 @ApiBearerAuth()
 export class AppointmentsController {
  constructor(private readonly appointments: AppointmentsService) {}

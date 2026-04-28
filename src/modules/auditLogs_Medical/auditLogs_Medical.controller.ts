@@ -6,9 +6,10 @@ import { AccessType } from 'src/types';
 import AuditLogs_MedicalDtoAdd from './dtos/auditLogs_Medical-add.dto';
 import { AuditLogs_Medical } from 'src/entitys/auditLogs_Medical.entity';
 import { Access } from 'src/shared/guards/access.decorator';
+import { AccessGuard } from 'src/shared/guards/access.guard';
 @Controller('auditLogs_Medical')
 @Access(AccessType.ADMIN)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard,AccessGuard)
 @ApiBearerAuth()
 export class AuditLogs_MedicalController {
  constructor(private readonly auditLogs_Medical: AuditLogs_MedicalService) {}
