@@ -18,7 +18,7 @@ export class Rates {
  private generateId() {
   this.id = nanoid();
  }
- @ManyToOne(() => Doctors)
+ @ManyToOne(() => Doctors, (doctor) => doctor.rates)
  doctor: Doctors;
  @ManyToOne(() => Patients)
  patient: Patients;

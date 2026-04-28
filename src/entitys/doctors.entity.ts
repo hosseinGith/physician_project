@@ -11,6 +11,7 @@ import { nanoid } from 'nanoid';
 
 import { Users } from './users.entity';
 import { DoctorHours } from './doctorHours.entity';
+import { Rates } from './rates.entity';
 
 @Entity()
 export class Doctors {
@@ -26,6 +27,8 @@ export class Doctors {
  user: Users;
  @OneToMany(() => DoctorHours, (doctorHour) => doctorHour.doctor)
  doctorHours: DoctorHours[];
+ @OneToMany(() => Rates, (rate) => rate.doctor)
+ rates: Rates[];
  // تخصص (قلب، پوست، داخلی، ...)
  @Column()
  specialty: string;
