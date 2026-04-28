@@ -12,13 +12,14 @@ import {
 import { AppointmentsService } from './appointments.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
-import { AccessGuard } from 'src/shared/guards/access.guard';
 import { AccessType } from 'src/types';
 import AppointmentsDtoAdd from './dtos/appointments-add.dto';
 import AppointmentsUpdateDto from './dtos/appointments-update.dto';
 import type { Request } from 'express';
+import { Access } from 'src/shared/guards/access.decorator';
 @Controller('appointments')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.ADMIN]))
+@Access(AccessType.ADMIN)
+@UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class AppointmentsController {
  constructor(private readonly appointments: AppointmentsService) {}

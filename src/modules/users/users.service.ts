@@ -2,6 +2,7 @@ import {
  BadRequestException,
  Injectable,
  NotFoundException,
+ UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entitys/users.entity';
@@ -13,6 +14,9 @@ import { Patients } from 'src/entitys/patients.entity';
 import { Doctors } from 'src/entitys/doctors.entity';
 import { JwtService } from '@nestjs/jwt';
 import find from 'src/shared/utils/find';
+import UserUpdatePublicDto from './dtos/user-update-public.dto';
+import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
+import { Request } from 'express';
 @Injectable()
 export class UsersService {
  constructor(
@@ -88,7 +92,13 @@ export class UsersService {
    await queryRunner.release();
   }
  }
- async update(id: string, body: UserUpdateDto) {
+ private async updateCheckUserData(
+  id: string,
+  body: {
+   number?: string;
+   national_id?: string;
+  },
+ ) {
   if (!id) throw new BadRequestException('', 'id');
   if (body?.number)
    if (await this.users.findOneBy({ number: body?.number }))
@@ -106,6 +116,19 @@ export class UsersService {
   if (fieldsToUpdate === 0) {
    throw new BadRequestException('هیچ فیلدی برای به‌روزرسانی ارسال نشده است.');
   }
+  return user;
+ }
+ async update(id: string, body: UserUpdateDto) {
+  const user = await this.updateCheckUserData(id, body);
+  if (user)
+   return (await this.users.update({ id: user.id }, body)).affected === 1;
+  throw new NotFoundException();
+ }
+ async updateUserData(body: UserUpdatePublicDto, request: Request) {
+  const token = getDataFromUserToken(request);
+  if (!token) throw new UnauthorizedException();
+
+  const user = await this.updateCheckUserData(token.id, body);
 
   if (user)
    return (await this.users.update({ id: user.id }, body)).affected === 1;

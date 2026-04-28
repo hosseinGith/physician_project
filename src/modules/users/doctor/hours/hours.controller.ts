@@ -10,7 +10,6 @@ import {
  UseInterceptors,
  UsePipes,
 } from '@nestjs/common';
-import { AccessGuard } from 'src/shared/guards/access.guard';
 import { AccessType } from 'src/types';
 import type { Request } from 'express';
 import AddHourDto from './dtos/AddHour.dto';
@@ -19,12 +18,14 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
+import { Access } from 'src/shared/guards/access.decorator';
 
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
 @ApiBearerAuth()
 @Controller('doctorhours')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.DOCTOR]))
+@Access(AccessType.ADMIN)
+@UseGuards(AuthGuard)
 export class HoursController {
  constructor(private readonly service: HoursService) {}
  @Get()

@@ -4,12 +4,18 @@ import {
  ForbiddenException,
  Injectable,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { AccessType } from 'src/types';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
- constructor(private readonly access: AccessType[]) {}
+ constructor(private readonly reflector: Reflector) {}
  canActivate(context: ExecutionContext): boolean {
+  const requiredAccess = this.reflector.get<AccessType[]>(
+   'accessTypes',
+   context.getHandler(),
+  );
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const request = context.switchToHttp().getRequest();
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -17,7 +23,7 @@ export class AccessGuard implements CanActivate {
 
   if (
    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-   this.access.includes(userAccess) ||
+   requiredAccess.includes(userAccess) ||
    userAccess === AccessType.SYSTEM_ADMIN
   )
    return true;

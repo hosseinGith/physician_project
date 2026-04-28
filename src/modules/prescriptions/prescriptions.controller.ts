@@ -7,18 +7,18 @@ import {
  Patch,
  Post,
  UseGuards,
- UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
-import { AccessGuard } from 'src/shared/guards/access.guard';
 import { AccessType } from 'src/types';
 import { PrescriptionsService } from './prescriptions.service';
 import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
 import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
+import { Access } from 'src/shared/guards/access.decorator';
 
 @Controller('prescriptions')
-@UseGuards(AuthGuard, new AccessGuard([AccessType.ADMIN]))
+@Access(AccessType.ADMIN)
+@UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class PrescriptionsController {
  constructor(private readonly prescriptions: PrescriptionsService) {}
