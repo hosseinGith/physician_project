@@ -19,12 +19,12 @@ function calculateResurces(
  };
 }
 export default async function getHostResorces() {
- const username = 'miradigi';
- const password = 'F2]o1CQ]qbK4c5';
+ const username = process.env.host_username;
+ const password = process.env.host_password;
+
  const auth = Buffer.from(`${username}:${password}`).toString('base64');
 
  try {
-  // دریافت آمار منابع
   const res = await axios.get<{
    data: {
     find(arg0: (item: any) => boolean): {

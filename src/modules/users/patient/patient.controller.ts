@@ -2,6 +2,7 @@ import {
  Body,
  Controller,
  Get,
+ Param,
  Patch,
  Post,
  Query,
@@ -21,6 +22,8 @@ import PatientUpdateDto from './dtos/update.dto';
 import { Access } from 'src/shared/guards/access.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessGuard } from 'src/shared/guards/access.guard';
+import { SortedByEnum } from './types';
+import { StatusPrescriptions } from 'src/entitys/prescriptions.entity';
 
 @Controller('patient')
 @ApiBearerAuth()
@@ -29,18 +32,38 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 @UseGuards(AuthGuard)
 export class PatientController {
  constructor(private readonly service: PatientService) {}
-
  @Access(AccessType.PATIENT)
  @UseGuards(AccessGuard)
- @Get('/active_doctors')
+ @Get('/prescriptions/search')
+ searchInPatientPrescriptions(@Req() request: Request) {
+  return this.service.searchInPatientPrescriptions(request);
+ }
+ @Get('/prescriptions')
+ getPatientPrescriptions(
+  @Query('q') q: string,
+  @Query('status') status: StatusPrescriptions | undefined,
+  @Query('sortedBy') sortedBy: SortedByEnum | undefined,
+  @Req() request: Request,
+ ) {
+  return this.service.getPatientPrescriptions(request, q, status, sortedBy);
+ }
+ @Access(AccessType.PATIENT)
+ @UseGuards(AccessGuard)
+ @Get('/doctors/actives')
  findActiveDoctors() {
   return this.service.findActiveDoctors();
  }
  @Access(AccessType.PATIENT)
  @UseGuards(AccessGuard)
- @Get('/search/doctors')
+ @Get('/doctors/search')
  search(@Query('q') q: string, @Query('specialty') specialty?: string) {
   return this.service.search(q, specialty);
+ }
+ @Access(AccessType.PATIENT)
+ @UseGuards(AccessGuard)
+ @Get('/doctors/getDoctorForAppointments:id')
+ getDoctorForAppointments(@Param('id') id: string) {
+  return this.service.getDoctorForAppointments(id);
  }
  @Access(AccessType.PATIENT)
  @UseGuards(AccessGuard)

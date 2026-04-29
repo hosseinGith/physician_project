@@ -4,6 +4,7 @@ import {
  Column,
  ManyToOne,
  BeforeInsert,
+ CreateDateColumn,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
@@ -54,6 +55,7 @@ export class Prescriptions {
   type: 'enum',
   enum: StatusPrescriptions,
  })
- status: string;
+ status: StatusPrescriptions;
+ @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+ created_at: Date;
 }
-

@@ -17,6 +17,11 @@ import { JwtService } from '@nestjs/jwt';
 import { Patients } from 'src/entitys/patients.entity';
 import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 import PatientUpdateDto from './dtos/update.dto';
+import {
+ Prescriptions,
+ StatusPrescriptions,
+} from 'src/entitys/prescriptions.entity';
+import { SortedByEnum } from './types';
 
 @Injectable()
 export class PatientService {
@@ -31,8 +36,97 @@ export class PatientService {
   private doctorHours: Repository<DoctorHours>,
   @InjectRepository(Appointments)
   private appointments: Repository<Appointments>,
+  @InjectRepository(Prescriptions)
+  private prescriptions: Repository<Prescriptions>,
   private jwt: JwtService,
  ) {}
+ async searchInPatientPrescriptions(request: Request) {
+  const token = request.headers.authorization?.split(' ')[1];
+  if (!token) throw new UnauthorizedException();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const de_patient = this.jwt.decode(String(token));
+
+  if (!de_patient) throw new UnauthorizedException();
+  const userId = (de_patient as TokenType).id;
+  return await this.prescriptions.find({
+   where: {
+    patient: {
+     user: { id: userId },
+    },
+   },
+   relations: ['patient'],
+   select: {
+    doctor: {
+     user: {
+      first_name: true,
+      last_name: true,
+     },
+     id: true,
+     bio: true,
+     consultation_fee: true,
+     specialty: true,
+    },
+    diagnosis: true,
+    doctor_digital_signature: true,
+    id: true,
+    issue_date: true,
+    medications: true,
+    status: true,
+    valid_until: true,
+   },
+  });
+ }
+ async getPatientPrescriptions(
+  request: Request,
+  q: string,
+  status: StatusPrescriptions | undefined,
+  sortedBy: SortedByEnum | undefined,
+ ) {
+  const token = request.headers.authorization?.split(' ')[1];
+  if (!token) throw new UnauthorizedException();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const de_patient = this.jwt.decode(String(token));
+
+  if (!de_patient) throw new UnauthorizedException();
+  const userId = (de_patient as TokenType).id;
+  return await this.prescriptions.find({
+   order: {
+    created_at: sortedBy
+     ? sortedBy === SortedByEnum.OLDER
+       ? 'ASC'
+       : 'DESC'
+     : undefined,
+   },
+   where: {
+    status,
+    patient: {
+     user: { id: userId },
+    },
+   },
+   relations: ['patient'],
+   select: {
+    doctor: {
+     user: {
+      first_name: true,
+      last_name: true,
+     },
+     id: true,
+     bio: true,
+     consultation_fee: true,
+     specialty: true,
+    },
+    diagnosis: true,
+    doctor_digital_signature: true,
+    id: true,
+    issue_date: true,
+    medications: true,
+    status: true,
+    valid_until: true,
+   },
+  });
+ }
 
  async findActiveDoctors() {
   return await this.users.find({
@@ -40,14 +134,24 @@ export class PatientService {
     access: AccessType.DOCTOR,
     is_active: true,
    },
-   select: ['doctor'],
+   relations: ['doctor'],
+   select: {
+    access: true,
+    doctor: {
+     id: true,
+     bio: true,
+     consultation_fee: true,
+     specialty: true,
+    },
+   },
   });
  }
  // public.service.ts
  async search(q: string, specialty?: string) {
   const queryBuilder = this.users
    .createQueryBuilder('users')
-   .leftJoinAndSelect('users.doctor', 'doctor');
+   .leftJoinAndSelect('users.doctor', 'doctor')
+   .select(['first_name', 'specialty']);
 
   if (q) {
    queryBuilder.andWhere(
@@ -65,7 +169,31 @@ export class PatientService {
 
   return await queryBuilder.getMany();
  }
-
+ async getDoctorForAppointments(id: string) {
+  const user = await this.users
+   .createQueryBuilder('user')
+   .leftJoinAndSelect('user.doctor', 'doctor')
+   .leftJoinAndSelect('doctor.doctorHours', 'doctorHours')
+   .leftJoin('doctor.rates', 'rates')
+   .where('user.id = :id', { id })
+   .andWhere('user.is_active = :is_active', { is_active: true })
+   .select([
+    'user.first_name',
+    'user.last_name',
+    'user.access',
+    'doctor.consultation_fee',
+    'doctor.bio',
+    'doctor.medical_license_number',
+    'doctor.specialty',
+    'doctorHours.id',
+    'doctorHours.hour',
+   ])
+   .addSelect('COALESCE(AVG(rates.rate), 0)', 'averageRate')
+   .groupBy('user.id, doctor.id, doctorHours.id')
+   .getOne();
+  if (!user) throw new NotFoundException();
+  return user;
+ }
  // taking turns
  async appointment(body: ActiveTurn, request: Request) {
   const doctor = await this.doctors.findOneBy({ id: body.doctorId });
@@ -201,7 +329,10 @@ export class PatientService {
     /* empty */
    }
   }
-  if(Object.keys(body).length===0)throw new BadRequestException('فیلدی ارسال نشده است. یا مقدار آن تکراری است.')
+  if (Object.keys(body).length === 0)
+   throw new BadRequestException(
+    'فیلدی ارسال نشده است. یا مقدار آن تکراری است.',
+   );
 
   const result = await this.patients.update(
    {

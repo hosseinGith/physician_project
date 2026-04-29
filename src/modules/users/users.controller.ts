@@ -27,37 +27,43 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 @Controller('users')
 @ApiBearerAuth()
 @UsePipes(HashUserData)
-@UseGuards(AuthGuard,AccessGuard)
+@UseGuards(AuthGuard)
 @UseInterceptors(DecryptUserData)
 export class UsersController {
  constructor(private readonly users: UsersService) {}
  @Access()
+ @UseGuards(AccessGuard)
  @Get(':id')
  findOne(@Param('id') id: string) {
   return this.users.get(id);
  }
  @Access()
+ @UseGuards(AccessGuard)
  @Get()
  findAll() {
   return this.users.get();
  }
  @Access()
+ @UseGuards(AccessGuard)
  @Post()
  add(@Body() body: AdminAddUser) {
   return this.users.add(body);
  }
- @Access()
- @Patch(':id')
- update(@Param('id') id: string, @Body() body: UserUpdateDto) {
-  return this.users.update(id, body);
- }
-
  @Access(AccessType.PATIENT, AccessType.DOCTOR)
+ @UseGuards(AccessGuard)
  @Patch('/updateUserData')
  updateUserData(@Body() body: UserUpdatePublicDto, @Req() request: Request) {
   return this.users.updateUserData(body, request);
  }
  @Access()
+ @UseGuards(AccessGuard)
+ @Patch(':id')
+ update(@Param('id') id: string, @Body() body: UserUpdateDto) {
+  return this.users.update(id, body);
+ }
+
+ @Access()
+ @UseGuards(AccessGuard)
  @Delete(':id')
  delete(@Param('id') id: string) {
   return this.users.delete(id);

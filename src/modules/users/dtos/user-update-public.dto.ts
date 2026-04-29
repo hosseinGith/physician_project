@@ -1,15 +1,11 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { OmitType } from '@nestjs/swagger';
-import { Users } from 'src/entitys/users.entity';
-
-export default class UserUpdatePublicDto extends PartialType(
- OmitType(Users, [
-  'access',
-  'doctor',
-  'patient',
-  'created_at',
-  'id',
-  'is_active',
-  'number',
- ]),
-) {}
+import { IsString } from 'class-validator';
+class userData {
+ @IsString()
+ first_name: string;
+ @IsString()
+ last_name: string;
+ @IsString()
+ national_id: string;
+}
+export default class UserUpdatePublicDto extends PartialType(userData) {}

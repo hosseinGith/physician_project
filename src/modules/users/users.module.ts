@@ -13,6 +13,7 @@ import { Appointments } from 'src/entitys/appointments.entity';
 import { DoctorModule } from './doctor/doctor.module';
 import { DoctorService } from './doctor/doctor.service';
 import { DoctorController } from './doctor/doctor.controller';
+import { Prescriptions } from 'src/entitys/prescriptions.entity';
 
 @Module({
  imports: [
@@ -22,6 +23,7 @@ import { DoctorController } from './doctor/doctor.controller';
    Patients,
    DoctorHours,
    Appointments,
+   Prescriptions,
   ]),
   PatientModule,
   DoctorModule,
