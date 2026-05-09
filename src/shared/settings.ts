@@ -11,3 +11,5 @@ export const hashedUserCol = [
  'insurance_company',
  'code',
 ];
+
+export const hashedChatCol = ['content'];

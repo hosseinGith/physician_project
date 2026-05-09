@@ -28,6 +28,9 @@ import { DoctorHours } from './entitys/doctorHours.entity';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { WebsocketGateway } from './websocket/websocket.gateway';
 import { WebsocketService } from './websocket/websocket.service';
+import { ChatGateway } from './websocket/chat/chat.gateway';
+import { ChatService } from './websocket/chat/chat.service';
+import { ChatRequests } from './entitys/chatRequests.entity';
 dotenv.config();
 
 @Module({
@@ -51,6 +54,7 @@ dotenv.config();
    entities: [
     Users,
     Patients,
+    ChatRequests,
     Rates,
     Doctors,
     Files,
@@ -68,6 +72,7 @@ dotenv.config();
   TypeOrmModule.forFeature([
    Users,
    Patients,
+   ChatRequests,
    Rates,
    Doctors,
    Files,
@@ -99,6 +104,8 @@ dotenv.config();
   },
   WebsocketGateway,
   WebsocketService,
+  ChatGateway,
+  ChatService,
  ],
 })
 export class AppModule {}

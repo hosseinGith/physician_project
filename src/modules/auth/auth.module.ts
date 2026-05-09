@@ -7,9 +7,12 @@ import { Patients } from 'src/entitys/patients.entity';
 import { AuthService } from './auth.service';
 import { OtpCodes } from 'src/entitys/otpCodes.entity';
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
+import { ChatRequests } from 'src/entitys/chatRequests.entity';
 
 @Module({
- imports: [TypeOrmModule.forFeature([Users, Patients, Doctors, OtpCodes])],
+ imports: [
+  TypeOrmModule.forFeature([Users, Patients, ChatRequests, Doctors, OtpCodes]),
+ ],
  controllers: [AuthController],
  providers: [AuthService, CryptoHash],
 })

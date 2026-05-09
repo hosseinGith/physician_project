@@ -5,25 +5,25 @@ import {
  OnGatewayConnection,
  OnGatewayDisconnect,
  ConnectedSocket,
+ OnGatewayInit,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { WebsocketService } from './websocket.service';
 import { UseGuards } from '@nestjs/common';
-import { WsAuthGuard } from './gurds/WsAuth.guard';
-import { wsAccess } from './gurds/wsAccess.guard';
-import { Access } from 'src/shared/guards/access.decorator';
-import { AccessType } from 'src/types';
+import { WsAuthGuard } from './gurds/wsAuth.guard';
 @UseGuards(WsAuthGuard)
 @WebSocketGateway({ cors: { origin: '*' } })
 export class WebsocketGateway
- implements OnGatewayConnection, OnGatewayDisconnect
+ implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
  @WebSocketServer()
  server: Server;
 
  constructor(private websocketService: WebsocketService) {}
+ afterInit(server: Server) {
+  this.websocketService.setServer(server);
+ }
 
- @UseGuards(WsAuthGuard)
  handleConnection(client: Socket) {
   void this.websocketService.addClient(client);
  }
@@ -31,10 +31,9 @@ export class WebsocketGateway
  handleDisconnect(client: Socket) {
   this.websocketService.removeClient(client.id);
  }
- @Access(AccessType.PATIENT)
- @UseGuards(wsAccess)
- @SubscribeMessage('start-real-time')
- startRealTimeUpdates(@ConnectedSocket() client: Socket) {
-  client.emit('asd');
+
+ @SubscribeMessage('ping')
+ handlePing(@ConnectedSocket() client: Socket) {
+  client.emit('');
  }
 }

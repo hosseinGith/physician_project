@@ -29,6 +29,7 @@ export class UserDtoAdd {
  access: AccessType;
 
  @IsString()
+ @IsOptional()
  @Matches(/^\d{10}$/, { message: 'فرمت کد ملی اشتباه است' })
  national_id?: string;
 }

@@ -7,6 +7,7 @@ import { Users } from 'src/entitys/users.entity';
 import { Doctors } from 'src/entitys/doctors.entity';
 import { Patients } from 'src/entitys/patients.entity';
 import { DoctorHours } from 'src/entitys/doctorHours.entity';
+import { ChatRequests } from 'src/entitys/chatRequests.entity';
 
 @Module({
  imports: [
@@ -15,6 +16,7 @@ import { DoctorHours } from 'src/entitys/doctorHours.entity';
    Users,
    Doctors,
    Patients,
+   ChatRequests,
    DoctorHours,
   ]),
  ],

@@ -3,29 +3,32 @@ import {
  PrimaryColumn,
  BeforeInsert,
  ManyToOne,
- OneToMany,
  Column,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
-import { Messages } from './messages.entity';
 import { Matches } from 'class-validator';
+enum ChatRequestStatusEnum {
+ REJECTED = 'rejected',
+ ACCEPTED = 'accepted',
+ WAITING = 'waiting',
+}
 @Entity()
-export class Conversitions {
+export class ChatRequests {
  @PrimaryColumn()
  id: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
- @ManyToOne(() => Patients)
+ @ManyToOne(() => Patients, (patients) => patients.chatRequests)
  patient: Patients;
- @ManyToOne(() => Doctors)
+ @ManyToOne(() => Doctors, (doctor) => doctor.chatRequests)
  doctor: Doctors;
- @OneToMany(() => Messages, (message) => message.conversition)
- messages: Messages[];
+ @Column({ default: ChatRequestStatusEnum.WAITING })
+ status: ChatRequestStatusEnum;
  @Column()
  @Matches(/room_doctor_\w_patient_\w/)
  roomId: string;

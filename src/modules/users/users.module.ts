@@ -14,6 +14,7 @@ import { DoctorModule } from './doctor/doctor.module';
 import { DoctorService } from './doctor/doctor.service';
 import { DoctorController } from './doctor/doctor.controller';
 import { Prescriptions } from 'src/entitys/prescriptions.entity';
+import { ChatRequests } from 'src/entitys/chatRequests.entity';
 
 @Module({
  imports: [
@@ -21,6 +22,7 @@ import { Prescriptions } from 'src/entitys/prescriptions.entity';
    Users,
    Doctors,
    Patients,
+   ChatRequests,
    DoctorHours,
    Appointments,
    Prescriptions,

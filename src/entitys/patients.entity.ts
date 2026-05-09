@@ -5,11 +5,13 @@ import {
  Column,
  OneToOne,
  JoinColumn,
+ OneToMany,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
 import { Users } from './users.entity';
 import { randomInt } from 'node:crypto';
+import { ChatRequests } from './chatRequests.entity';
 @Entity()
 export class Patients {
  @PrimaryColumn()
@@ -23,6 +25,8 @@ export class Patients {
  @OneToOne(() => Users, (user) => user.patient)
  @JoinColumn()
  user: Users;
+ @OneToMany(() => ChatRequests, (chatRequest) => chatRequest.patient)
+ chatRequests: ChatRequests[];
  // شماره پرونده (یکتا، مثل MR-۱۴۰۴-۱۲۳۴)
  @Column({ unique: true })
  medical_record_number: string;

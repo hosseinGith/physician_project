@@ -30,6 +30,8 @@ export class WsAuthGuard implements CanActivate {
     if (!user?.is_active) throw new Error();
 
     client['userAccess'] = user?.access || '';
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    client['data'] = user;
 
     return true;
    } else throw new Error();

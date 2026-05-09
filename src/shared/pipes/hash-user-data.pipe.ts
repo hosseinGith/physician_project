@@ -11,26 +11,26 @@ import { hashedUserCol } from '../settings';
 export class HashUserData implements PipeTransform {
  transform(value: any) {
   if (!value || typeof value !== 'object') return value;
-  return this.deepSearchAndEncrypt(value);
+  return this.deepSearchAndEncrypt(value, hashedUserCol);
  }
 
- private deepSearchAndEncrypt(data: any): any {
+ deepSearchAndEncrypt(data: any, hashedCol: string[]): any {
   if (Array.isArray(data)) {
-   return data.map((item) => this.deepSearchAndEncrypt(item));
+   return data.map((item) => this.deepSearchAndEncrypt(item, hashedCol));
   }
   if (data) {
    const result = { ...data };
 
    for (const [key, value] of Object.entries(result)) {
     try {
-     if (typeof value === 'string' && hashedUserCol.includes(key)) {
+     if (typeof value === 'string' && hashedCol.includes(key)) {
       result[key] = new CryptoHash().encrypt(value);
      } else if (
       typeof value === 'object' &&
       value !== null &&
       !('getTime' in value)
      ) {
-      result[key] = this.deepSearchAndEncrypt(value);
+      result[key] = this.deepSearchAndEncrypt(value, hashedCol);
      }
     } catch {
      /* empty */

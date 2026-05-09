@@ -45,6 +45,6 @@ export class Messages {
  file: Files;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
  created_at: Date;
- @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- updated_at: Date;
+ @CreateDateColumn({ type: 'datetime', nullable: true })
+ updated_at: string;
 }
