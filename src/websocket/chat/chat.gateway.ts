@@ -40,8 +40,6 @@ export class ChatGateway extends WebsocketGateway {
 
   @ConnectedSocket() client: Socket,
  ) {
-  console.log(response);
-
   return await this.service.send(response.roomId, response.content, client);
  }
  @SubscribeMessage('joinRoom')

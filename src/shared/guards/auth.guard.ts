@@ -28,13 +28,11 @@ export class AuthGuard implements CanActivate {
   if (!token) throw new UnauthorizedException();
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const res = (await this.jwtService.verify(token)) as TokenType;
-  console.log(res?.number);
 
   if (res?.number) {
    const user = await this.usersRep.findOneBy({
     number: res?.number,
    });
-   console.log(user);
 
    if (!user) throw new NotFoundException();
    if (!user?.is_active)
