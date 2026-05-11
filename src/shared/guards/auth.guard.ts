@@ -25,24 +25,25 @@ export class AuthGuard implements CanActivate {
   const request = context.switchToHttp().getRequest<Request>();
   if (request.url.split('/')[1] === 'auth') return true;
   const token = String(request.headers?.authorization).split(' ')[1];
+  if (!token) throw new UnauthorizedException();
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  const res = (await this.jwtService.verify(token)) as TokenType;
+  console.log(res?.number);
 
-  try {
-   if (!token) throw new UnauthorizedException();
-   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-   const res = (await this.jwtService.verify(token)) as TokenType;
-   if (res?.number) {
-    const user = await this.usersRep.findOneBy({ number: res.number });
-    if (!user) throw new NotFoundException();
-    if (!user?.is_active)
-     throw new ForbiddenException(
-      'اکانت شما فعال نشده است. تا فعال شدن آن منتظر بمونید.',
-     );
-    request['userAccess'] = user?.access || '';
+  if (res?.number) {
+   const user = await this.usersRep.findOneBy({
+    number: res?.number,
+   });
+   console.log(user);
 
-    return true;
-   } else throw new UnauthorizedException();
-  } catch {
-   throw new UnauthorizedException();
-  }
+   if (!user) throw new NotFoundException();
+   if (!user?.is_active)
+    throw new ForbiddenException(
+     'اکانت شما فعال نشده است. تا فعال شدن آن منتظر بمونید.',
+    );
+   request['userAccess'] = user?.access || '';
+
+   return true;
+  } else throw new UnauthorizedException();
  }
 }
