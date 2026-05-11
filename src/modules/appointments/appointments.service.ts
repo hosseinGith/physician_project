@@ -1,11 +1,10 @@
 import {
  BadRequestException,
- ConflictException,
  Injectable,
  NotFoundException,
  UnauthorizedException,
 } from '@nestjs/common';
-import { FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { Appointments } from 'src/entitys/appointments.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import AppointmentsDtoAdd from './dtos/appointments-add.dto';
@@ -89,35 +88,20 @@ export class AppointmentsService {
   return appointments;
  }
  async update(id: string, body: AppointmentsUpdateDto) {
-  try {
-   if (!id) throw new BadRequestException('', 'id');
+  if (!id) throw new BadRequestException('', 'id');
 
-   const user = await this.appointments.findOneBy({ id });
-   const fieldsToUpdate = Object.keys(body).length;
+  const user = await this.appointments.findOneBy({ id });
+  const fieldsToUpdate = Object.keys(body).length;
 
-   if (fieldsToUpdate === 0) {
-    throw new BadRequestException('هیچ فیلدی برای به‌روزرسانی ارسال نشده است.');
-   }
-
-   if (user)
-    return (
-     (await this.appointments.update({ id: user.id }, body)).affected === 1
-    );
-   throw new NotFoundException();
-  } catch (error) {
-   if (
-    error instanceof QueryFailedError &&
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    error.driverError?.code === 'ER_DUP_ENTRY'
-   ) {
-    throw new ConflictException(
-     'این نام کاربری قبلاً استفاده شده است. لطفاً نام کاربری دیگری انتخاب کنید.',
-     'number',
-    );
-   } else {
-    throw error;
-   }
+  if (fieldsToUpdate === 0) {
+   throw new BadRequestException('هیچ فیلدی برای به‌روزرسانی ارسال نشده است.');
   }
+
+  if (user)
+   return (
+    (await this.appointments.update({ id: user.id }, body)).affected === 1
+   );
+  throw new NotFoundException();
  }
  async delete(id: string) {
   if (!id) throw new BadRequestException('id not found', 'id');
