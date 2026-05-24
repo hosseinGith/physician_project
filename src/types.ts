@@ -7,9 +7,7 @@ export enum AccessType {
  SYSTEM_ADMIN = 'system_admin',
 }
 export interface TokenType {
- number: string;
  id: string;
- iat: number;
 }
 export const FilesTypePublicAccess = [
  'pdf',

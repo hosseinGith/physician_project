@@ -3,7 +3,6 @@ import {
  ExecutionContext,
  ForbiddenException,
  Injectable,
- NotFoundException,
  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -25,16 +24,18 @@ export class AuthGuard implements CanActivate {
   const request = context.switchToHttp().getRequest<Request>();
   if (request.url.split('/')[1] === 'auth') return true;
   const token = String(request.headers?.authorization).split(' ')[1];
+
   if (!token) throw new UnauthorizedException();
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const res = (await this.jwtService.verify(token)) as TokenType;
 
-  if (res?.number) {
+  if (res?.id) {
    const user = await this.usersRep.findOneBy({
-    number: res?.number,
+    id: res?.id,
    });
 
-   if (!user) throw new NotFoundException();
+   if (!user) throw new UnauthorizedException();
+
    if (!user?.is_active)
     throw new ForbiddenException(
      'اکانت شما فعال نشده است. تا فعال شدن آن منتظر بمونید.',

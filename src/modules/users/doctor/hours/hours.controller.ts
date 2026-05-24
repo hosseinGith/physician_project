@@ -24,7 +24,7 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
 @ApiBearerAuth()
-@Controller('doctorhours')
+@Controller('/api/doctorhours')
 @Access(AccessType.DOCTOR)
 @UseGuards(AuthGuard, AccessGuard)
 export class HoursController {

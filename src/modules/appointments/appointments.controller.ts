@@ -18,7 +18,7 @@ import AppointmentsUpdateDto from './dtos/appointments-update.dto';
 import type { Request } from 'express';
 import { Access } from 'src/shared/guards/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
-@Controller('appointments')
+@Controller('/api/appointments')
 @Access(AccessType.ADMIN)
 @UseGuards(AuthGuard,AccessGuard)
 @ApiBearerAuth()

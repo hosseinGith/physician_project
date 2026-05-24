@@ -24,13 +24,20 @@ import type { Request } from 'express';
 import { Access } from 'src/shared/guards/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 
-@Controller('users')
+@Controller('/api/users')
 @ApiBearerAuth()
 @UsePipes(HashUserData)
 @UseGuards(AuthGuard)
 @UseInterceptors(DecryptUserData)
 export class UsersController {
  constructor(private readonly users: UsersService) {}
+
+ @Access(AccessType.PATIENT, AccessType.DOCTOR)
+ @UseGuards(AccessGuard)
+ @Get('/getUserInitialInfo')
+ getUserInitialInfo(@Req() request: Request) {
+  return this.users.getUserInitialInfo(request);
+ }
  @Access()
  @UseGuards(AccessGuard)
  @Get(':id')

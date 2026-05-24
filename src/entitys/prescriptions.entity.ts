@@ -27,11 +27,8 @@ export class Prescriptions {
   this.id = nanoid();
  }
  // ارجاع به Patients
- @ManyToOne(() => Patients)
+ @ManyToOne(() => Patients, (patient) => patient.prescriptions)
  patient: Patients;
- // ارجاع به Doctors
- @ManyToOne(() => Doctors)
- doctor: Doctors;
 
  // ارجاع به Appointments (NULL اگر مشاوره آنلاین)
  @ManyToOne(() => Appointments, (appointment) => appointment.prescriptions)

@@ -17,9 +17,10 @@ export default class LoginDto {
  number: string;
  @IsString()
  @Length(
-  Number(process.env.OTP_code_length || 5),
-  Number(process.env.OTP_code_length || 5),
+  Number(process.env.OTP_CODE_LENGTH || 5),
+  Number(process.env.OTP_CODE_LENGTH || 5),
   { message: 'فرمت کد تایید اشتباه است.' },
  )
  code: string;
 }
+

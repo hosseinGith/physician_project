@@ -35,6 +35,19 @@ export class UsersService {
    is_active: true,
   });
  }
+
+ async getUserInitialInfo(request: Request) {
+  const token = getDataFromUserToken(request);
+  console.log(token);
+  
+  const id = token?.id;
+  const userData = await this.users.findOne({
+   relations: ['doctor', 'patient'],
+   where: { id },
+  });
+  if (!userData) throw new UnauthorizedException();
+  return userData;
+ }
  async get(id?: string) {
   return await find<Users>(this.users, id);
  }

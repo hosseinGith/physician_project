@@ -57,16 +57,16 @@ export class PatientService {
    },
    relations: ['patient'],
    select: {
-    doctor: {
-     user: {
-      first_name: true,
-      last_name: true,
-     },
-     id: true,
-     bio: true,
-     consultation_fee: true,
-     specialty: true,
-    },
+    // doctor: {
+    //  user: {
+    //   first_name: true,
+    //   last_name: true,
+    //  },
+    //  id: true,
+    //  bio: true,
+    //  consultation_fee: true,
+    //  specialty: true,
+    // },
     diagnosis: true,
     doctor_digital_signature: true,
     id: true,
@@ -107,16 +107,16 @@ export class PatientService {
    },
    relations: ['patient'],
    select: {
-    doctor: {
-     user: {
-      first_name: true,
-      last_name: true,
-     },
-     id: true,
-     bio: true,
-     consultation_fee: true,
-     specialty: true,
-    },
+    // doctor: {
+    //  user: {
+    //   first_name: true,
+    //   last_name: true,
+    //  },
+    //  id: true,
+    //  bio: true,
+    //  consultation_fee: true,
+    //  specialty: true,
+    // },
     diagnosis: true,
     doctor_digital_signature: true,
     id: true,

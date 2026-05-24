@@ -36,7 +36,7 @@ export class Users {
  @Column({ default: AccessType.PATIENT })
  @IsEnum(AccessType)
  access: AccessType;
- @Column({ default: false, type: 'boolean' })
+ @Column({ default: true, type: 'boolean' })
  is_active: boolean;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
  created_at: Date;

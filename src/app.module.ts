@@ -25,24 +25,23 @@ import { Messages } from './entitys/messages.entity';
 import { Conversitions } from './entitys/conversitions.entity';
 import { OtpCodes } from './entitys/otpCodes.entity';
 import { DoctorHours } from './entitys/doctorHours.entity';
-import { AuthGuard } from './shared/guards/auth.guard';
 import { WebsocketGateway } from './websocket/websocket.gateway';
 import { WebsocketService } from './websocket/websocket.service';
 import { ChatGateway } from './websocket/chat/chat.gateway';
 import { ChatService } from './websocket/chat/chat.service';
 import { ChatRequests } from './entitys/chatRequests.entity';
+import { Specialty } from './entitys/specialty.entity';
 dotenv.config();
 
 @Module({
  imports: [
   ThrottlerModule.forRoot([
    {
-    // min
     ttl: 60 * 1000,
-    // count
     limit: 20,
    },
   ]),
+
   JwtModule.register({ secret: process.env?.JWT_secret, global: true }),
   TypeOrmModule.forRoot({
    type: 'mysql',
@@ -66,6 +65,7 @@ dotenv.config();
     Prescriptions,
     OtpCodes,
     DoctorHours,
+    Specialty,
    ],
    synchronize: true,
   }),
@@ -83,6 +83,7 @@ dotenv.config();
    Prescriptions,
    OtpCodes,
    DoctorHours,
+   Specialty,
    MedicalRecords,
   ]),
   UsersModule,
@@ -98,10 +99,7 @@ dotenv.config();
    provide: APP_GUARD,
    useClass: ThrottlerGuard,
   },
-  {
-   provide: APP_GUARD,
-   useClass: AuthGuard,
-  },
+
   WebsocketGateway,
   WebsocketService,
   ChatGateway,

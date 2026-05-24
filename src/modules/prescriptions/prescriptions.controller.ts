@@ -17,7 +17,7 @@ import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
 import { Access } from 'src/shared/guards/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 
-@Controller('prescriptions')
+@Controller('/api/prescriptions')
 @Access(AccessType.ADMIN)
 @UseGuards(AuthGuard,AccessGuard)
 @ApiBearerAuth()

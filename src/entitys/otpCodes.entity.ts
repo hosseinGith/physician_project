@@ -14,7 +14,7 @@ export class OtpCodes {
  private generateId() {
   this.id = nanoid();
  }
- @Column({ length: process.env.OTP_code_length })
+ @Column({ length: process.env.OTP_CODE_LENGTH })
  code: string;
  @Column()
  number: string;

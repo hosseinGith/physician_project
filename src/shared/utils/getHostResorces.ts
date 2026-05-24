@@ -19,8 +19,8 @@ function calculateResurces(
  };
 }
 export default async function getHostResorces() {
- const username = process.env.host_username;
- const password = process.env.host_password;
+ const username = process.env.HOST_USERNAME;
+ const password = process.env.HOST_PASSWORD;
 
  const auth = Buffer.from(`${username}:${password}`).toString('base64');
 

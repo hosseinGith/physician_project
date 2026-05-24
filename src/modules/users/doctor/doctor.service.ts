@@ -14,12 +14,15 @@ import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 import { Users } from 'src/entitys/users.entity';
 import { Patients } from 'src/entitys/patients.entity';
 import { Appointments } from 'src/entitys/appointments.entity';
+import { Specialty } from 'src/entitys/specialty.entity';
 
 @Injectable()
 export class DoctorService {
  constructor(
   @InjectRepository(Doctors)
   private readonly doctors: Repository<Doctors>,
+  @InjectRepository(Specialty)
+  private readonly specialty: Repository<Specialty>,
   @InjectRepository(Users)
   private readonly users: Repository<Users>,
   @InjectRepository(Patients)
@@ -31,6 +34,51 @@ export class DoctorService {
  async get(id?: string) {
   return await find<Doctors>(this.doctors, id, ['doctorHours']);
  }
+ async find(q: string = '', specialty: string = '') {
+  const queryBuilder = this.doctors
+   .createQueryBuilder('doctor')
+   .leftJoinAndSelect('doctor.specialty', 'specialty')
+   .leftJoinAndSelect('doctor.user', 'user')
+   .addSelect(
+    (qb) =>
+     qb
+      .select('COALESCE(AVG(rate.score), 0)')
+      .from('rates', 'rate')
+      .where('rate.doctorId = doctor.id'),
+    'ratesAvg',
+   )
+   .addSelect(
+    (qb) =>
+     qb
+      .select('COUNT(rate.id)')
+      .from('rates', 'rate')
+      .where('rate.doctorId = doctor.id'),
+    'ratesCount',
+   );
+
+  if (q) {
+   queryBuilder
+    .where('doctor.id = :q', { q })
+    .orWhere('specialty.slug LIKE :query', { query: `%${q}%` })
+    .orWhere('specialty.name LIKE :query', { query: `%${q}%` })
+    .orWhere('user.first_name LIKE :query', { query: `%${q}%` })
+    .orWhere('user.last_name LIKE :query', { query: `%${q}%` });
+  }
+
+  if (specialty) {
+   if (q) {
+    queryBuilder.andWhere('specialty.name = :specialty', { specialty });
+   } else {
+    queryBuilder.where('specialty.name = :specialty', { specialty });
+   }
+  }
+
+  return queryBuilder.getMany();
+ }
+ async allSpecialtys() {
+  return this.specialty.find({ select: ['name', 'id'] });
+ }
+
  async getUserData(request: Request) {
   const token = getDataFromUserToken(request);
   if (!token) throw new UnauthorizedException();

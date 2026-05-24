@@ -4,6 +4,7 @@ import {
  Get,
  Param,
  Patch,
+ Query,
  Req,
  UseGuards,
  UseInterceptors,
@@ -23,23 +24,32 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
 @ApiBearerAuth()
-@Controller('doctor')
-@UseGuards(AuthGuard)
+@Controller('/api/doctor')
 export class DoctorController {
  constructor(private readonly service: DoctorService) {}
-
+ @Get('/public/search')
+ search(@Query('q') q?: string, @Query('specialty') specialty?: string) {
+  return this.service.find(q, specialty);
+ }
+ @Get('/public/specialtys')
+ specialtys() {
+  return this.service.allSpecialtys();
+ }
+ @UseGuards(AuthGuard)
  @Access(AccessType.DOCTOR)
  @UseGuards(AccessGuard)
  @Get('/profile')
  getUserData(@Req() request: Request) {
   return this.service.getUserData(request);
  }
+ @UseGuards(AuthGuard)
  @Access(AccessType.DOCTOR)
  @UseGuards(AccessGuard)
  @Get('/my_patients')
  my_appointments(@Req() request: Request) {
   return this.service.my_appointments(request);
  }
+ @UseGuards(AuthGuard)
  @Access(AccessType.DOCTOR)
  @UseGuards(AccessGuard)
  @Get()
@@ -50,6 +60,7 @@ export class DoctorController {
  findOne(@Param('id') id: string) {
   return this.service.get(id);
  }
+ @UseGuards(AuthGuard)
  @Access(AccessType.DOCTOR)
  @UseGuards(AccessGuard)
  @Patch(':id')

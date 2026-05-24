@@ -6,6 +6,7 @@ import {
  OneToOne,
  JoinColumn,
  OneToMany,
+ ManyToOne,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
@@ -13,6 +14,7 @@ import { Users } from './users.entity';
 import { DoctorHours } from './doctorHours.entity';
 import { Rates } from './rates.entity';
 import { ChatRequests } from './chatRequests.entity';
+import { Specialty } from './specialty.entity';
 
 @Entity()
 export class Doctors {
@@ -33,8 +35,11 @@ export class Doctors {
  @OneToMany(() => ChatRequests, (chatRequest) => chatRequest.doctor)
  chatRequests: ChatRequests[];
  // تخصص (قلب، پوست، داخلی، ...)
- @Column()
- specialty: string;
+ @ManyToOne(() => Specialty, (specialty) => specialty.doctors, {
+  nullable: true, // اگه تخصص اجباری نباشه
+  eager: false,
+ })
+ specialty: Specialty;
  // شماره نظام پزشکی
  @Column()
  medical_license_number: string;

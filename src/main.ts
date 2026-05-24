@@ -3,15 +3,21 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import csrf from 'als-csrf';
 import { AuditLogs_Medical } from './entitys/auditLogs_Medical.entity';
 import { ConvertNumberPersionToNumberLatinPipe } from './shared/pipes/convert-number-persion-to-number-latin.pipe';
 async function bootstrap() {
  const app = await NestFactory.create(AppModule);
  app.use(helmet());
  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
- app.use(csrf());
- app.enableCors();
+ //  app.use(csrf());
+ app.enableCors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+ });
  app.useGlobalPipes(
   new ConvertNumberPersionToNumberLatinPipe(),
   new ValidationPipe({

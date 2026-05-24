@@ -24,8 +24,8 @@ export class WsAuthGuard implements CanActivate {
 
    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-unsafe-argument
    const res = (await this.jwtService.verify(token)) as TokenType;
-   if (res?.number) {
-    const user = await this.usersRep.findOneBy({ number: res.number });
+   if (res?.id) {
+    const user = await this.usersRep.findOneBy({ id: res.id });
     if (!user) throw new Error();
     if (!user?.is_active) throw new Error();
 

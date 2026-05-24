@@ -9,6 +9,7 @@ import { HoursService } from './hours/hours.service';
 import { HoursModule } from './hours/hours.module';
 import { Patients } from 'src/entitys/patients.entity';
 import { Appointments } from 'src/entitys/appointments.entity';
+import { Specialty } from 'src/entitys/specialty.entity';
 
 @Module({
  imports: [
@@ -18,6 +19,7 @@ import { Appointments } from 'src/entitys/appointments.entity';
    DoctorHours,
    Patients,
    Appointments,
+   Specialty,
   ]),
   HoursModule,
  ],

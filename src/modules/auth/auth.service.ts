@@ -2,6 +2,7 @@ import {
  Injectable,
  BadRequestException,
  NotFoundException,
+ UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +17,8 @@ import { OtpCodes } from 'src/entitys/otpCodes.entity';
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
 import { randomInt } from 'node:crypto';
 import { baseTimeOtpExpire } from 'src/shared/settings';
+import { Request, Response } from 'express';
+import { TokenType } from 'src/types';
 
 @Injectable()
 export class AuthService {
@@ -40,11 +43,13 @@ export class AuthService {
   if (existingNumber) {
    const delta = (Date.now() - existingNumber.created_at.getTime()) / 1000;
    if (
-    delta < Number(process.env.OTP_code_time_expire_sec || baseTimeOtpExpire)
+    delta < Number(process.env.OTP_CODE_TIME_EXPIRE_SEC || baseTimeOtpExpire)
    ) {
-    throw new BadRequestException(
-     `کد ارسال شده است . لطفا بعد ${(Number(process.env.OTP_code_time_expire_sec || baseTimeOtpExpire) - delta).toFixed(0)} ثانیه دوباره تلاش کنید.`,
-    );
+    return {
+     message: `کد ارسال شده است . لطفا بعد از ${(Number(process.env.OTP_CODE_TIME_EXPIRE_SEC || baseTimeOtpExpire) - delta).toFixed(0)} ثانیه دوباره تلاش کنید.`,
+     error: 'haveCode',
+     time: `${(Number(process.env.OTP_CODE_TIME_EXPIRE_SEC || baseTimeOtpExpire) - delta).toFixed(0)}`,
+    };
    }
   }
   // after check number date in otpCodes delete it if after of expire time
@@ -65,18 +70,35 @@ export class AuthService {
      number: body.number,
     }),
    );
-   return code;
+   return { code, time: baseTimeOtpExpire };
   } catch {
    throw new BadRequestException('مشکل در سیستم');
   }
  }
+ createTokens(tokenConfig: any, response: Response) {
+  try {
+   const new_refresh_token = this.jwtService.sign(tokenConfig, {
+    secret: process.env.JWT_SECRET,
+   });
+   const new_access_token = this.jwtService.sign(tokenConfig);
 
- async verify_otp_code(body: LoginDto) {
+   response.cookie('refresh_token', new_refresh_token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+   });
+   return new_access_token;
+  } catch {
+   /* empty */
+  }
+ }
+ async verify_otp_code(body: LoginDto, request: Request, response: Response) {
   const otp = await this.otpCodes.findOneBy({ number: body.number });
-  if (!otp?.code) throw new NotFoundException();
+  if (!otp?.code) throw new NotFoundException('شماره  مورد نظر پیدا نشد.');
+
   if (otp.code !== body.code) {
    if (otp) {
-    await this.otpCodes.delete({ number: body.number });
     throw new BadRequestException(
      'کد اشتباه است. لطفا دوباره تلاش کنید.',
      'Code incorrect',
@@ -88,7 +110,7 @@ export class AuthService {
     );
   } else if (
    (Date.now() - otp.created_at.getTime()) / 1000 >
-   Number(process.env.OTP_code_time_expire_sec || baseTimeOtpExpire)
+   Number(process.env.OTP_CODE_TIME_EXPIRE_SEC || baseTimeOtpExpire)
   ) {
    await this.otpCodes.delete({ number: body.number });
    throw new BadRequestException(
@@ -102,38 +124,73 @@ export class AuthService {
    });
 
    if (!existingNumber) {
-    const user = this.users.create({
-     number: body.number,
-    });
-    const savedUser = await this.users.save(user);
-    const token = this.jwtService.sign({
-     id: savedUser.id,
-     number: body.number,
-    });
-    await this.otpCodes.delete({ number: body.number });
+    const queryRunner = this.users.manager.connection.createQueryRunner();
+    console.log(existingNumber);
 
-    return {
-     token,
-     user: {
-      id: savedUser.id,
-      number: body.number,
-     },
-    };
+    try {
+     await queryRunner.connect();
+     await queryRunner.startTransaction();
+     const user = await queryRunner.manager.save(
+      Users,
+      queryRunner.manager.create(Users, {
+       number: body.number,
+      }),
+     );
+     const patient = queryRunner.manager.create(Patients, {
+      user,
+     });
+     // ✅ اصلاح: از manager داخل تراکنش استفاده کن
+     await queryRunner.manager.delete(OtpCodes, { number: body.number });
+
+     await queryRunner.manager.save(Patients, patient);
+
+     const token = this.createTokens({ id: user.id }, response);
+     await queryRunner.commitTransaction();
+     response.status(200).json({
+      token,
+     });
+    } catch (e) {
+     console.log(e);
+
+     await queryRunner.rollbackTransaction();
+     response.sendStatus(500);
+    } finally {
+     await queryRunner.release();
+    }
    } else {
-    const token = this.jwtService.sign({
-     id: existingNumber.id,
-     number: existingNumber.number,
-    });
+    const token = this.createTokens({ id: existingNumber.id }, response);
     await this.otpCodes.delete({ number: body.number });
-
-    return {
+    response.status(200).json({
      token,
-    };
+    });
    }
   } catch (err) {
    console.error(err);
 
    throw new BadRequestException('خطا در ثبت‌نام. لطفاً دوباره تلاش کنید.');
+  }
+ }
+ async refreshToken(request: Request, response: Response) {
+  if (!request.cookies)
+   return response
+    .status(406)
+    .json(new BadRequestException('مشکل در روش ارسال اطلاعات.').getResponse());
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const user_refresh_token = request.cookies['refresh_token'] as
+   | string
+   | undefined;
+  if (!user_refresh_token) throw new UnauthorizedException();
+  try {
+   this.jwtService.verify(user_refresh_token, {
+    secret: process.env.JWT_SECRET,
+   });
+   const de_user: TokenType = this.jwtService.decode(user_refresh_token);
+   const id = de_user?.id;
+   const user = await this.users.findOneBy({ id });
+   if (!user) throw new NotFoundException();
+   return this.createTokens({ id: user.id }, response);
+  } catch {
+   throw new UnauthorizedException();
   }
  }
 }

@@ -7,7 +7,7 @@ import AuditLogs_MedicalDtoAdd from './dtos/auditLogs_Medical-add.dto';
 import { AuditLogs_Medical } from 'src/entitys/auditLogs_Medical.entity';
 import { Access } from 'src/shared/guards/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
-@Controller('auditLogs_Medical')
+@Controller('/api/auditLogs_Medical')
 @Access(AccessType.ADMIN)
 @UseGuards(AuthGuard,AccessGuard)
 @ApiBearerAuth()

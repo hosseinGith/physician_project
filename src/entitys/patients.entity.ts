@@ -12,6 +12,8 @@ import { nanoid } from 'nanoid';
 import { Users } from './users.entity';
 import { randomInt } from 'node:crypto';
 import { ChatRequests } from './chatRequests.entity';
+import { Prescriptions } from './prescriptions.entity';
+import { Appointments } from './appointments.entity';
 @Entity()
 export class Patients {
  @PrimaryColumn()
@@ -27,6 +29,10 @@ export class Patients {
  user: Users;
  @OneToMany(() => ChatRequests, (chatRequest) => chatRequest.patient)
  chatRequests: ChatRequests[];
+ @OneToMany(() => Prescriptions, (prescription) => prescription.patient)
+ prescriptions: Prescriptions[];
+ @OneToMany(() => Appointments, (appointment) => appointment.patient)
+ appointments: Appointments[];
  // شماره پرونده (یکتا، مثل MR-۱۴۰۴-۱۲۳۴)
  @Column({ unique: true })
  medical_record_number: string;

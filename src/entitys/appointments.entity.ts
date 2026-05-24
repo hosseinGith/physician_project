@@ -38,7 +38,7 @@ export class Appointments {
  }
  // ارجاع به Patients
 
- @ManyToOne(() => Patients)
+ @ManyToOne(() => Patients, (patient) => patient.appointments)
  patient: Patients;
  // ارجاع به Doctors
  @ManyToOne(() => Doctors)

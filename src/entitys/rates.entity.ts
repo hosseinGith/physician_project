@@ -23,7 +23,7 @@ export class Rates {
  @ManyToOne(() => Patients)
  patient: Patients;
  @Column()
- rate: number;
+ score: number;
  @Column()
  description: string;
 }

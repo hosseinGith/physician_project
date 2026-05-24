@@ -25,7 +25,7 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 import { SortedByEnum } from './types';
 import { StatusPrescriptions } from 'src/entitys/prescriptions.entity';
 
-@Controller('patient')
+@Controller('/api/patient')
 @ApiBearerAuth()
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
@@ -61,7 +61,7 @@ export class PatientController {
  }
  @Access(AccessType.PATIENT)
  @UseGuards(AccessGuard)
- @Get('/doctors/getDoctorForAppointments:id')
+ @Get('/doctors/getDoctorForAppointments/:id')
  getDoctorForAppointments(@Param('id') id: string) {
   return this.service.getDoctorForAppointments(id);
  }
