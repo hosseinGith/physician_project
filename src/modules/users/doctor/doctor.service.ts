@@ -14,15 +14,15 @@ import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 import { Users } from 'src/entitys/users.entity';
 import { Patients } from 'src/entitys/patients.entity';
 import { Appointments } from 'src/entitys/appointments.entity';
-import { Specialty } from 'src/entitys/specialty.entity';
+import { Specialties } from 'src/entitys/specialties.entity';
 
 @Injectable()
 export class DoctorService {
  constructor(
   @InjectRepository(Doctors)
   private readonly doctors: Repository<Doctors>,
-  @InjectRepository(Specialty)
-  private readonly specialty: Repository<Specialty>,
+  @InjectRepository(Specialties)
+  private readonly specialties: Repository<Specialties>,
   @InjectRepository(Users)
   private readonly users: Repository<Users>,
   @InjectRepository(Patients)
@@ -37,7 +37,10 @@ export class DoctorService {
  async find(q: string = '', specialty: string = '') {
   const queryBuilder = this.doctors
    .createQueryBuilder('doctor')
-   .leftJoinAndSelect('doctor.specialty', 'specialty')
+   .leftJoinAndSelect('doctor.specialties', 'specialtyDoctor')
+   .leftJoinAndSelect('specialtyDoctor.specialty', 'specialty')
+   .leftJoinAndSelect('doctor.doctorHours', 'doctorHours')
+   .leftJoinAndSelect('doctor.days', 'days')
    .leftJoinAndSelect('doctor.user', 'user')
    .addSelect(
     (qb) =>
@@ -56,27 +59,31 @@ export class DoctorService {
     'ratesCount',
    );
 
+  // جستجو
   if (q) {
-   queryBuilder
-    .where('doctor.id = :q', { q })
-    .orWhere('specialty.slug LIKE :query', { query: `%${q}%` })
-    .orWhere('specialty.name LIKE :query', { query: `%${q}%` })
-    .orWhere('user.first_name LIKE :query', { query: `%${q}%` })
-    .orWhere('user.last_name LIKE :query', { query: `%${q}%` });
+   queryBuilder.andWhere(
+    `(
+      doctor.id = :qId OR 
+      user.first_name LIKE :q OR 
+      user.last_name LIKE :q OR 
+      specialty.name LIKE :q
+    )`,
+    {
+     qId: q,
+     q: `%${q}%`,
+    },
+   );
   }
 
+  // فیلتر تخصص
   if (specialty) {
-   if (q) {
-    queryBuilder.andWhere('specialty.name = :specialty', { specialty });
-   } else {
-    queryBuilder.where('specialty.name = :specialty', { specialty });
-   }
+   queryBuilder.andWhere('specialty.name = :specialty', { specialty });
   }
 
   return queryBuilder.getMany();
  }
  async allSpecialtys() {
-  return this.specialty.find({ select: ['name', 'id'] });
+  return this.specialties.find({ select: ['name', 'id'] });
  }
 
  async getUserData(request: Request) {

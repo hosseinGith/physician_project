@@ -24,7 +24,6 @@ export class AuthGuard implements CanActivate {
   const request = context.switchToHttp().getRequest<Request>();
   if (request.url.split('/')[1] === 'auth') return true;
   const token = String(request.headers?.authorization).split(' ')[1];
-
   if (!token) throw new UnauthorizedException();
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   const res = (await this.jwtService.verify(token)) as TokenType;

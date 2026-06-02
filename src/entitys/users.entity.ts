@@ -16,28 +16,28 @@ import { Patients } from './patients.entity';
 @Entity()
 export class Users {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @Column({ unique: true })
- number: string;
+ number!: string;
  @OneToOne(() => Doctors, (doctor) => doctor.user)
- doctor: Doctors;
+ doctor!: Doctors;
  @OneToOne(() => Patients, (patient) => patient.user)
- patient: Patients;
+ patient!: Patients;
  @Column({ nullable: true })
- first_name: string;
+ first_name!: string;
  @Column({ nullable: true })
- last_name: string;
+ last_name!: string;
  @Column({ length: 10, nullable: true, unique: true })
- national_id: string;
+ national_id!: string;
  @Column({ default: AccessType.PATIENT })
  @IsEnum(AccessType)
- access: AccessType;
+ access!: AccessType;
  @Column({ default: true, type: 'boolean' })
- is_active: boolean;
+ is_active!: boolean;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- created_at: Date;
+ created_at!: Date;
 }

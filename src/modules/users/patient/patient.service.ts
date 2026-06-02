@@ -22,6 +22,7 @@ import {
  StatusPrescriptions,
 } from 'src/entitys/prescriptions.entity';
 import { SortedByEnum } from './types';
+import { Specialties } from 'src/entitys/specialties.entity';
 
 @Injectable()
 export class PatientService {
@@ -141,7 +142,7 @@ export class PatientService {
      id: true,
      bio: true,
      consultation_fee: true,
-     specialty: true,
+     specialties: true,
     },
    },
   });
@@ -161,7 +162,7 @@ export class PatientService {
   }
 
   if (specialty) {
-   queryBuilder.andWhere('doctor.specialty = :specialty', { specialty });
+   queryBuilder.andWhere('doctor.specialty = :specialty', { Specialties });
   }
 
   // فقط کاربرانی که دکتر هستند (دکتر دارند)
@@ -280,7 +281,7 @@ export class PatientService {
      consultation_fee: true,
      id: true,
      medical_license_number: true,
-     specialty: true,
+     specialties: true,
     },
     hour: { hour: true },
     prescriptions: {

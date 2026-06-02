@@ -13,16 +13,16 @@ import { Matches } from 'class-validator';
 @Entity()
 export class DoctorHours {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @ManyToOne(() => Doctors, (doctor) => doctor.doctorHours)
- doctor: Doctors;
+ doctor!: Doctors;
  @Column()
  @Matches(/^([01][0-9]|2[0-3]):[0-5][0-9]$/, {
   message: 'ساعت باید در فرمت HH:MM باشد',
  })
- hour: string;
+ hour!: string;
 }

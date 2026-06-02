@@ -30,7 +30,10 @@ import { WebsocketService } from './websocket/websocket.service';
 import { ChatGateway } from './websocket/chat/chat.gateway';
 import { ChatService } from './websocket/chat/chat.service';
 import { ChatRequests } from './entitys/chatRequests.entity';
-import { Specialty } from './entitys/specialty.entity';
+import { Specialties } from './entitys/specialties.entity';
+import { SpecialtyDoctors } from './entitys/specialtyDoctors.entity';
+import { DoctorHourDays } from './entitys/doctorHourDays.entity';
+import { DatesOfReservedDay } from './entitys/DatesOfReservedDay.entity';
 dotenv.config();
 
 @Module({
@@ -65,7 +68,10 @@ dotenv.config();
     Prescriptions,
     OtpCodes,
     DoctorHours,
-    Specialty,
+    Specialties,
+    SpecialtyDoctors,
+    DoctorHourDays,
+    DatesOfReservedDay,
    ],
    synchronize: true,
   }),
@@ -83,8 +89,11 @@ dotenv.config();
    Prescriptions,
    OtpCodes,
    DoctorHours,
-   Specialty,
+   Specialties,
    MedicalRecords,
+   SpecialtyDoctors,
+   DoctorHourDays,
+   DatesOfReservedDay,
   ]),
   UsersModule,
   AuthModule,

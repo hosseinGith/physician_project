@@ -6,7 +6,6 @@ import {
  OneToOne,
  JoinColumn,
  OneToMany,
- ManyToOne,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
@@ -14,12 +13,14 @@ import { Users } from './users.entity';
 import { DoctorHours } from './doctorHours.entity';
 import { Rates } from './rates.entity';
 import { ChatRequests } from './chatRequests.entity';
-import { Specialty } from './specialty.entity';
+import { SpecialtyDoctors } from './specialtyDoctors.entity';
+import { DoctorHourDays } from './doctorHourDays.entity';
+import { DatesOfReservedDay } from './DatesOfReservedDay.entity';
 
 @Entity()
 export class Doctors {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
@@ -27,26 +28,32 @@ export class Doctors {
  // ارجاع به Users
  @OneToOne(() => Users, (user) => user.doctor)
  @JoinColumn()
- user: Users;
+ user!: Users;
+
  @OneToMany(() => DoctorHours, (doctorHour) => doctorHour.doctor)
- doctorHours: DoctorHours[];
+ doctorHours!: DoctorHours[];
+
+ @OneToMany(() => DoctorHourDays, (day) => day.doctor)
+ days!: DoctorHourDays[];
+ @OneToMany(
+  () => DatesOfReservedDay,
+  (dateOfBlockedDay) => dateOfBlockedDay.doctor,
+ )
+ DatesOfReservedDay!: DatesOfReservedDay[];
  @OneToMany(() => Rates, (rate) => rate.doctor)
- rates: Rates[];
+ rates!: Rates[];
  @OneToMany(() => ChatRequests, (chatRequest) => chatRequest.doctor)
- chatRequests: ChatRequests[];
+ chatRequests!: ChatRequests[];
  // تخصص (قلب، پوست، داخلی، ...)
- @ManyToOne(() => Specialty, (specialty) => specialty.doctors, {
-  nullable: true, // اگه تخصص اجباری نباشه
-  eager: false,
- })
- specialty: Specialty;
+ @OneToMany(() => SpecialtyDoctors, (specialtyDoctor) => specialtyDoctor.doctor)
+ specialties!: SpecialtyDoctors[];
  // شماره نظام پزشکی
  @Column()
- medical_license_number: string;
+ medical_license_number!: number;
  // هزینه ویزیت
  @Column()
- consultation_fee: string;
+ consultation_fee!: number;
  // بیوگرافی
  @Column()
- bio: string;
+ bio!: string;
 }

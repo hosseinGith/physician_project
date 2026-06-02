@@ -9,7 +9,9 @@ import { HoursService } from './hours/hours.service';
 import { HoursModule } from './hours/hours.module';
 import { Patients } from 'src/entitys/patients.entity';
 import { Appointments } from 'src/entitys/appointments.entity';
-import { Specialty } from 'src/entitys/specialty.entity';
+import { Specialties } from 'src/entitys/specialties.entity';
+import { SpecialtyDoctors } from 'src/entitys/specialtyDoctors.entity';
+import { DatesOfReservedDay } from 'src/entitys/DatesOfReservedDay.entity';
 
 @Module({
  imports: [
@@ -19,7 +21,9 @@ import { Specialty } from 'src/entitys/specialty.entity';
    DoctorHours,
    Patients,
    Appointments,
-   Specialty,
+   Specialties,
+   SpecialtyDoctors,
+   DatesOfReservedDay,
   ]),
   HoursModule,
  ],
