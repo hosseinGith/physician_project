@@ -14,5 +14,6 @@ import { DoctorHours } from 'src/entitys/doctorHours.entity';
 
  controllers: [HoursController],
  providers: [HoursService],
+ exports: [HoursService],
 })
 export class HoursModule {}

@@ -1,7 +1,7 @@
 import AddHourDto from './dtos/AddHour.dto';
 import { DoctorHours } from 'src/entitys/doctorHours.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, FindOptionsWhere, Repository } from 'typeorm';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Doctors } from 'src/entitys/doctors.entity';
@@ -27,6 +27,18 @@ export class HoursService {
 
   private readonly jwt: JwtService,
  ) {}
+ async findOne(
+  id: string,
+  where?: FindOptionsWhere<DoctorHours> | FindOptionsWhere<DoctorHours>[],
+  select?: FindOptionsSelect<DoctorHours>,
+ ): Promise<DoctorHours> {
+  const hour = await this.doctorHours.findOne({
+   where: { id, ...where },
+   select,
+  });
+  if (!hour) throw new NotFoundException('Doctor hour not found');
+  return hour;
+ }
  async get(id?: string) {
   return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
  }

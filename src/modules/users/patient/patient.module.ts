@@ -14,7 +14,8 @@ import { ChatRequests } from 'src/entitys/chatRequests.entity';
  imports: [
   TypeOrmModule.forFeature([
    Users,
-   Patients,ChatRequests,
+   Patients,
+   ChatRequests,
    Doctors,
    Appointments,
    DoctorHours,
@@ -23,5 +24,6 @@ import { ChatRequests } from 'src/entitys/chatRequests.entity';
  ],
  providers: [PatientService],
  controllers: [PatientController],
+ exports: [PatientService],
 })
 export class PatientModule {}

@@ -78,6 +78,11 @@ export class PatientService {
    },
   });
  }
+ async findOne(id: string): Promise<Patients> {
+  const patient = await this.patients.findOneBy({ id });
+  if (!patient) throw new NotFoundException('Patient not found');
+  return patient;
+ }
  async getPatientPrescriptions(
   request: Request,
   q: string,

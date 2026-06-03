@@ -29,5 +29,6 @@ import { DatesOfReservedDay } from 'src/entitys/DatesOfReservedDay.entity';
  ],
  controllers: [DoctorController],
  providers: [DoctorService, HoursService],
+ exports: [DoctorService],
 })
 export class DoctorModule {}

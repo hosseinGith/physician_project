@@ -30,7 +30,11 @@ export class DoctorService {
   @InjectRepository(Appointments)
   private readonly appointments: Repository<Appointments>,
  ) {}
-
+ async findOne(id: string): Promise<Doctors> {
+  const doctor = await this.doctors.findOneBy({ id });
+  if (!doctor) throw new NotFoundException('Doctor not found');
+  return doctor;
+ }
  async get(id?: string) {
   return await find<Doctors>(this.doctors, id, ['doctorHours']);
  }
