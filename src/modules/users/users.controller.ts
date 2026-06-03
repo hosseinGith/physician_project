@@ -53,8 +53,8 @@ export class UsersController {
  @Access()
  @UseGuards(AccessGuard)
  @Post()
- add(@Body() body: AdminAddUser) {
-  return this.users.add(body);
+ create(@Body() body: AdminAddUser) {
+  return this.users.create(body);
  }
  @Access(AccessType.PATIENT, AccessType.DOCTOR)
  @UseGuards(AccessGuard)

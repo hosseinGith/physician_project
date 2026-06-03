@@ -1,12 +1,12 @@
 import { IsEnum, IsString } from 'class-validator';
-import { AccessTypeAuditLogs_MedicalEnum } from 'src/entitys/auditLogs_Medical.entity';
+import { AccessTypeAuditLogsMedicalEnum } from 'src/entitys/auditLogs_Medical.entity';
 
-export default class AuditLogs_MedicalDtoAdd {
+export default class AuditLogsMedicalDtoAdd {
  @IsString()
  accessedByUserid: string;
  @IsString()
  patientId: string;
- @IsEnum(AccessTypeAuditLogs_MedicalEnum)
+ @IsEnum(AccessTypeAuditLogsMedicalEnum)
  accessType: string;
  @IsString()
  accessReason: string;

@@ -26,7 +26,7 @@ export class PrescriptionsService {
   if (res) return res;
   throw new NotFoundException();
  }
- async add(body: PrescriptionsDtoAdd) {
+ async create(body: PrescriptionsDtoAdd) {
   const create_status = this.PrescriptionsRep.create(body);
   const prescriptions = await this.PrescriptionsRep.save(create_status);
   return prescriptions;

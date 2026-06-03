@@ -42,7 +42,7 @@ export class HoursService {
  async get(id?: string) {
   return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
  }
- async add(body: AddHourDto, request: Request) {
+ async create(body: AddHourDto, request: Request) {
   const token = getDataFromUserToken(request);
   if (!token) throw new UnauthorizedException();
   const userId = token.id;

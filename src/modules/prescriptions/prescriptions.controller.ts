@@ -33,8 +33,8 @@ export class PrescriptionsController {
   return this.prescriptions.get();
  }
  @Post()
- add(@Body() body: PrescriptionsDtoAdd) {
-  return this.prescriptions.add(body);
+ create(@Body() body: PrescriptionsDtoAdd) {
+  return this.prescriptions.create(body);
  }
  @Patch(':id')
  update(@Param('id') id: string, @Body() body: PrescriptionsUpdateDto) {

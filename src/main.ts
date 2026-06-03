@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import { AuditLogs_Medical } from './entitys/auditLogs_Medical.entity';
+import { AuditLogsMedical } from './entitys/auditLogs_Medical.entity';
 import { ConvertNumberPersionToNumberLatinPipe } from './shared/pipes/convert-number-persion-to-number-latin.pipe';
 async function bootstrap() {
  const app = await NestFactory.create(AppModule);
@@ -34,7 +34,7 @@ async function bootstrap() {
   .addBearerAuth()
   .build();
  const document = SwaggerModule.createDocument(app, config, {
-  extraModels: [AuditLogs_Medical], // مدل‌های اضافی
+  extraModels: [AuditLogsMedical], // مدل‌های اضافی
  });
  SwaggerModule.setup('/documentation', app, document, {
   swaggerOptions: {

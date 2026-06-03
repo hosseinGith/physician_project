@@ -38,8 +38,8 @@ export class HoursController {
   return this.service.get(id);
  }
  @Post()
- add(@Body() body: AddHourDto, @Req() request: Request) {
-  return this.service.add(body, request);
+ create(@Body() body: AddHourDto, @Req() request: Request) {
+  return this.service.create(body, request);
  }
  @Delete(':id')
  delete(@Param('id') id: string) {

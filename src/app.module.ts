@@ -11,11 +11,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entitys/users.entity';
 import dotenv from 'dotenv';
 import { Appointments } from './entitys/appointments.entity';
-import { AuditLogs_Medical } from './entitys/auditLogs_Medical.entity';
+import { AuditLogsMedical } from './entitys/auditLogs_Medical.entity';
 import { MedicalRecords } from './entitys/medicalRecords.entity';
 import { Prescriptions } from './entitys/prescriptions.entity';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
-import { AuditLogs_MedicalModule } from './modules/auditLogs_Medical/auditLogs_Medical.module';
+import { AuditLogsMedicalModule } from './modules/auditLogs_Medical/auditLogsMedical.module';
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
 import { Patients } from './entitys/patients.entity';
 import { Rates } from './entitys/rates.entity';
@@ -25,10 +25,6 @@ import { Messages } from './entitys/messages.entity';
 import { Conversitions } from './entitys/conversitions.entity';
 import { OtpCodes } from './entitys/otpCodes.entity';
 import { DoctorHours } from './entitys/doctorHours.entity';
-import { WebsocketGateway } from './websocket/websocket.gateway';
-import { WebsocketService } from './websocket/websocket.service';
-import { ChatGateway } from './websocket/chat/chat.gateway';
-import { ChatService } from './websocket/chat/chat.service';
 import { ChatRequests } from './entitys/chatRequests.entity';
 import { Specialties } from './entitys/specialties.entity';
 import { SpecialtyDoctors } from './entitys/specialtyDoctors.entity';
@@ -64,7 +60,7 @@ dotenv.config();
     Messages,
     Conversitions,
     Appointments,
-    AuditLogs_Medical,
+    AuditLogsMedical,
     MedicalRecords,
     Prescriptions,
     OtpCodes,
@@ -86,7 +82,7 @@ dotenv.config();
    Messages,
    Conversitions,
    Appointments,
-   AuditLogs_Medical,
+   AuditLogsMedical,
    Prescriptions,
    OtpCodes,
    DoctorHours,
@@ -99,7 +95,7 @@ dotenv.config();
   UsersModule,
   AuthModule,
   AppointmentsModule,
-  AuditLogs_MedicalModule,
+  AuditLogsMedicalModule,
   PrescriptionsModule,
  ],
  controllers: [AppController, AppointmentController],
@@ -109,11 +105,6 @@ dotenv.config();
    provide: APP_GUARD,
    useClass: ThrottlerGuard,
   },
-
-  WebsocketGateway,
-  WebsocketService,
-  ChatGateway,
-  ChatService,
  ],
 })
 export class AppModule {}

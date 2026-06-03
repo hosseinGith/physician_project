@@ -58,7 +58,7 @@ export class UsersService {
  async get(id?: string) {
   return await find<Users>(this.users, id);
  }
- async add(body: AdminAddUser) {
+ async create(body: AdminAddUser) {
   const existingUser = await this.users.findOne({
    where: { number: body.user.number },
   });
