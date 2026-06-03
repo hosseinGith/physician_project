@@ -11,7 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entitys/users.entity';
 import dotenv from 'dotenv';
 import { Appointments } from './entitys/appointments.entity';
-import { AuditLogsMedical } from './entitys/auditLogs_Medical.entity';
+import { AuditLogsMedical } from './entitys/auditLogsMedical.entity';
 import { MedicalRecords } from './entitys/medicalRecords.entity';
 import { Prescriptions } from './entitys/prescriptions.entity';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
@@ -30,7 +30,6 @@ import { Specialties } from './entitys/specialties.entity';
 import { SpecialtyDoctors } from './entitys/specialtyDoctors.entity';
 import { DoctorHourDays } from './entitys/doctorHourDays.entity';
 import { DatesOfReservedDay } from './entitys/DatesOfReservedDay.entity';
-import { AppointmentController } from './modules/appointments/appointment.controller';
 dotenv.config();
 
 @Module({
@@ -98,7 +97,7 @@ dotenv.config();
   AuditLogsMedicalModule,
   PrescriptionsModule,
  ],
- controllers: [AppController, AppointmentController],
+ controllers: [AppController],
  providers: [
   AppService,
   {

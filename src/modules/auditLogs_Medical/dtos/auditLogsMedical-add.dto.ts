@@ -1,5 +1,5 @@
 import { IsEnum, IsString } from 'class-validator';
-import { AccessTypeAuditLogsMedicalEnum } from 'src/entitys/auditLogs_Medical.entity';
+import { AccessTypeAuditLogsMedicalEnum } from 'src/entitys/auditLogsMedical.entity';
 
 export default class AuditLogsMedicalDtoAdd {
  @IsString()

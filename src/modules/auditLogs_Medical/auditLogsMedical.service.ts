@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { Repository } from 'typeorm';
-import { AuditLogsMedical } from 'src/entitys/auditLogs_Medical.entity';
+import { AuditLogsMedical } from 'src/entitys/auditLogsMedical.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import AuditLogsMedicalDtoAdd from './dtos/auditLogsMedical-add.dto';
 import { PatientService } from '../users/patient/patient.service';
@@ -35,14 +35,14 @@ export class AuditLogsMedicalService {
    ...{ ...body, patientId: undefined },
    patient,
   });
-  const auditLogs_MedicalRep =
+  const auditLogsMedicalRep =
    await this.AuditLogsMedicalRep.save(create_status);
-  return auditLogs_MedicalRep;
+  return auditLogsMedicalRep;
  }
  async update(id: string, body: AuditLogsMedicalDtoAdd) {
   if (!id) throw new BadRequestException('', 'id');
 
-  const auditLogs_MedicalRep = await this.AuditLogsMedicalRep.findOneBy({
+  const auditLogsMedicalRep = await this.AuditLogsMedicalRep.findOneBy({
    id,
   });
   const fieldsToUpdate = Object.keys(body).length;
@@ -52,11 +52,11 @@ export class AuditLogsMedicalService {
   }
   const patient = await this.patients.findOne(body.patientId);
   if (!patient) throw new NotFoundException();
-  if (auditLogs_MedicalRep)
+  if (auditLogsMedicalRep)
    return (
     (
      await this.AuditLogsMedicalRep.update(
-      { id: auditLogs_MedicalRep.id },
+      { id: auditLogsMedicalRep.id },
       { ...{ ...body, patientId: undefined }, patient },
      )
     ).affected === 1
