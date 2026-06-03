@@ -34,6 +34,7 @@ import { Specialties } from './entitys/specialties.entity';
 import { SpecialtyDoctors } from './entitys/specialtyDoctors.entity';
 import { DoctorHourDays } from './entitys/doctorHourDays.entity';
 import { DatesOfReservedDay } from './entitys/DatesOfReservedDay.entity';
+import { AppointmentController } from './modules/appointments/appointment.controller';
 dotenv.config();
 
 @Module({
@@ -101,7 +102,7 @@ dotenv.config();
   AuditLogs_MedicalModule,
   PrescriptionsModule,
  ],
- controllers: [AppController],
+ controllers: [AppController, AppointmentController],
  providers: [
   AppService,
   {

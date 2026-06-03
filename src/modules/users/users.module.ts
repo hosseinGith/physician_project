@@ -34,5 +34,7 @@ import { Specialties } from 'src/entitys/specialties.entity';
  ],
  controllers: [UsersController, PatientController, DoctorController],
  providers: [UsersService, PatientService, DoctorService],
+ exports: [UsersService],
 })
 export class UsersModule {}
+

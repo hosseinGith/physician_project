@@ -29,6 +29,13 @@ export class UsersService {
   private jwtService: JwtService,
  ) {}
 
+ async findOne(id: string, throwError = true) {
+  const user = await this.users.findOneBy({
+   id,
+  });
+  if (throwError && !user) throw new NotFoundException();
+  return user;
+ }
  async findActiveDoctors() {
   return await this.users.findOneBy({
    access: AccessType.DOCTOR,
@@ -39,7 +46,7 @@ export class UsersService {
  async getUserInitialInfo(request: Request) {
   const token = getDataFromUserToken(request);
   console.log(token);
-  
+
   const id = token?.id;
   const userData = await this.users.findOne({
    relations: ['doctor', 'patient'],

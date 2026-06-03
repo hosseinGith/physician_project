@@ -6,18 +6,15 @@ import {
  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
-import { Users } from 'src/entitys/users.entity';
+import { UsersService } from 'src/modules/users/users.service';
 import { TokenType } from 'src/types';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
  constructor(
   private readonly jwtService: JwtService,
-  @InjectRepository(Users)
-  private readonly usersRep: Repository<Users>,
+  private readonly users: UsersService,
  ) {}
 
  async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,10 +26,7 @@ export class AuthGuard implements CanActivate {
   const res = (await this.jwtService.verify(token)) as TokenType;
 
   if (res?.id) {
-   const user = await this.usersRep.findOneBy({
-    id: res?.id,
-   });
-
+   const user = await this.users.findOne(res?.id, false);
    if (!user) throw new UnauthorizedException();
 
    if (!user?.is_active)
