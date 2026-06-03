@@ -7,7 +7,7 @@ import {
 import { Repository } from 'typeorm';
 import { AuditLogsMedical } from 'src/entitys/auditLogs_Medical.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import AuditLogsMedicalDtoAdd from './dtos/auditLogs_Medical-add.dto';
+import AuditLogsMedicalDtoAdd from './dtos/auditLogsMedical-add.dto';
 import { PatientService } from '../users/patient/patient.service';
 
 @Injectable()
