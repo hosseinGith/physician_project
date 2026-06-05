@@ -19,18 +19,18 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('/api/prescriptions')
 @Access(AccessType.ADMIN)
-@UseGuards(AuthGuard,AccessGuard)
+@UseGuards(AuthGuard, AccessGuard)
 @ApiBearerAuth()
 export class PrescriptionsController {
  constructor(private readonly prescriptions: PrescriptionsService) {}
 
  @Get(':id')
  findOne(@Param('id') id: string) {
-  return this.prescriptions.get(id);
+  return this.prescriptions.findOne(id);
  }
  @Get()
  findAll() {
-  return this.prescriptions.get();
+  return this.prescriptions.findAll();
  }
  @Post()
  create(@Body() body: PrescriptionsDtoAdd) {
@@ -41,7 +41,7 @@ export class PrescriptionsController {
   return this.prescriptions.update(id, body);
  }
  @Delete(':id')
- delete(@Param('id') id: string) {
-  return this.prescriptions.delete(id);
+ remove(@Param('id') id: string) {
+  return this.prescriptions.remove(id);
  }
 }

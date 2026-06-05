@@ -3,7 +3,7 @@ import {
  Injectable,
  NotFoundException,
 } from '@nestjs/common';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Prescriptions } from 'src/entitys/prescriptions.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
@@ -13,28 +13,27 @@ import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
 export class PrescriptionsService {
  constructor(
   @InjectRepository(Prescriptions)
-  private PrescriptionsRep: Repository<Prescriptions>,
+  private prescriptionsRep: Repository<Prescriptions>,
  ) {}
- async get(id?: string) {
-  let res:
-   | FindOptionsWhere<Prescriptions>
-   | FindOptionsWhere<Prescriptions>[]
-   | null;
-  if (!Number.isNaN(id)) {
-   res = await this.PrescriptionsRep.findOneBy({ id });
-  } else res = await this.PrescriptionsRep.find();
+ async findOne(id: string) {
+  const res = await this.prescriptionsRep.findOneBy({ id });
   if (res) return res;
   throw new NotFoundException();
  }
+ async findAll() {
+  const res = await this.prescriptionsRep.find();
+  return res;
+ }
  async create(body: PrescriptionsDtoAdd) {
-  const create_status = this.PrescriptionsRep.create(body);
-  const prescriptions = await this.PrescriptionsRep.save(create_status);
+  const prescriptions = await this.prescriptionsRep.save(
+   this.prescriptionsRep.create(body),
+  );
   return prescriptions;
  }
  async update(id: string, body: PrescriptionsUpdateDto) {
   if (!id) throw new BadRequestException('', 'id');
 
-  const prescriptions = await this.PrescriptionsRep.findOneBy({ id });
+  const prescriptions = await this.prescriptionsRep.findOneBy({ id });
   const fieldsToUpdate = Object.keys(body).length;
 
   if (fieldsToUpdate === 0) {
@@ -43,14 +42,13 @@ export class PrescriptionsService {
 
   if (prescriptions)
    return (
-    (await this.PrescriptionsRep.update({ id: prescriptions.id }, body))
+    (await this.prescriptionsRep.update({ id: prescriptions.id }, body))
      .affected === 1
    );
   throw new NotFoundException();
  }
- async delete(id: string) {
-  if (!id) throw new BadRequestException('id not found', 'id');
-  const res = await this.PrescriptionsRep.delete({ id });
+ async remove(id: string) {
+  const res = await this.prescriptionsRep.delete({ id });
   if (!res.affected) throw new NotFoundException();
   return true;
  }
