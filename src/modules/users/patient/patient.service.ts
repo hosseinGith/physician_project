@@ -2,54 +2,36 @@ import {
  BadRequestException,
  Injectable,
  NotFoundException,
- UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entitys/users.entity';
-import { AccessType, TokenType } from 'src/types';
+import { AccessType } from 'src/types';
 import { Repository } from 'typeorm';
 import ActiveTurn from './dtos/turn.dto';
-import { Doctors } from 'src/entitys/doctors.entity';
 import { DoctorHours } from 'src/entitys/doctorHours.entity';
-import { Appointments } from 'src/entitys/appointments.entity';
-import { Request } from 'express';
-import { JwtService } from '@nestjs/jwt';
 import { Patients } from 'src/entitys/patients.entity';
-import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 import PatientUpdateDto from './dtos/update.dto';
-import {
- Prescriptions,
- StatusPrescriptions,
-} from 'src/entitys/prescriptions.entity';
+import { StatusPrescriptions } from 'src/entitys/prescriptions.entity';
 import { SortedByEnum } from './types';
 import { Specialties } from 'src/entitys/specialties.entity';
+import { UsersService } from '../users.service';
+import { DoctorService } from '../doctor/doctor.service';
+import { AppointmentsService } from 'src/modules/appointments/appointments.service';
+import { HoursService } from '../doctor/hours/hours.service';
+import { PrescriptionsService } from 'src/modules/prescriptions/prescriptions.service';
 
 @Injectable()
 export class PatientService {
  constructor(
-  @InjectRepository(Users)
-  private users: Repository<Users>,
-  @InjectRepository(Doctors)
-  private doctors: Repository<Doctors>,
-  @InjectRepository(Patients)
-  private patients: Repository<Patients>,
   @InjectRepository(DoctorHours)
-  private doctorHours: Repository<DoctorHours>,
-  @InjectRepository(Appointments)
-  private appointments: Repository<Appointments>,
-  @InjectRepository(Prescriptions)
-  private prescriptions: Repository<Prescriptions>,
-  private jwt: JwtService,
+  private patients: Repository<Patients>,
+  private users: UsersService,
+  private doctors: DoctorService,
+  private doctorHours: HoursService,
+  private appointments: AppointmentsService,
+  private prescriptions: PrescriptionsService,
  ) {}
- async searchInPatientPrescriptions(request: Request) {
-  const token = request.headers.authorization?.split(' ')[1];
-  if (!token) throw new UnauthorizedException();
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const de_patient = this.jwt.decode(String(token));
-
-  if (!de_patient) throw new UnauthorizedException();
-  const userId = (de_patient as TokenType).id;
+ async searchInPatientPrescriptions(userId: string) {
   return await this.prescriptions.find({
    where: {
     patient: {
@@ -84,19 +66,11 @@ export class PatientService {
   return patient;
  }
  async getPatientPrescriptions(
-  request: Request,
+  userId: string,
   q: string,
   status: StatusPrescriptions | undefined,
   sortedBy: SortedByEnum | undefined,
  ) {
-  const token = request.headers.authorization?.split(' ')[1];
-  if (!token) throw new UnauthorizedException();
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const de_patient = this.jwt.decode(String(token));
-
-  if (!de_patient) throw new UnauthorizedException();
-  const userId = (de_patient as TokenType).id;
   return await this.prescriptions.find({
    order: {
     created_at: sortedBy
@@ -175,7 +149,7 @@ export class PatientService {
 
   return await queryBuilder.getMany();
  }
- async getDoctorForAppointments(id: string) {
+ async getDoctor(id: string) {
   const user = await this.users
    .createQueryBuilder('user')
    .leftJoinAndSelect('user.doctor', 'doctor')
@@ -201,18 +175,11 @@ export class PatientService {
   return user;
  }
  // taking turns
- async appointment(body: ActiveTurn, request: Request) {
+ async createAppointment(body: ActiveTurn, userId: string) {
   const doctor = await this.doctors.findOneBy({ id: body.doctorId });
   if (!doctor)
    throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
-  const token = request.headers.authorization?.split(' ')[1];
-  if (!token) throw new UnauthorizedException();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const de_patient = this.jwt.decode(String(token));
-
-  if (!de_patient) throw new UnauthorizedException();
-  const userId = (de_patient as TokenType).id;
   const user = await this.users.findOne({
    where: { id: userId },
    relations: ['patient'],
@@ -259,15 +226,8 @@ export class PatientService {
   const new_appointment = this.appointments.save(save_appointment);
   return Boolean(new_appointment);
  }
- async get_appointments(request: Request) {
-  const token = request.headers.authorization?.split(' ')[1];
-  if (!token) throw new UnauthorizedException();
-
+ async getAppointments(userId: string) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const de_patient = this.jwt.decode(String(token));
-
-  if (!de_patient) throw new UnauthorizedException();
-  const userId = (de_patient as TokenType).id;
   const user = await this.users.findOne({
    where: { id: userId },
    relations: ['patient'],
@@ -307,22 +267,18 @@ export class PatientService {
 
   return appointment;
  }
- async profile(request: Request) {
-  const token = getDataFromUserToken(request);
-  if (!token) throw new UnauthorizedException();
+ async getProfile(userId: string) {
   const user = await this.users.findOne({
-   where: { id: token.id },
+   where: { id: userId },
    relations: ['patient'],
   });
 
   if (!user) throw new NotFoundException();
   return user;
  }
- async update(body: PatientUpdateDto, request: Request) {
-  const token = getDataFromUserToken(request);
-  if (!token) throw new UnauthorizedException();
+ async update(body: PatientUpdateDto, userId: string) {
   const user = await this.users.findOne({
-   where: { id: token.id },
+   where: { id: userId },
    relations: ['patient'],
    select: { patient: true },
   });

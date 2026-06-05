@@ -29,14 +29,13 @@ import { StatusPrescriptions } from 'src/entitys/prescriptions.entity';
 @ApiBearerAuth()
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
-@UseGuards(AuthGuard)
+@Access(AccessType.PATIENT)
+@UseGuards(AuthGuard, AccessGuard)
 export class PatientController {
  constructor(private readonly service: PatientService) {}
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
  @Get('/prescriptions/search')
  searchInPatientPrescriptions(@Req() request: Request) {
-  return this.service.searchInPatientPrescriptions(request);
+  return this.service.searchInPatientPrescriptions(request.user.id);
  }
  @Get('/prescriptions')
  getPatientPrescriptions(
@@ -45,49 +44,40 @@ export class PatientController {
   @Query('sortedBy') sortedBy: SortedByEnum | undefined,
   @Req() request: Request,
  ) {
-  return this.service.getPatientPrescriptions(request, q, status, sortedBy);
+  return this.service.getPatientPrescriptions(
+   request.user.id,
+   q,
+   status,
+   sortedBy,
+  );
  }
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
  @Get('/doctors/actives')
  findActiveDoctors() {
   return this.service.findActiveDoctors();
  }
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
  @Get('/doctors/search')
  search(@Query('q') q: string, @Query('specialty') specialty?: string) {
   return this.service.search(q, specialty);
  }
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
- @Get('/doctors/getDoctorForAppointments/:id')
- getDoctorForAppointments(@Param('id') id: string) {
-  return this.service.getDoctorForAppointments(id);
+ @Get('/doctors/:id')
+ getDoctor(@Param('id') id: string) {
+  return this.service.getDoctor(id);
  }
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
  @Get('profile')
- profile(@Req() request: Request) {
-  return this.service.profile(request);
+ getProfile(@Req() request: Request) {
+  return this.service.getProfile(request.user.id);
  }
 
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
  @Get('/appointments')
- get_appointments(@Req() request: Request) {
-  return this.service.get_appointments(request);
+ getAppointments(@Req() request: Request) {
+  return this.service.getAppointments(request.user.id);
  }
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
- @Post('/appointment/active')
- appointment(@Body() body: ActiveTurn, @Req() request: Request) {
-  return this.service.appointment(body, request);
+ @Post('/appointment')
+ createAppointment(@Body() body: ActiveTurn, @Req() request: Request) {
+  return this.service.createAppointment(body, request.user.id);
  }
- @Access(AccessType.PATIENT)
- @UseGuards(AccessGuard)
- @Patch('/patientUpdate')
- patientUpdate(@Body() body: PatientUpdateDto, @Req() request: Request) {
-  return this.service.update(body, request);
+ @Patch('/profile')
+ update(@Body() body: PatientUpdateDto, @Req() request: Request) {
+  return this.service.update(body, request.user.id);
  }
 }
