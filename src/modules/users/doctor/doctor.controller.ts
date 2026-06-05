@@ -2,6 +2,7 @@ import {
  Body,
  Controller,
  Get,
+ NotFoundException,
  Param,
  Patch,
  Query,
@@ -29,40 +30,37 @@ export class DoctorController {
  constructor(private readonly service: DoctorService) {}
  @Get('/public/search')
  search(@Query('q') q?: string, @Query('specialty') specialty?: string) {
-  return this.service.find(q, specialty);
+  return this.service.searchDoctors(q, specialty);
  }
- @Get('/public/specialtys')
- specialtys() {
-  return this.service.allSpecialtys();
+ @Get('/public/specialties')
+ specialties() {
+  return this.service.getAllSpecialties();
  }
- @UseGuards(AuthGuard)
+
  @Access(AccessType.DOCTOR)
- @UseGuards(AccessGuard)
+ @UseGuards(AuthGuard, AccessGuard)
  @Get('/profile')
- getUserData(@Req() request: Request) {
-  return this.service.getUserData(request);
+ getProfile(@Req() request: Request) {
+  if (!request.user?.id) throw new NotFoundException();
+  return this.service.getProfile(request.user.id);
  }
- @UseGuards(AuthGuard)
+
  @Access(AccessType.DOCTOR)
- @UseGuards(AccessGuard)
- @Get('/my_patients')
- my_appointments(@Req() request: Request) {
-  return this.service.my_appointments(request);
+ @UseGuards(AuthGuard, AccessGuard)
+ @Get('/my_appointments')
+ getDoctorAppointments(@Req() request: Request) {
+  const userId = request.user?.id;
+  if (!userId) throw new NotFoundException();
+  return this.service.getDoctorAppointments(userId);
  }
- @UseGuards(AuthGuard)
- @Access(AccessType.DOCTOR)
- @UseGuards(AccessGuard)
- @Get()
- get() {
-  return this.service.get();
- }
+
  @Get(':id')
  findOne(@Param('id') id: string) {
-  return this.service.get(id);
+  return this.service.findOne(id);
  }
- @UseGuards(AuthGuard)
+
  @Access(AccessType.DOCTOR)
- @UseGuards(AccessGuard)
+ @UseGuards(AuthGuard, AccessGuard)
  @Patch(':id')
  update(@Param() id: string, @Body() body: AddDoctorDto) {
   return this.service.update(id, body);

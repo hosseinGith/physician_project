@@ -8,13 +8,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Doctors } from 'src/entitys/doctors.entity';
 import AddDoctorDto from './dtos/add.dto';
-import find from 'src/shared/utils/find';
 import type { Request } from 'express';
 import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
 import { Users } from 'src/entitys/users.entity';
 import { Patients } from 'src/entitys/patients.entity';
 import { Appointments } from 'src/entitys/appointments.entity';
 import { Specialties } from 'src/entitys/specialties.entity';
+import { AppointmentsModule } from 'src/modules/appointments/appointments.module';
+import { UsersModule } from '../users.module';
 
 @Injectable()
 export class DoctorService {
@@ -23,22 +24,21 @@ export class DoctorService {
   private readonly doctors: Repository<Doctors>,
   @InjectRepository(Specialties)
   private readonly specialties: Repository<Specialties>,
-  @InjectRepository(Users)
-  private readonly users: Repository<Users>,
-  @InjectRepository(Patients)
-  private readonly patients: Repository<Patients>,
-  @InjectRepository(Appointments)
-  private readonly appointments: Repository<Appointments>,
+  private readonly users: UsersModule,
+  private readonly appointments: AppointmentsModule,
  ) {}
- async findOne(id: string): Promise<Doctors> {
+ async getProfile(id: string): Promise<Doctors> {
   const doctor = await this.doctors.findOneBy({ id });
   if (!doctor) throw new NotFoundException('Doctor not found');
   return doctor;
  }
- async get(id?: string) {
-  return await find<Doctors>(this.doctors, id, ['doctorHours']);
+ async findOne(id: string) {
+  return this.doctors.findOneBy({ id });
  }
- async find(q: string = '', specialty: string = '') {
+ async findAll() {
+  return this.doctors.find({ select: ['doctorHours'] });
+ }
+ async searchDoctors(q: string = '', specialty: string = '') {
   const queryBuilder = this.doctors
    .createQueryBuilder('doctor')
    .leftJoinAndSelect('doctor.specialties', 'specialtyDoctor')
@@ -86,26 +86,13 @@ export class DoctorService {
 
   return queryBuilder.getMany();
  }
- async allSpecialtys() {
+ async getAllSpecialties() {
   return this.specialties.find({ select: ['name', 'id'] });
  }
 
- async getUserData(request: Request) {
-  const token = getDataFromUserToken(request);
-  if (!token) throw new UnauthorizedException();
+ async getDoctorAppointments(userId: string) {
   const user = await this.users.findOne({
-   where: { id: token.id },
-   relations: ['doctor'],
-  });
-
-  if (!user) throw new NotFoundException();
-  return user;
- }
- async my_appointments(request: Request) {
-  const token = getDataFromUserToken(request);
-  if (!token) throw new UnauthorizedException();
-  const user = await this.users.findOne({
-   where: { id: token.id },
+   where: { id: userId },
    relations: ['doctor'],
   });
   if (!user) throw new UnauthorizedException();
