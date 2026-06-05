@@ -1,10 +1,18 @@
-import { Body, Controller, Post, Req, Res, UsePipes } from '@nestjs/common';
+import {
+ Body,
+ Controller,
+ NotFoundException,
+ Post,
+ Req,
+ Res,
+ UsePipes,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import LoginDto from './dtos/login.dto';
 import OtpDto from './dtos/otp.dto';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
-import type { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 
 @ApiTags('Authentication')
 @Controller('/api/auth')
@@ -12,20 +20,31 @@ import type { Request, Response } from 'express';
 export class AuthController {
  constructor(private readonly authService: AuthService) {}
  @Post()
- signin(@Body() body: OtpDto) {
-  return this.authService.login(body);
+ sendOtp(@Body() body: OtpDto) {
+  return this.authService.sendOtp(body);
  }
 
  @Post('/verify-code')
- codeOTP(
+ async verifyCode(
   @Body() body: LoginDto,
-  @Req() request: Request,
-  @Res() response: Response,
+  @Res({ passthrough: true }) response: Response,
  ) {
-  return this.authService.verify_otp_code(body, request, response);
+  const { userId } = await this.authService.verifyCode(body);
+  const token = this.authService.createTokens({ id: userId }, response);
+  return token;
  }
  @Post('/refresh-token')
- refreshToken(@Req() request: Request, @Res() response: Response) {
-  return this.authService.refreshToken(request, response);
+ async refreshToken(
+  @Req() request: Request,
+  @Res({ passthrough: true }) response: Response,
+ ) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const user_refresh_token = request.cookies['refresh_token'] as
+   | string
+   | undefined;
+  if (!user_refresh_token) throw new NotFoundException();
+  const { userId } = await this.authService.refreshToken(user_refresh_token);
+  const token = this.authService.createTokens({ id: userId }, response);
+  return token;
  }
 }

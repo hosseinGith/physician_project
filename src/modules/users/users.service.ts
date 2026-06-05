@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entitys/users.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { AdminAddUser } from './dtos/user-add.dto';
 import UserUpdateDto from './dtos/user-update.dto';
 import { AccessType } from 'src/types';
@@ -32,6 +32,16 @@ export class UsersService {
  async findOne(id: string, throwError = true) {
   const user = await this.users.findOneBy({
    id,
+  });
+  if (throwError && !user) throw new NotFoundException();
+  return user;
+ }
+ async findOneByWhere(
+  where?: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
+  throwError = true,
+ ) {
+  const user = await this.users.findOne({
+   where,
   });
   if (throwError && !user) throw new NotFoundException();
   return user;
