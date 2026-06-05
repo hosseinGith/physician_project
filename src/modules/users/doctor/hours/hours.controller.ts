@@ -3,6 +3,7 @@ import {
  Controller,
  Delete,
  Get,
+ UnauthorizedException,
  Param,
  Post,
  Req,
@@ -30,19 +31,21 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 export class HoursController {
  constructor(private readonly service: HoursService) {}
  @Get()
- get() {
-  return this.service.get();
+ findAll() {
+  return this.service.findAll();
  }
  @Get(':id')
  findOne(@Param('id') id: string) {
-  return this.service.get(id);
+  return this.service.findOne(id);
  }
  @Post()
  create(@Body() body: AddHourDto, @Req() request: Request) {
-  return this.service.create(body, request);
+  const userId = request.user?.id;
+  if (!userId) throw new UnauthorizedException();
+  return this.service.create(body, userId);
  }
  @Delete(':id')
- delete(@Param('id') id: string) {
-  return this.service.delete(id);
+ remove(@Param('id') id: string) {
+  return this.service.remove(id);
  }
 }
