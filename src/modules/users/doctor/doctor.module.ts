@@ -11,21 +11,17 @@ import { Patients } from 'src/entitys/patients.entity';
 import { Appointments } from 'src/entitys/appointments.entity';
 import { Specialties } from 'src/entitys/specialties.entity';
 import { SpecialtyDoctors } from 'src/entitys/specialtyDoctors.entity';
-import { DatesOfReservedDay } from 'src/entitys/DatesOfReservedDay.entity';
+import { PatientModule } from '../patient/patient.module';
+import { AppointmentsModule } from 'src/modules/appointments/appointments.module';
+import { UsersModule } from '../users.module';
 
 @Module({
  imports: [
-  TypeOrmModule.forFeature([
-   Users,
-   Doctors,
-   DoctorHours,
-   Patients,
-   Appointments,
-   Specialties,
-   SpecialtyDoctors,
-   DatesOfReservedDay,
-  ]),
+  TypeOrmModule.forFeature([Doctors, Specialties, SpecialtyDoctors]),
+  UsersModule,
   HoursModule,
+  PatientModule,
+  AppointmentsModule,
  ],
  controllers: [DoctorController],
  providers: [DoctorService, HoursService],

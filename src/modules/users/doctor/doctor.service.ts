@@ -8,14 +8,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Doctors } from 'src/entitys/doctors.entity';
 import AddDoctorDto from './dtos/add.dto';
-import type { Request } from 'express';
-import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
-import { Users } from 'src/entitys/users.entity';
-import { Patients } from 'src/entitys/patients.entity';
-import { Appointments } from 'src/entitys/appointments.entity';
 import { Specialties } from 'src/entitys/specialties.entity';
-import { AppointmentsModule } from 'src/modules/appointments/appointments.module';
-import { UsersModule } from '../users.module';
+import { UsersService } from '../users.service';
+import { AppointmentsService } from 'src/modules/appointments/appointments.service';
 
 @Injectable()
 export class DoctorService {
@@ -24,8 +19,8 @@ export class DoctorService {
   private readonly doctors: Repository<Doctors>,
   @InjectRepository(Specialties)
   private readonly specialties: Repository<Specialties>,
-  private readonly users: UsersModule,
-  private readonly appointments: AppointmentsModule,
+  private readonly users: UsersService,
+  private readonly appointments: AppointmentsService,
  ) {}
  async getProfile(id: string): Promise<Doctors> {
   const doctor = await this.doctors.findOneBy({ id });
@@ -91,10 +86,7 @@ export class DoctorService {
  }
 
  async getDoctorAppointments(userId: string) {
-  const user = await this.users.findOne({
-   where: { id: userId },
-   relations: ['doctor'],
-  });
+  const user = await this.users.findOne(userId, ['doctor']);
   if (!user) throw new UnauthorizedException();
   const patients = await this.appointments.findOne({
    where: { doctor: { id: user.doctor.id } },

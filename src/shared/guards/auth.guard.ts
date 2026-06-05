@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
   const res = (await this.jwtService.verify(token)) as TokenType;
 
   if (res?.id) {
-   const user = await this.users.findOne(res?.id, false);
+   const user = await this.users.findOne(res?.id, undefined, undefined, false);
    if (!user) throw new UnauthorizedException();
 
    if (!user?.is_active)
@@ -34,6 +34,7 @@ export class AuthGuard implements CanActivate {
      'اکانت شما فعال نشده است. تا فعال شدن آن منتظر بمونید.',
     );
    request['userAccess'] = user?.access || '';
+   request.user = user;
 
    return true;
   } else throw new UnauthorizedException();

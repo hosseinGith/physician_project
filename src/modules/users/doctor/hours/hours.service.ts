@@ -32,16 +32,9 @@ export class HoursService {
   return await this.doctorHours.find();
  }
  async create(body: AddHourDto, userId: string) {
-  const user = await this.user.findOne({
-   where: {
-    id: userId,
-   },
-   select: {
-    doctor: { id: true },
-   },
-   relations: ['doctor'],
+  const user = await this.user.findOne(userId, ['doctor'], {
+   doctor: { id: true },
   });
-
   if (!user) throw new NotFoundException('', 'User');
   const doctor = user.doctor;
 

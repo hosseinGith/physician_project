@@ -6,7 +6,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entitys/users.entity';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import {
+ FindOptionsRelationByString,
+ FindOptionsRelations,
+ FindOptionsSelect,
+ FindOptionsSelectByString,
+ FindOptionsWhere,
+ Repository,
+} from 'typeorm';
 import { AdminAddUser } from './dtos/user-add.dto';
 import UserUpdateDto from './dtos/user-update.dto';
 import { AccessType } from 'src/types';
@@ -29,9 +36,16 @@ export class UsersService {
   private jwtService: JwtService,
  ) {}
 
- async findOne(id: string, throwError = true) {
-  const user = await this.users.findOneBy({
-   id,
+ async findOne(
+  id: string,
+  relations?: FindOptionsRelations<Users> | FindOptionsRelationByString,
+  select?: FindOptionsSelect<Users> | FindOptionsSelectByString<Users>,
+  throwError = true,
+ ) {
+  const user = await this.users.findOne({
+   where: { id },
+   relations,
+   select,
   });
   if (throwError && !user) throw new NotFoundException();
   return user;

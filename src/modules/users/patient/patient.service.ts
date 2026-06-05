@@ -180,10 +180,7 @@ export class PatientService {
   if (!doctor)
    throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
 
-  const user = await this.users.findOne({
-   where: { id: userId },
-   relations: ['patient'],
-  });
+  const user = await this.users.findOne(userId, ['patient']);
 
   if (!user) throw new NotFoundException('کاربر پیدا نشد.', 'User not found');
   if (user.access !== AccessType.PATIENT)
@@ -228,10 +225,7 @@ export class PatientService {
  }
  async getAppointments(userId: string) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const user = await this.users.findOne({
-   where: { id: userId },
-   relations: ['patient'],
-  });
+  const user = await this.users.findOne(userId, ['patient']);
 
   const appointment = await this.appointments.find({
    where: {
@@ -268,20 +262,13 @@ export class PatientService {
   return appointment;
  }
  async getProfile(userId: string) {
-  const user = await this.users.findOne({
-   where: { id: userId },
-   relations: ['patient'],
-  });
+  const user = await this.users.findOne(userId, ['patient']);
 
   if (!user) throw new NotFoundException();
   return user;
  }
  async update(body: PatientUpdateDto, userId: string) {
-  const user = await this.users.findOne({
-   where: { id: userId },
-   relations: ['patient'],
-   select: { patient: true },
-  });
+  const user = await this.users.findOne(userId, ['patient'], { patient: true });
 
   if (!user) throw new NotFoundException();
   (Object.keys(body) as (keyof PatientUpdateDto)[]).forEach((key) => {
