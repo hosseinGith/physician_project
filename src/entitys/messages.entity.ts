@@ -7,6 +7,7 @@ import {
  ManyToOne,
  OneToOne,
  JoinColumn,
+ UpdateDateColumn,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
@@ -21,30 +22,30 @@ export enum FileTypeEnum {
 @Entity()
 export class Messages {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @ManyToOne(() => Users)
- sender: Users;
+ sender!: Users;
  @ManyToOne(() => Conversitions, (conversition) => conversition.messages)
- conversition: Conversitions;
+ conversition!: Conversitions;
  @Column({ length: 2000 })
- content: string;
+ content!: string;
  @Column({
   type: 'enum',
   enum: FileTypeEnum,
   enumName: 'FileType',
  })
- type: string;
+ type!: string;
  @OneToOne(() => Messages, (message) => message)
  @JoinColumn()
- replyToMessage: Messages;
+ replyToMessage!: Messages;
  @ManyToOne(() => Files)
- file: Files;
+ file!: Files;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- created_at: Date;
- @CreateDateColumn({ type: 'datetime', nullable: true })
- updated_at: string;
+ created_at!: Date;
+ @UpdateDateColumn({ type: 'datetime', nullable: true })
+ updated_at?: string;
 }
