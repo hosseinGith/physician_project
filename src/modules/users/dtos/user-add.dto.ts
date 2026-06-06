@@ -9,8 +9,8 @@ import {
  ValidateIf,
  ValidateNested,
 } from 'class-validator';
-import { Doctors } from 'src/entitys/doctors.entity';
-import { Patients } from 'src/entitys/patients.entity';
+import { Doctors } from 'src/entities/doctors.entity';
+import { Patients } from 'src/entities/patients.entity';
 import { numberRegx } from 'src/shared/utils';
 import { AccessType } from 'src/types';
 

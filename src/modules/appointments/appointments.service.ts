@@ -13,7 +13,7 @@ import {
  FindOptionsWhere,
  Repository,
 } from 'typeorm';
-import { Appointments } from 'src/entitys/appointments.entity';
+import { Appointments } from 'src/entities/appointments.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import AppointmentsDtoAdd from './dtos/appointments-add.dto';
 import AppointmentsUpdateDto from './dtos/appointments-update.dto';

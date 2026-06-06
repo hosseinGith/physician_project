@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Doctors } from 'src/entitys/doctors.entity';
+import { Doctors } from 'src/entities/doctors.entity';
 import AddDoctorDto from './dtos/add.dto';
-import { Specialties } from 'src/entitys/specialties.entity';
+import { Specialties } from 'src/entities/specialties.entity';
 import { UsersService } from '../users.service';
 import { AppointmentsService } from 'src/modules/appointments/appointments.service';
 

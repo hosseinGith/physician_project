@@ -7,12 +7,12 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Patients } from 'src/entitys/patients.entity';
-import { Users } from 'src/entitys/users.entity';
+import { Patients } from 'src/entities/patients.entity';
+import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 import LoginDto from './dtos/login.dto';
 import OtpDto from './dtos/otp.dto';
-import { OtpCodes } from 'src/entitys/otpCodes.entity';
+import { OtpCodes } from 'src/entities/otpCodes.entity';
 
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
 import { randomInt } from 'node:crypto';

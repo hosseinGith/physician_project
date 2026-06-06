@@ -1,5 +1,5 @@
 import AddHourDto from './dtos/AddHour.dto';
-import { DoctorHours } from 'src/entitys/doctorHours.entity';
+import { DoctorHours } from 'src/entities/doctorHours.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsSelect, FindOptionsWhere, Repository } from 'typeorm';
 import {

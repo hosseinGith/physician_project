@@ -1,16 +1,16 @@
 import AddHourDto from './dtos/AddHour.dto';
-import { DoctorHours } from 'src/entitys/doctorHours.entity';
+import { DoctorHours } from 'src/entities/doctorHours.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Doctors } from 'src/entitys/doctors.entity';
+import { Doctors } from 'src/entities/doctors.entity';
 import {
  BadRequestException,
  Injectable,
  NotFoundException,
 } from '@nestjs/common';
 import find from 'src/shared/utils/find';
-import { Users } from 'src/entitys/users.entity';
+import { Users } from 'src/entities/users.entity';
 
 @Injectable()
 export class HoursService {
