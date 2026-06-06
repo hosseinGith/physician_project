@@ -19,8 +19,9 @@ import { AccessType } from 'src/types';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
 import type { Request } from 'express';
-import { Access } from 'src/shared/guards/access.decorator';
+import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
+import SkipAuth from 'src/shared/decorators/skip-auth.decorator';
 
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)
@@ -35,6 +36,10 @@ export class DoctorController {
  @Get('/public/specialties')
  specialties() {
   return this.service.getAllSpecialties();
+ }
+ @Get('/doctors/:id')
+ getDoctor(@Param('id') id: string) {
+  return this.service.getDoctorDetails(id);
  }
 
  @Access(AccessType.DOCTOR)
@@ -54,11 +59,13 @@ export class DoctorController {
   return this.service.getDoctorAppointments(userId);
  }
 
+ @Access(AccessType.DOCTOR)
+ @UseGuards(AuthGuard, AccessGuard)
+ @SkipAuth()
  @Get(':id')
  findOne(@Param('id') id: string) {
   return this.service.findOne(id);
  }
-
  @Access(AccessType.DOCTOR)
  @UseGuards(AuthGuard, AccessGuard)
  @Patch(':id')

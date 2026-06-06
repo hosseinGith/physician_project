@@ -3,11 +3,11 @@ import { VisitTypeAppointmentsEnum } from 'src/entitys/appointments.entity';
 
 export default class ActiveTurn {
  @IsString()
- hourId: string;
+ hourId!: string;
  @IsString()
- doctorId: string;
+ doctorId!: string;
  @IsDate()
- date: Date;
+ date!: Date;
  @IsEnum(VisitTypeAppointmentsEnum)
- visit_type: VisitTypeAppointmentsEnum;
+ visit_type!: VisitTypeAppointmentsEnum;
 }

@@ -21,7 +21,7 @@ import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
 import UserUpdatePublicDto from './dtos/user-update-public.dto';
 import type { Request } from 'express';
-import { Access } from 'src/shared/guards/access.decorator';
+import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('/api/users')

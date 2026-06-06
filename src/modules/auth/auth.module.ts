@@ -10,5 +10,6 @@ import { UsersModule } from '../users/users.module';
  imports: [TypeOrmModule.forFeature([OtpCodes]), UsersModule],
  controllers: [AuthController],
  providers: [AuthService, CryptoHash],
+ exports: [AuthService],
 })
 export class AuthModule {}

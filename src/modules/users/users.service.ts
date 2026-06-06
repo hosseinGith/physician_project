@@ -42,14 +42,13 @@ export class UsersService {
   return user;
  }
  async findOneByWhere(
-  where?: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
-  throwError = true,
- ) {
-  const user = await this.users.findOne({
-   where,
-  });
-  if (throwError && !user) throw new NotFoundException();
-  return user;
+  where: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Users>,
+  select?: FindOptionsSelect<Users> | FindOptionsSelectByString<Users>,
+ ): Promise<Users> {
+  const res = await this.users.findOne({ where, relations, select });
+  if (!res) throw new NotFoundException();
+  return res;
  }
  async findActiveDoctors() {
   return await this.users.findBy({

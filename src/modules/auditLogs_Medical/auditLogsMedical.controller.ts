@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
 import AuditLogsMedicalDtoAdd from './dtos/auditLogsMedical-add.dto';
 import { AuditLogsMedical } from 'src/entitys/auditLogsMedical.entity';
-import { Access } from 'src/shared/guards/access.decorator';
+import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 @Controller('/api/auditLogsMedical')
 @Access(AccessType.ADMIN)

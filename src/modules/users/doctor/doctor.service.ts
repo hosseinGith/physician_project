@@ -1,5 +1,7 @@
 import {
  BadRequestException,
+ forwardRef,
+ Inject,
  Injectable,
  NotFoundException,
  UnauthorizedException,
@@ -20,6 +22,7 @@ export class DoctorService {
   @InjectRepository(Specialties)
   private readonly specialties: Repository<Specialties>,
   private readonly users: UsersService,
+  @Inject(forwardRef(() => AppointmentsService))
   private readonly appointments: AppointmentsService,
  ) {}
  async getProfile(id: string): Promise<Doctors> {
@@ -88,10 +91,10 @@ export class DoctorService {
  async getDoctorAppointments(userId: string) {
   const user = await this.users.findOne(userId, ['doctor']);
   if (!user) throw new UnauthorizedException();
-  const patients = await this.appointments.findOne({
-   where: { doctor: { id: user.doctor.id } },
-   relations: ['patients', 'prescriptions'],
-   select: {
+  const patients = await this.appointments.findOneByWhere(
+   { doctor: { id: user.doctor.id } },
+   ['patients', 'prescriptions'],
+   {
     appointment_date: true,
     created_at: true,
     hour: true,
@@ -110,10 +113,34 @@ export class DoctorService {
      },
     },
    },
-  });
+  );
   return patients;
  }
-
+ async getDoctorDetails(id: string) {
+  const user = await this.doctors
+   .createQueryBuilder('doctor')
+   .leftJoinAndSelect('doctor.user', 'user')
+   .leftJoinAndSelect('doctor.doctorHours', 'doctorHours')
+   .leftJoin('doctor.rates', 'rates')
+   .where('user.id = :id', { id })
+   .andWhere('user.is_active = :is_active', { is_active: true })
+   .select([
+    'user.first_name',
+    'user.last_name',
+    'user.access',
+    'doctor.consultation_fee',
+    'doctor.bio',
+    'doctor.medical_license_number',
+    'doctor.specialty',
+    'doctorHours.id',
+    'doctorHours.hour',
+   ])
+   .addSelect('COALESCE(AVG(rates.rate), 0)', 'averageRate')
+   .groupBy('user.id, doctor.id, doctorHours.id')
+   .getOne();
+  if (!user) throw new NotFoundException();
+  return user;
+ }
  async update(id: string, body: AddDoctorDto) {
   if (!id) throw new BadRequestException('', 'id');
 

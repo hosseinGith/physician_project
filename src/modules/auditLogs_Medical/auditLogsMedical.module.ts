@@ -14,5 +14,6 @@ import { PatientModule } from '../users/patient/patient.module';
  ],
  controllers: [AuditLogsMedicalController],
  providers: [AuditLogsMedicalService],
+ exports: [AuditLogsMedicalService],
 })
 export class AuditLogsMedicalModule {}

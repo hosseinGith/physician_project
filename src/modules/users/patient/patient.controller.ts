@@ -2,9 +2,7 @@ import {
  Body,
  Controller,
  Get,
- Param,
  Patch,
- Post,
  Query,
  Req,
  UseGuards,
@@ -12,14 +10,13 @@ import {
  UsePipes,
 } from '@nestjs/common';
 import { PatientService } from './patient.service';
-import ActiveTurn from './dtos/turn.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AccessType } from 'src/types';
 import type { Request } from 'express';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
 import PatientUpdateDto from './dtos/update.dto';
-import { Access } from 'src/shared/guards/access.decorator';
+import { Access } from 'src/shared/decorators/access.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import { SortedByEnum } from './types';
@@ -63,23 +60,12 @@ export class PatientController {
  ) {
   return this.service.search(q, request.user.id, specialty);
  }
- @Get('/doctors/:id')
- getDoctor(@Param('id') id: string) {
-  return this.service.getDoctor(id);
- }
+
  @Get('profile')
  getProfile(@Req() request: Request) {
   return this.service.getProfile(request.user.id);
  }
 
- @Get('/appointments')
- getAppointments(@Req() request: Request) {
-  return this.service.getAppointments(request.user.id);
- }
- @Post('/appointment')
- createAppointment(@Body() body: ActiveTurn, @Req() request: Request) {
-  return this.service.createAppointment(body, request.user.id);
- }
  @Patch('/profile')
  update(@Body() body: PatientUpdateDto, @Req() request: Request) {
   return this.service.update(body, request.user.id);
