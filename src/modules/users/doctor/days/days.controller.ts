@@ -39,7 +39,7 @@ export class DaysController {
  }
  @Post()
  create(@Body() body: AddHourDto, @Req() request: Request) {
-  return this.service.create(body, request);
+  return this.service.create(body, request.user.id);
  }
  @Delete(':id')
  delete(@Param('id') id: string) {
