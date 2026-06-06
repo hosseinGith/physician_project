@@ -5,6 +5,7 @@ import {
  Injectable,
  UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { UsersService } from 'src/modules/users/users.service';
@@ -15,11 +16,16 @@ export class AuthGuard implements CanActivate {
  constructor(
   private readonly jwtService: JwtService,
   private readonly users: UsersService,
+  private readonly reflector: Reflector,
  ) {}
-
  async canActivate(context: ExecutionContext): Promise<boolean> {
   const request = context.switchToHttp().getRequest<Request>();
-  if (request.url.split('/')[1] === 'auth') return true;
+  const skipAuth = this.reflector?.get<boolean>(
+   'skipAuth',
+   context.getHandler(),
+  );
+  if (skipAuth) return true;
+
   const token = String(request.headers?.authorization).split(' ')[1];
   if (!token) throw new UnauthorizedException();
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
