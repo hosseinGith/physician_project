@@ -50,6 +50,14 @@ export class UsersService {
   if (!res) throw new NotFoundException();
   return res;
  }
+ async findAllByWhere(
+  where: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Users>,
+  select?: FindOptionsSelect<Users> | FindOptionsSelectByString<Users>,
+ ): Promise<Users[]> {
+  const res = await this.users.find({ where, relations, select });
+  return res;
+ }
  async findActiveDoctors() {
   return await this.users.findBy({
    access: AccessType.DOCTOR,

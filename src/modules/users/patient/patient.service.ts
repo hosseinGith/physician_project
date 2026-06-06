@@ -100,7 +100,7 @@ export class PatientService {
  }
 
  async findActiveDoctors() {
-  return await this.users.findOneByWhere(
+  return await this.users.findAllByWhere(
    {
     access: AccessType.DOCTOR,
     is_active: true,
