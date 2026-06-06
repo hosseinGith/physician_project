@@ -3,6 +3,7 @@ import {
  CallHandler,
  ExecutionContext,
  Injectable,
+ InternalServerErrorException,
  NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
@@ -18,8 +19,7 @@ export class DecryptUserData implements NestInterceptor {
      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
      return this.deepSearchAndDecrypt(data);
     } catch {
-     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-     return data;
+     throw new InternalServerErrorException('دوباره تلاش کنید.');
     }
    }),
   );
