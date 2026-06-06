@@ -1,10 +1,9 @@
-// crypto.service.ts - نسخه AES-CBC
 import { Injectable } from '@nestjs/common';
-import { createCipheriv, createDecipheriv } from 'node:crypto';
+import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 
 @Injectable()
 export class CryptoHash {
- private readonly algorithm = 'aes-256-cbc'; // تغییر از gcm به cbc
+ private readonly algorithm = 'aes-256-cbc';
  private readonly secretKey: Buffer;
  private readonly iv: Buffer;
 
@@ -15,14 +14,9 @@ export class CryptoHash {
     'Invalid ENCRYPTION_KEY length. Must be 32 bytes (64 hex chars)',
    );
   }
-  const iv_key = process.env.ENCRYPTION_KEY_IV;
-  if (!iv_key || iv_key.length !== 32) {
-   throw new Error(
-    'Invalid ENCRYPTION_KEY_IV length. Must be 32 bytes (32 hex chars)',
-   );
-  }
+
   this.secretKey = Buffer.from(keyHex, 'hex');
-  this.iv = Buffer.from(iv_key, 'hex');
+  this.iv = randomBytes(16);
  }
 
  encrypt(text: string): string {
