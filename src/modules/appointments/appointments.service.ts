@@ -57,7 +57,7 @@ export class AppointmentsService {
   return res;
  }
 
- async getAppointments(userId: string) {
+ async getPatientAppointments(userId: string) {
   const user = await this.users.findOne(userId, ['patient']);
 
   const appointment = await this.appointments.find({

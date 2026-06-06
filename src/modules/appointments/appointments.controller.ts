@@ -27,11 +27,11 @@ export class AppointmentsController {
   return this.appointments.findAll();
  }
  @Access(AccessType.PATIENT)
- @Get()
- getAppointments(@Req() request: Request) {
+ @Get('/patientAppointments')
+ getPatientAppointments(@Req() request: Request) {
   const userId = request.user?.id;
   if (!userId) throw new NotFoundException();
-  return this.appointments.getAppointments(userId);
+  return this.appointments.getPatientAppointments(userId);
  }
  @Post()
  create(@Body() body: AppointmentsDtoAdd) {
