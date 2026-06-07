@@ -18,7 +18,6 @@ import {
 import { AdminAddUser } from './dtos/user-add.dto';
 import UserUpdateDto from './dtos/user-update.dto';
 import { AccessType } from 'src/types';
-import find from 'src/shared/utils/find';
 import UserUpdatePublicDto from './dtos/user-update-public.dto';
 @Injectable()
 export class UsersService {
@@ -74,7 +73,7 @@ export class UsersService {
   return userData;
  }
  async get(id?: string) {
-  return await find<Users>(this.users, id);
+  return await this.users.findBy({ id });
  }
  async create(body: AdminAddUser) {
   const existingUser = await this.users.findOne({

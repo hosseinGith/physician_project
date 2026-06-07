@@ -9,7 +9,6 @@ import {
  Injectable,
  NotFoundException,
 } from '@nestjs/common';
-import find from 'src/shared/utils/find';
 import { Users } from 'src/entities/users.entity';
 
 @Injectable()
@@ -24,9 +23,9 @@ export class DaysService {
 
   private readonly jwt: JwtService,
  ) {}
- async get(id?: string) {
-  return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
- }
+ //  async get(id?: string) {
+ //   return await this
+ //  }
  create(body: AddHourDto, userId: string) {}
  async delete(id: string) {
   if (typeof id !== 'number') new BadRequestException('id required');
