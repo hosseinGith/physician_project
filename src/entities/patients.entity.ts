@@ -13,7 +13,7 @@ import { Users } from './users.entity';
 import { randomInt } from 'node:crypto';
 import { ChatRequests } from './chatRequests.entity';
 import { Prescriptions } from './prescriptions.entity';
-import { Appointments } from './appointments.entity';
+import { Appointments } from '../modules/appointments/appointments.entity';
 @Entity()
 export class Patients {
  @PrimaryColumn()

@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsString } from 'class-validator';
-import { VisitTypeAppointmentsEnum } from 'src/entities/appointments.entity';
+import { VisitTypeAppointmentsEnum } from 'src/modules/appointments/appointments.entity';
 
 export default class ActiveTurn {
  @IsString()

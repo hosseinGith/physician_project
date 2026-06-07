@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid';
 
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
-import { Appointments } from './appointments.entity';
+import { Appointments } from '../modules/appointments/appointments.entity';
 export enum StatusPrescriptions {
  ACTIVE = 'active',
  DISPENSED = 'dispensed',

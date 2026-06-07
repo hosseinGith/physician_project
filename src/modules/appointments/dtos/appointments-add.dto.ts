@@ -2,7 +2,7 @@ import { IsBoolean, IsDate, IsEnum, IsString } from 'class-validator';
 import {
  StatusAppointmentsEnum,
  VisitTypeAppointmentsEnum,
-} from 'src/entities/appointments.entity';
+} from 'src/modules/appointments/appointments.entity';
 
 export default class AppointmentsDtoAdd {
  @IsString()

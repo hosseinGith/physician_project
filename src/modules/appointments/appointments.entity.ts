@@ -11,10 +11,10 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Patients } from './patients.entity';
-import { Doctors } from './doctors.entity';
-import { Prescriptions } from './prescriptions.entity';
-import { DoctorHours } from './doctorHours.entity';
+import { Patients } from '../../entities/patients.entity';
+import { Doctors } from '../../entities/doctors.entity';
+import { Prescriptions } from '../../entities/prescriptions.entity';
+import { DoctorHours } from '../../entities/doctorHours.entity';
 export enum StatusAppointmentsEnum {
  SCHEDULED = 'scheduled',
  COMPLETED = 'completed',
