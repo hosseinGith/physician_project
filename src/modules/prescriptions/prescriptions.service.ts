@@ -3,8 +3,8 @@ import {
  Injectable,
  NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { Prescriptions } from 'src/entitys/prescriptions.entity';
+import { FindManyOptions, Repository } from 'typeorm';
+import { Prescriptions } from 'src/entities/prescriptions.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
 import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
@@ -20,8 +20,8 @@ export class PrescriptionsService {
   if (res) return res;
   throw new NotFoundException();
  }
- async findAll() {
-  const res = await this.prescriptionsRep.find();
+ async findAll(options?: FindManyOptions<Prescriptions>) {
+  const res = await this.prescriptionsRep.find(options);
   return res;
  }
  async create(body: PrescriptionsDtoAdd) {

@@ -1,19 +1,15 @@
 import AddHourDto from './dtos/AddHour.dto';
-import { DoctorHours } from 'src/entitys/doctorHours.entity';
+import { DoctorHours } from 'src/entities/doctorHours.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { Doctors } from 'src/entitys/doctors.entity';
+import { Doctors } from 'src/entities/doctors.entity';
 import {
  BadRequestException,
  Injectable,
  NotFoundException,
- UnauthorizedException,
 } from '@nestjs/common';
-import find from 'src/shared/utils/find';
-import { Users } from 'src/entitys/users.entity';
-import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
+import { Users } from 'src/entities/users.entity';
 
 @Injectable()
 export class HoursService {
@@ -27,13 +23,10 @@ export class HoursService {
 
   private readonly jwt: JwtService,
  ) {}
- async get(id?: string) {
-  return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
- }
- async create(body: AddHourDto, request: Request) {
-  const token = getDataFromUserToken(request);
-  if (!token) throw new UnauthorizedException();
-  const userId = token.id;
+ //  async get(id?: string) {
+ //   return await find<DoctorHours>(this.doctorHours, id, [], ['hour']);
+ //  }
+ async create(body: AddHourDto, userId: string) {
   const user = await this.user.findOne({
    where: {
     id: userId,

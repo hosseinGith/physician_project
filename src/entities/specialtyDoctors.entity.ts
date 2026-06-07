@@ -6,13 +6,13 @@ import { Specialties } from './specialties.entity';
 @Entity()
 export class SpecialtyDoctors {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @ManyToOne(() => Doctors, (doctor) => doctor.specialties)
- doctor: Doctors;
+ doctor!: Doctors;
  @ManyToOne(() => Specialties)
- specialty: Specialties;
+ specialty!: Specialties;
 }

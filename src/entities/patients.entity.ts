@@ -13,29 +13,28 @@ import { Users } from './users.entity';
 import { randomInt } from 'node:crypto';
 import { ChatRequests } from './chatRequests.entity';
 import { Prescriptions } from './prescriptions.entity';
-import { Appointments } from './appointments.entity';
+import { Appointments } from '../modules/appointments/appointments.entity';
 @Entity()
 export class Patients {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  // ارجاع به Users
-
  @OneToOne(() => Users, (user) => user.patient)
  @JoinColumn()
- user: Users;
+ user!: Users;
  @OneToMany(() => ChatRequests, (chatRequest) => chatRequest.patient)
- chatRequests: ChatRequests[];
+ chatRequests!: ChatRequests[];
  @OneToMany(() => Prescriptions, (prescription) => prescription.patient)
- prescriptions: Prescriptions[];
+ prescriptions!: Prescriptions[];
  @OneToMany(() => Appointments, (appointment) => appointment.patient)
- appointments: Appointments[];
- // شماره پرونده (یکتا، مثل MR-۱۴۰۴-۱۲۳۴)
+ appointments!: Appointments[];
+ // شماره پرونده پزشکی (منحصربه‌فرد)
  @Column({ unique: true })
- medical_record_number: string;
+ medical_record_number!: string;
  @BeforeInsert()
  generateShortUUID() {
   const min = Math.pow(10, 4 - 1);
@@ -45,21 +44,21 @@ export class Patients {
   this.medical_record_number = `MR-${new Date().getFullYear()}${new Date().getMonth()}${new Date().getDay()}${new Date().getSeconds()}-${code}`;
  }
  // گروه خونی
- @Column()
- blood_type: string;
+ @Column({ nullable: true })
+ blood_type?: string;
  // حساسیت‌های دارویی/غذایی
- @Column()
- allergies: string;
+ @Column({ nullable: true })
+ allergies?: string;
  // بیماری‌های مزمن
- @Column()
- chronic_diseases: string;
+ @Column({ nullable: true })
+ chronic_diseases?: string;
  // نام شخص اضطراری
- @Column()
- emergency_contact_name: string;
+ @Column({ nullable: true })
+ emergency_contact_name?: string;
  // تلفن شخص اضطراری (رمزگذاری شده)
- @Column()
- emergency_contact_phone: string;
+ @Column({ nullable: true })
+ emergency_contact_phone?: string;
  // شرکت بیمه
- @Column()
- insurance_company: string;
+ @Column({ nullable: true })
+ insurance_company?: string;
 }

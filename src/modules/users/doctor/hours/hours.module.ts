@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { HoursController } from './hours.controller';
 import { HoursService } from './hours.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DoctorHours } from 'src/entitys/doctorHours.entity';
+import { DoctorHours } from 'src/entities/doctorHours.entity';
 import { DoctorModule } from '../doctor.module';
 import { UsersModule } from '../../users.module';
 

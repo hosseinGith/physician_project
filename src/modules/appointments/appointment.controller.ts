@@ -1,8 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import {
+ Body,
+ Controller,
+ Delete,
+ Get,
+ Param,
+ Patch,
+ UseGuards,
+} from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import AppointmentsUpdateDto from './dtos/appointments-update.dto';
+import { Access } from 'src/shared/decorators/access.decorator';
+import { AccessType } from 'src/types';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('appointment')
+@Access(AccessType.ADMIN)
+@UseGuards(AuthGuard, AccessGuard)
 export class AppointmentController {
  constructor(private readonly appointments: AppointmentsService) {}
  @Get(':id')

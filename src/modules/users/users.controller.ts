@@ -21,7 +21,7 @@ import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
 import UserUpdatePublicDto from './dtos/user-update-public.dto';
 import type { Request } from 'express';
-import { Access } from 'src/shared/guards/access.decorator';
+import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('/api/users')
@@ -31,12 +31,11 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 @UseInterceptors(DecryptUserData)
 export class UsersController {
  constructor(private readonly users: UsersService) {}
-
  @Access(AccessType.PATIENT, AccessType.DOCTOR)
  @UseGuards(AccessGuard)
- @Get('/getUserInitialInfo')
- getUserInitialInfo(@Req() request: Request) {
-  return this.users.getUserInitialInfo(request);
+ @Get('/profile')
+ getProfile(@Req() request: Request) {
+  return this.users.getProfile(request.user.id);
  }
  @Access()
  @UseGuards(AccessGuard)
@@ -60,7 +59,7 @@ export class UsersController {
  @UseGuards(AccessGuard)
  @Patch('/updateUserData')
  updateUserData(@Body() body: UserUpdatePublicDto, @Req() request: Request) {
-  return this.users.updateUserData(body, request);
+  return this.users.updateUserData(body, request.user.id);
  }
  @Access()
  @UseGuards(AccessGuard)
@@ -72,7 +71,7 @@ export class UsersController {
  @Access()
  @UseGuards(AccessGuard)
  @Delete(':id')
- delete(@Param('id') id: string) {
-  return this.users.delete(id);
+ remove(@Param('id') id: string) {
+  return this.users.remove(id);
  }
 }

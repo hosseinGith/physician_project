@@ -1,11 +1,12 @@
 import {
  BadRequestException,
  Injectable,
+ InternalServerErrorException,
  NotFoundException,
  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/entitys/users.entity';
+import { Users } from 'src/entities/users.entity';
 import {
  FindOptionsRelationByString,
  FindOptionsRelations,
@@ -17,23 +18,12 @@ import {
 import { AdminAddUser } from './dtos/user-add.dto';
 import UserUpdateDto from './dtos/user-update.dto';
 import { AccessType } from 'src/types';
-import { Patients } from 'src/entitys/patients.entity';
-import { Doctors } from 'src/entitys/doctors.entity';
-import { JwtService } from '@nestjs/jwt';
-import find from 'src/shared/utils/find';
 import UserUpdatePublicDto from './dtos/user-update-public.dto';
-import getDataFromUserToken from 'src/shared/utils/getDataFromUserToken';
-import { Request } from 'express';
 @Injectable()
 export class UsersService {
  constructor(
   @InjectRepository(Users)
   private users: Repository<Users>,
-  @InjectRepository(Patients)
-  private patients: Repository<Patients>,
-  @InjectRepository(Doctors)
-  private doctors: Repository<Doctors>,
-  private jwtService: JwtService,
  ) {}
 
  async findOne(
@@ -51,27 +41,30 @@ export class UsersService {
   return user;
  }
  async findOneByWhere(
-  where?: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
-  throwError = true,
- ) {
-  const user = await this.users.findOne({
-   where,
-  });
-  if (throwError && !user) throw new NotFoundException();
-  return user;
+  where: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Users>,
+  select?: FindOptionsSelect<Users> | FindOptionsSelectByString<Users>,
+ ): Promise<Users> {
+  const res = await this.users.findOne({ where, relations, select });
+  if (!res) throw new NotFoundException();
+  return res;
+ }
+ async findAllByWhere(
+  where: FindOptionsWhere<Users> | FindOptionsWhere<Users>[],
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Users>,
+  select?: FindOptionsSelect<Users> | FindOptionsSelectByString<Users>,
+ ): Promise<Users[]> {
+  const res = await this.users.find({ where, relations, select });
+  return res;
  }
  async findActiveDoctors() {
-  return await this.users.findOneBy({
+  return await this.users.findBy({
    access: AccessType.DOCTOR,
    is_active: true,
   });
  }
 
- async getUserInitialInfo(request: Request) {
-  const token = getDataFromUserToken(request);
-  console.log(token);
-
-  const id = token?.id;
+ async getProfile(id: string) {
   const userData = await this.users.findOne({
    relations: ['doctor', 'patient'],
    where: { id },
@@ -80,7 +73,7 @@ export class UsersService {
   return userData;
  }
  async get(id?: string) {
-  return await find<Users>(this.users, id);
+  return await this.users.findBy({ id });
  }
  async create(body: AdminAddUser) {
   const existingUser = await this.users.findOne({
@@ -103,33 +96,18 @@ export class UsersService {
    const user = this.users.create({
     ...body.user,
     is_active,
+    ...(body.user.access === AccessType.PATIENT && { patient: body.patient }),
+    ...(body.user.access === AccessType.DOCTOR && { doctor: body.doctor }),
    });
 
-   const savedUser = await queryRunner.manager.save(user);
-
-   if (body.user.access === AccessType.PATIENT) {
-    const patient = this.patients.create({ user: savedUser, ...body.patient });
-    await queryRunner.manager.save(patient);
-   } else if (body.user.access === AccessType.DOCTOR) {
-    const doctor = this.doctors.create({ user: savedUser, ...body.doctor });
-    await queryRunner.manager.save(doctor);
-   }
+   const savedUser = await queryRunner.manager.save(Users, user);
 
    await queryRunner.commitTransaction();
 
-   const token = this.jwtService.sign({
-    id: savedUser.id,
-    number: body.user.number,
-    role: body.user.access,
-   });
-
    return {
-    token,
-    user: { ...savedUser, number: body.user.number },
+    user: { ...savedUser, number: body.user.number, password: undefined },
    };
-  } catch (err) {
-   console.error(err);
-
+  } catch {
    await queryRunner.rollbackTransaction();
    throw new BadRequestException('خطا در ثبت‌نام. لطفاً دوباره تلاش کنید.');
   } finally {
@@ -143,13 +121,13 @@ export class UsersService {
    national_id?: string;
   },
  ) {
-  if (!id) throw new BadRequestException('', 'id');
   if (body?.number)
    if (await this.users.findOneBy({ number: body?.number }))
     throw new BadRequestException(
      'این نام کاربری استفاده شده است. لطفاً نام کاربری دیگری انتخاب کنید.',
      'number',
     );
+
   if (body?.national_id)
    if (await this.users.findOneBy({ national_id: body.national_id }))
     throw new BadRequestException('این کد ملی استفاده شده است.', 'national_id');
@@ -163,48 +141,45 @@ export class UsersService {
   return user;
  }
  async update(id: string, body: UserUpdateDto) {
+  return (await this.users.update({ id }, body)).affected === 1;
+ }
+ async updateUserData(body: UserUpdatePublicDto, id: string) {
   const user = await this.updateCheckUserData(id, body);
   if (user)
    return (await this.users.update({ id: user.id }, body)).affected === 1;
   throw new NotFoundException();
  }
- async updateUserData(body: UserUpdatePublicDto, request: Request) {
-  const token = getDataFromUserToken(request);
-  if (!token) throw new UnauthorizedException();
-
-  const user = await this.updateCheckUserData(token.id, body);
-
-  if (user)
-   return (await this.users.update({ id: user.id }, body)).affected === 1;
-  throw new NotFoundException();
- }
- async delete(id: string) {
+ async remove(id: string) {
   if (!id) throw new BadRequestException('id not found', 'id');
 
   const queryRunner = this.users.manager.connection.createQueryRunner();
-  const user = await this.users.findOneBy({ id });
+  // get user with relations to check if it's doctor or patient and delete related data accordingly
+  const user = await this.users.findOne({
+   where: { id },
+   relations: ['doctor', 'patient'],
+  });
+
   if (!user) throw new NotFoundException();
+
   try {
    await queryRunner.connect();
    await queryRunner.startTransaction();
-
-   if (user?.access === AccessType.DOCTOR) {
-    const id = (await this.doctors.findOneBy({ user: { id: user.id } }))?.id;
-
-    await queryRunner.manager.delete('doctor_hours', { doctor: { id } });
+   // delete related data based on user access type
+   if (user?.access === AccessType.DOCTOR && user.doctor) {
+    await queryRunner.manager.delete('doctor_hours', {
+     doctor: { id: user.doctor.id },
+    });
     await queryRunner.manager.delete('doctors', { id });
-   } else if (user?.access === AccessType.PATIENT) {
-    const id = (await this.patients.findOneBy({ user: { id: user.id } }))?.id;
-    await queryRunner.manager.delete('patients', { id });
+   } else if (user?.access === AccessType.PATIENT && user.patient) {
+    await queryRunner.manager.delete('patients', { id: user.patient.id });
    }
    await queryRunner.manager.delete('users', { id });
    await queryRunner.commitTransaction();
 
    return true;
-  } catch (error) {
+  } catch {
    await queryRunner.rollbackTransaction();
-   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-   return error;
+   throw new InternalServerErrorException(); // ✅
   } finally {
    await queryRunner.release();
   }

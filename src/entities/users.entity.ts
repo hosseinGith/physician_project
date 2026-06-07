@@ -28,11 +28,11 @@ export class Users {
  @OneToOne(() => Patients, (patient) => patient.user)
  patient!: Patients;
  @Column({ nullable: true })
- first_name!: string;
+ first_name?: string;
  @Column({ nullable: true })
- last_name!: string;
+ last_name?: string;
  @Column({ length: 10, nullable: true, unique: true })
- national_id!: string;
+ national_id?: string;
  @Column({ default: AccessType.PATIENT })
  @IsEnum(AccessType)
  access!: AccessType;

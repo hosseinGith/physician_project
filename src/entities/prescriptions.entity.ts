@@ -9,8 +9,7 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Patients } from './patients.entity';
-import { Doctors } from './doctors.entity';
-import { Appointments } from './appointments.entity';
+import { Appointments } from '../modules/appointments/appointments.entity';
 export enum StatusPrescriptions {
  ACTIVE = 'active',
  DISPENSED = 'dispensed',
@@ -20,7 +19,7 @@ export enum StatusPrescriptions {
 @Entity()
 export class Prescriptions {
  @PrimaryColumn()
- id: string;
+ id!: string;
 
  @BeforeInsert()
  private generateId() {
@@ -28,31 +27,31 @@ export class Prescriptions {
  }
  // ارجاع به Patients
  @ManyToOne(() => Patients, (patient) => patient.prescriptions)
- patient: Patients;
+ patient!: Patients;
 
  // ارجاع به Appointments (NULL اگر مشاوره آنلاین)
  @ManyToOne(() => Appointments, (appointment) => appointment.prescriptions)
- appointment: Appointments;
+ appointment!: Appointments;
  // تاریخ تجویز
  @Column({ type: 'date' })
- issue_date: string;
+ issue_date!: string;
  // تاریخ اعتبار
  @Column({ type: 'date' })
- valid_until: string;
+ valid_until!: string;
  // تشخیص پزشک
  @Column()
- diagnosis: string;
+ diagnosis!: string;
  // لیست داروها (نام، دوز، مدت، توضیحات)
  @Column()
- medications: string;
+ medications!: string;
  // امضای دیجیتال پزشک (برای اعتبار قانونی)
  @Column()
- doctor_digital_signature: string;
+ doctor_digital_signature!: string;
  @Column({
   type: 'enum',
   enum: StatusPrescriptions,
  })
- status: StatusPrescriptions;
+ status!: StatusPrescriptions;
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- created_at: Date;
+ created_at!: Date;
 }

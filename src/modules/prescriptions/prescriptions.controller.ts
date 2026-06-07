@@ -14,7 +14,7 @@ import { AccessType } from 'src/types';
 import { PrescriptionsService } from './prescriptions.service';
 import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
 import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
-import { Access } from 'src/shared/guards/access.decorator';
+import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 
 @Controller('/api/prescriptions')

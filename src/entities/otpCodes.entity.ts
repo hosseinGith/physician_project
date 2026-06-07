@@ -1,23 +1,18 @@
-import {
- BeforeInsert,
- Column,
- Entity,
- PrimaryColumn,
-} from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { nanoid } from 'nanoid';
 
 @Entity()
 export class OtpCodes {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
- @Column({ length: process.env.OTP_CODE_LENGTH })
- code: string;
+ @Column({ length: process.env.OTP_CODE_LENGTH || 5 })
+ code!: string;
  @Column()
- number: string;
+ number!: string;
  @Column({ default: () => 'CURRENT_TIMESTAMP', type: 'datetime' })
- created_at: Date;
+ created_at!: Date;
 }

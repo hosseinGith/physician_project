@@ -16,13 +16,13 @@ enum UseTypeEnum {
 @Entity()
 export class Files {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @Column()
- url: string;
+ url!: string;
  @Column({
   type: 'enum',
   enum: UseTypeEnum,
@@ -30,9 +30,9 @@ export class Files {
   default: UseTypeEnum.CONVERSITION,
  })
  @Column()
- use_type: string;
+ use_type!: string;
  @Column()
- type: string;
+ type!: string;
  @ManyToOne(() => Users, (user) => user)
- user: Users;
+ user!: Users;
 }

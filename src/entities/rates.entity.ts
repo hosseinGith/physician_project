@@ -13,17 +13,17 @@ import { Patients } from './patients.entity';
 @Entity()
 export class Rates {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @ManyToOne(() => Doctors, (doctor) => doctor.rates)
- doctor: Doctors;
+ doctor!: Doctors;
  @ManyToOne(() => Patients)
- patient: Patients;
+ patient!: Patients;
  @Column()
- score: number;
+ score!: number;
  @Column()
- description: string;
+ description!: string;
 }

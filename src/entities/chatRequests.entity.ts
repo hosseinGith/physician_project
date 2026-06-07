@@ -9,7 +9,6 @@ import { nanoid } from 'nanoid';
 
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
-import { Matches } from 'class-validator';
 enum ChatRequestStatusEnum {
  REJECTED = 'rejected',
  ACCEPTED = 'accepted',
@@ -18,18 +17,17 @@ enum ChatRequestStatusEnum {
 @Entity()
 export class ChatRequests {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
  @ManyToOne(() => Patients, (patients) => patients.chatRequests)
- patient: Patients;
+ patient!: Patients;
  @ManyToOne(() => Doctors, (doctor) => doctor.chatRequests)
- doctor: Doctors;
+ doctor!: Doctors;
  @Column({ default: ChatRequestStatusEnum.WAITING })
- status: ChatRequestStatusEnum;
+ status!: ChatRequestStatusEnum;
  @Column()
- @Matches(/room_doctor_\w_patient_\w/)
- roomId: string;
+ roomId!: string;
 }

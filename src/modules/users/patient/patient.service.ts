@@ -4,35 +4,25 @@ import {
  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/entitys/users.entity';
 import { AccessType } from 'src/types';
 import { Repository } from 'typeorm';
-import ActiveTurn from './dtos/turn.dto';
-import { DoctorHours } from 'src/entitys/doctorHours.entity';
-import { Patients } from 'src/entitys/patients.entity';
+import { Patients } from 'src/entities/patients.entity';
 import PatientUpdateDto from './dtos/update.dto';
-import { StatusPrescriptions } from 'src/entitys/prescriptions.entity';
+import { StatusPrescriptions } from 'src/entities/prescriptions.entity';
 import { SortedByEnum } from './types';
-import { Specialties } from 'src/entitys/specialties.entity';
 import { UsersService } from '../users.service';
-import { DoctorService } from '../doctor/doctor.service';
-import { AppointmentsService } from 'src/modules/appointments/appointments.service';
-import { HoursService } from '../doctor/hours/hours.service';
 import { PrescriptionsService } from 'src/modules/prescriptions/prescriptions.service';
 
 @Injectable()
 export class PatientService {
  constructor(
-  @InjectRepository(DoctorHours)
+  @InjectRepository(Patients)
   private patients: Repository<Patients>,
   private users: UsersService,
-  private doctors: DoctorService,
-  private doctorHours: HoursService,
-  private appointments: AppointmentsService,
   private prescriptions: PrescriptionsService,
  ) {}
  async searchInPatientPrescriptions(userId: string) {
-  return await this.prescriptions.find({
+  return await this.prescriptions.findAll({
    where: {
     patient: {
      user: { id: userId },
@@ -71,7 +61,7 @@ export class PatientService {
   status: StatusPrescriptions | undefined,
   sortedBy: SortedByEnum | undefined,
  ) {
-  return await this.prescriptions.find({
+  return await this.prescriptions.findAll({
    order: {
     created_at: sortedBy
      ? sortedBy === SortedByEnum.OLDER
@@ -109,13 +99,13 @@ export class PatientService {
  }
 
  async findActiveDoctors() {
-  return await this.users.find({
-   where: {
+  return await this.users.findAllByWhere(
+   {
     access: AccessType.DOCTOR,
     is_active: true,
    },
-   relations: ['doctor'],
-   select: {
+   ['doctor'],
+   {
     access: true,
     doctor: {
      id: true,
@@ -124,14 +114,26 @@ export class PatientService {
      specialties: true,
     },
    },
-  });
+  );
  }
- // public.service.ts
- async search(q: string, specialty?: string) {
-  const queryBuilder = this.users
-   .createQueryBuilder('users')
-   .leftJoinAndSelect('users.doctor', 'doctor')
-   .select(['first_name', 'specialty']);
+ async search(q: string, patientId: string, specialty?: string) {
+  const queryBuilder = this.patients
+   .createQueryBuilder('patient')
+   .leftJoinAndSelect('patient.appointments', 'appointment')
+   .leftJoin('appointment.doctor', 'doctor')
+   .leftJoin('doctor.user', 'user')
+   .where('patient.id = :patientId', { patientId })
+   .select([
+    'patient.id',
+    'appointment.id',
+    'appointment.appointment_date',
+    'appointment.status',
+    'doctor.id',
+    'doctor.bio',
+    'doctor.consultation_fee',
+    'user.first_name',
+    'user.last_name',
+   ]);
 
   if (q) {
    queryBuilder.andWhere(
@@ -141,126 +143,16 @@ export class PatientService {
   }
 
   if (specialty) {
-   queryBuilder.andWhere('doctor.specialty = :specialty', { Specialties });
+   queryBuilder
+    .leftJoinAndSelect('doctor.specialties', 'specialty')
+    .andWhere('doctor.specialties = :specialty', { specialty });
   }
 
-  // فقط کاربرانی که دکتر هستند (دکتر دارند)
   queryBuilder.andWhere('doctor.id IS NOT NULL');
 
   return await queryBuilder.getMany();
  }
- async getDoctor(id: string) {
-  const user = await this.users
-   .createQueryBuilder('user')
-   .leftJoinAndSelect('user.doctor', 'doctor')
-   .leftJoinAndSelect('doctor.doctorHours', 'doctorHours')
-   .leftJoin('doctor.rates', 'rates')
-   .where('user.id = :id', { id })
-   .andWhere('user.is_active = :is_active', { is_active: true })
-   .select([
-    'user.first_name',
-    'user.last_name',
-    'user.access',
-    'doctor.consultation_fee',
-    'doctor.bio',
-    'doctor.medical_license_number',
-    'doctor.specialty',
-    'doctorHours.id',
-    'doctorHours.hour',
-   ])
-   .addSelect('COALESCE(AVG(rates.rate), 0)', 'averageRate')
-   .groupBy('user.id, doctor.id, doctorHours.id')
-   .getOne();
-  if (!user) throw new NotFoundException();
-  return user;
- }
- // taking turns
- async createAppointment(body: ActiveTurn, userId: string) {
-  const doctor = await this.doctors.findOneBy({ id: body.doctorId });
-  if (!doctor)
-   throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
 
-  const user = await this.users.findOne(userId, ['patient']);
-
-  if (!user) throw new NotFoundException('کاربر پیدا نشد.', 'User not found');
-  if (user.access !== AccessType.PATIENT)
-   throw new NotFoundException('شما بیمار نیستید.', 'User not found');
-
-  const patient = user?.patient;
-  if (!patient)
-   throw new NotFoundException('کاربر پیدا نشد.', 'User not found');
-
-  const doctorHour = await this.doctorHours.findOneBy({
-   id: body.hourId,
-   doctor: { id: doctor.id },
-  });
-  if (!doctorHour)
-   throw new NotFoundException(
-    'ساعت مورد نظر پیدا نشد.',
-    'Doctor hour not found',
-   );
-
-  const dateOnly_string = new Date(body.date).toISOString().split('T')[0];
-  const dateOnly = new Date(dateOnly_string);
-  dateOnly.setHours(0, 0, 0, 0);
-  const appointment = await this.appointments.findOneBy({
-   doctor: { id: doctor.id },
-   appointment_date: dateOnly,
-   hour: { id: doctorHour.id },
-  });
-
-  if (appointment)
-   throw new BadRequestException(
-    'در ساعت انتخاب شده دکتر وقت آزاد ندارد.لطفا ساعت دیگری انتخاب کنید.',
-   );
-
-  const save_appointment = this.appointments.create({
-   appointment_date: dateOnly,
-   doctor: { id: doctor.id },
-   hour: doctorHour,
-   patient: { id: patient.id },
-  });
-  const new_appointment = this.appointments.save(save_appointment);
-  return Boolean(new_appointment);
- }
- async getAppointments(userId: string) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const user = await this.users.findOne(userId, ['patient']);
-
-  const appointment = await this.appointments.find({
-   where: {
-    patient: { id: user?.patient.id },
-   },
-   select: {
-    id: true,
-    appointment_date: true,
-    created_at: true,
-    doctor: {
-     bio: true,
-     consultation_fee: true,
-     id: true,
-     medical_license_number: true,
-     specialties: true,
-    },
-    hour: { hour: true },
-    prescriptions: {
-     diagnosis: true,
-     doctor_digital_signature: true,
-     issue_date: true,
-     medications: true,
-     status: true,
-     valid_until: true,
-    },
-    reminder_sent: true,
-    status: true,
-    symptoms: true,
-    visit_type: true,
-   },
-   relations: ['doctor', 'hour', 'prescriptions'],
-  });
-
-  return appointment;
- }
  async getProfile(userId: string) {
   const user = await this.users.findOne(userId, ['patient']);
 
