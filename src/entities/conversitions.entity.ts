@@ -11,7 +11,6 @@ import { nanoid } from 'nanoid';
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
 import { Messages } from './messages.entity';
-import { Matches } from 'class-validator';
 @Entity()
 export class Conversitions {
  @PrimaryColumn()
@@ -27,6 +26,5 @@ export class Conversitions {
  @OneToMany(() => Messages, (message) => message.conversition)
  messages: Messages[];
  @Column()
- @Matches(/room_doctor_\w_patient_\w/)
  roomId: string;
 }

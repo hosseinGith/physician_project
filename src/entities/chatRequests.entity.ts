@@ -9,7 +9,6 @@ import { nanoid } from 'nanoid';
 
 import { Patients } from './patients.entity';
 import { Doctors } from './doctors.entity';
-import { Matches } from 'class-validator';
 enum ChatRequestStatusEnum {
  REJECTED = 'rejected',
  ACCEPTED = 'accepted',
