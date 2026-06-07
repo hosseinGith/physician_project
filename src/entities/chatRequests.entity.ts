@@ -30,6 +30,5 @@ export class ChatRequests {
  @Column({ default: ChatRequestStatusEnum.WAITING })
  status: ChatRequestStatusEnum;
  @Column()
- @Matches(/room_doctor_\w_patient_\w/)
  roomId: string;
 }
