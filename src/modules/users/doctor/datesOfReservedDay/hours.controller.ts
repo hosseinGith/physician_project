@@ -29,14 +29,14 @@ import { AccessGuard } from 'src/shared/guards/access.guard';
 @UseGuards(AuthGuard, AccessGuard)
 export class HoursController {
  constructor(private readonly service: HoursService) {}
- @Get()
- get() {
-  return this.service.get();
- }
- @Get(':id')
- findOne(@Param('id') id: string) {
-  return this.service.get(id);
- }
+ //  @Get()
+ //  get() {
+ //   return this.service.get();
+ //  }
+ //  @Get(':id')
+ //  findOne(@Param('id') id: string) {
+ //   return this.service.get(id);
+ //  }
  @Post()
  create(@Body() body: AddHourDto, @Req() request: Request) {
   return this.service.create(body, request.user.id);

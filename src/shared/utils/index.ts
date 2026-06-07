@@ -1,1 +1,1 @@
-export const numberRegx = new RegExp(/^0[1-9]\d{9}$/);
+export const numberRegx = /^0[1-9]\d{9}$/;
