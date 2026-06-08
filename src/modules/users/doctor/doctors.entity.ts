@@ -10,12 +10,12 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Users } from '../users.entity';
-import { DoctorHours } from './hours/doctorHours.entity';
+
 import { Rates } from './rates.entity';
 import { ChatRequests } from '../../../entities/chatRequests.entity';
 import { SpecialtyDoctors } from './specialtyDoctors.entity';
-import { DoctorHourDays } from './days/doctorHourDays.entity';
-import { DatesOfReservedDay } from './datesOfReservedDay/DatesOfReservedDay.entity';
+
+import { BlockedTimes } from './blockedTimes/blockedTimes.entity';
 
 @Entity()
 export class Doctors {
@@ -30,16 +30,9 @@ export class Doctors {
  @JoinColumn()
  user!: Users;
 
- @OneToMany(() => DoctorHours, (doctorHour) => doctorHour.doctor)
- doctorHours!: DoctorHours[];
+ @OneToMany(() => BlockedTimes, (BlockedTime) => BlockedTime.doctor)
+ BlockedTimes!: BlockedTimes[];
 
- @OneToMany(() => DoctorHourDays, (day) => day.doctor)
- days!: DoctorHourDays[];
- @OneToMany(
-  () => DatesOfReservedDay,
-  (dateOfBlockedDay) => dateOfBlockedDay.doctor,
- )
- DatesOfReservedDay!: DatesOfReservedDay[];
  @OneToMany(() => Rates, (rate) => rate.doctor)
  rates!: Rates[];
  @OneToMany(() => ChatRequests, (chatRequest) => chatRequest.doctor)
