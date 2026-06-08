@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
-import { OtpCodes } from 'src/entities/otpCodes.entity';
+import { OtpCodes } from 'src/modules/auth/otpCodes.entity';
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
 import { UsersModule } from '../users/users.module';
 

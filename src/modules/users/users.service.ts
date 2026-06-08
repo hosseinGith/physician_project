@@ -6,7 +6,7 @@ import {
  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/entities/users.entity';
+import { Users } from 'src/modules/users/users.entity';
 import {
  FindOptionsRelationByString,
  FindOptionsRelations,

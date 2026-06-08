@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Doctors } from './doctors.entity';
-import { DoctorHours } from './doctorHours.entity';
+import { Doctors } from '../doctors.entity';
+import { DoctorHours } from '../hours/doctorHours.entity';
 enum DaysNameTypeEnum {
  SUNDAY = 'sunday',
  MONDAY = 'monday',

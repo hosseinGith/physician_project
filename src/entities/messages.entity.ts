@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Users } from './users.entity';
+import { Users } from '../modules/users/users.entity';
 import { Conversitions } from './conversitions.entity';
 import { Files } from './files.entity';
 export enum FileTypeEnum {

@@ -4,7 +4,7 @@ import {
  NotFoundException,
 } from '@nestjs/common';
 import { FindManyOptions, Repository } from 'typeorm';
-import { Prescriptions } from 'src/entities/prescriptions.entity';
+import { Prescriptions } from 'src/modules/prescriptions/prescriptions.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
 import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';

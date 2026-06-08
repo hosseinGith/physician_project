@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientController } from './patient.controller';
 import { PatientService } from './patient.service';
-import { Patients } from 'src/entities/patients.entity';
+import { Patients } from 'src/modules/users/patient/patients.entity';
 import { UsersModule } from '../users.module';
 import { PrescriptionsModule } from 'src/modules/prescriptions/prescriptions.module';
 

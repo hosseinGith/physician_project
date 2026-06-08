@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Users } from './users.entity';
+import { Users } from '../modules/users/users.entity';
 enum UseTypeEnum {
  CONVERSITION = 'conversition',
  ADMINUPLOAD = 'adminUpload',

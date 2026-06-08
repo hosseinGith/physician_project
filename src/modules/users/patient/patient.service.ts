@@ -6,9 +6,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccessType } from 'src/types';
 import { Repository } from 'typeorm';
-import { Patients } from 'src/entities/patients.entity';
+import { Patients } from 'src/modules/users/patient/patients.entity';
 import PatientUpdateDto from './dtos/update.dto';
-import { StatusPrescriptions } from 'src/entities/prescriptions.entity';
+import { StatusPrescriptions } from 'src/modules/prescriptions/prescriptions.entity';
 import { SortedByEnum } from './types';
 import { UsersService } from '../users.service';
 import { PrescriptionsService } from 'src/modules/prescriptions/prescriptions.service';

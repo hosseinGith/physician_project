@@ -9,13 +9,13 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Users } from './users.entity';
-import { DoctorHours } from './doctorHours.entity';
+import { Users } from '../users.entity';
+import { DoctorHours } from './hours/doctorHours.entity';
 import { Rates } from './rates.entity';
-import { ChatRequests } from './chatRequests.entity';
+import { ChatRequests } from '../../../entities/chatRequests.entity';
 import { SpecialtyDoctors } from './specialtyDoctors.entity';
-import { DoctorHourDays } from './doctorHourDays.entity';
-import { DatesOfReservedDay } from './DatesOfReservedDay.entity';
+import { DoctorHourDays } from './days/doctorHourDays.entity';
+import { DatesOfReservedDay } from './datesOfReservedDay/DatesOfReservedDay.entity';
 
 @Entity()
 export class Doctors {

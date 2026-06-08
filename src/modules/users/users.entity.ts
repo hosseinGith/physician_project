@@ -10,8 +10,8 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Doctors } from './doctors.entity';
-import { Patients } from './patients.entity';
+import { Doctors } from './doctor/doctors.entity';
+import { Patients } from './patient/patients.entity';
 
 @Entity()
 export class Users {
