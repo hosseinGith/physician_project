@@ -8,17 +8,22 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Doctors } from '../doctors.entity';
-
 @Entity()
-export class DoctorHours {
+export class BlockedTimes {
  @PrimaryColumn()
  id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
  }
- @ManyToOne(() => Doctors, (doctor) => doctor.doctorHours)
+ @ManyToOne(() => Doctors, (doctor) => doctor.BlockedTimes)
  doctor!: Doctors;
  @Column()
- hour!: string;
+ date!: Date;
+ @Column()
+ start_time!: Date;
+ @Column()
+ end_time!: Date;
+ @Column({ nullable: true })
+ reason?: string;
 }
