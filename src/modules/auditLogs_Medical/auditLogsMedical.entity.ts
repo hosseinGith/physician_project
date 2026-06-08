@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Patients } from './patients.entity';
-import { Users } from './users.entity';
+import { Patients } from '../users/patient/patients.entity';
+import { Users } from '../users/users.entity';
 export enum AccessTypeAuditLogsMedicalEnum {
  VIEW = 'view',
  EDIT = 'edit',

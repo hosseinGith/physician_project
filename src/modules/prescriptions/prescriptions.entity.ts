@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Patients } from './patients.entity';
-import { Appointments } from '../modules/appointments/appointments.entity';
+import { Patients } from '../users/patient/patients.entity';
+import { Appointments } from '../appointments/appointments.entity';
 export enum StatusPrescriptions {
  ACTIVE = 'active',
  DISPENSED = 'dispensed',

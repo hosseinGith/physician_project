@@ -8,7 +8,7 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Doctors } from './doctors.entity';
-import { Patients } from './patients.entity';
+import { Patients } from '../patient/patients.entity';
 export enum RecordTypeMedicalRecordsEnum {
  LABRESULT = 'labResult',
  RADIOLOGY = 'radiology',

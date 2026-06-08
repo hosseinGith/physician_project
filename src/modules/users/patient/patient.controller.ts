@@ -20,7 +20,7 @@ import { Access } from 'src/shared/decorators/access.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import { SortedByEnum } from './types';
-import { StatusPrescriptions } from 'src/entities/prescriptions.entity';
+import { StatusPrescriptions } from 'src/modules/prescriptions/prescriptions.entity';
 
 @Controller('/api/patient')
 @ApiBearerAuth()

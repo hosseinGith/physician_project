@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { Repository } from 'typeorm';
-import { AuditLogsMedical } from 'src/entities/auditLogsMedical.entity';
+import { AuditLogsMedical } from 'src/modules/auditLogs_Medical/auditLogsMedical.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import AuditLogsMedicalDtoAdd from './dtos/auditLogsMedical-add.dto';
 import { PatientService } from '../users/patient/patient.service';

@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { HoursController } from './hours.controller';
 import { HoursService } from './hours.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Users } from 'src/entities/users.entity';
-import { Doctors } from 'src/entities/doctors.entity';
-import { DoctorHours } from 'src/entities/doctorHours.entity';
+import { Users } from 'src/modules/users/users.entity';
+import { Doctors } from 'src/modules/users/doctor/doctors.entity';
+import { DoctorHours } from 'src/modules/users/doctor/hours/doctorHours.entity';
 
 @Module({
  imports: [

@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Patients } from './patients.entity';
-import { Doctors } from './doctors.entity';
+import { Patients } from '../modules/users/patient/patients.entity';
+import { Doctors } from '../modules/users/doctor/doctors.entity';
 import { Messages } from './messages.entity';
 @Entity()
 export class Conversitions {
