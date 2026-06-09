@@ -15,7 +15,7 @@ import AppointmentsDtoAdd from './dtos/appointments-add.dto';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import ActiveTurn from './dtos/turn.dto';
-import { Request } from 'express';
+import type { Request } from 'express';
 @Controller('/api/appointments')
 @Access(AccessType.ADMIN)
 @UseGuards(AuthGuard, AccessGuard)
