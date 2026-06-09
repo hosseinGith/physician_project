@@ -11,4 +11,4 @@ import { DoctorModule } from '../doctor.module';
  controllers: [BlockedTimesController],
  providers: [BlockedTimesService],
 })
-export class HoursModule {}
+export class BlockedTimesModule {}

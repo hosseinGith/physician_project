@@ -7,13 +7,13 @@ import { Specialties } from 'src/modules/users/doctor/entities/specialties.entit
 import { SpecialtyDoctors } from 'src/modules/users/doctor/entities/specialtyDoctors.entity';
 import { AppointmentsModule } from 'src/modules/appointments/appointments.module';
 import { UsersModule } from '../users.module';
-import { AppointmentsService } from 'src/modules/appointments/appointments.service';
-console.log(AppointmentsModule);
+import { BlockedTimesModule } from './blockedTimes/blockedTimes.module';
 @Module({
  imports: [
   TypeOrmModule.forFeature([Doctors, Specialties, SpecialtyDoctors]),
   UsersModule,
   forwardRef(() => AppointmentsModule),
+  BlockedTimesModule,
  ],
  controllers: [DoctorController],
  providers: [DoctorService],
