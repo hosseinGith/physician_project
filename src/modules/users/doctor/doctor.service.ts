@@ -42,11 +42,15 @@ export class DoctorService {
   relations?: FindOptionsRelationByString | FindOptionsRelations<Doctors>,
   select?: FindOptionsSelect<Doctors> | FindOptionsSelectByString<Doctors>,
  ) {
-  return this.doctors.findOne({ where, relations, select });
+  const doctor = await this.doctors.findOne({ where, relations, select });
+  if (!doctor) throw new NotFoundException('دکتر پیدا نشد.');
+  return doctor;
  }
 
  async findOneBy(id: string) {
-  return this.doctors.findOneBy({ id });
+  const doctor = await this.doctors.findOneBy({ id });
+  if (!doctor) throw new NotFoundException('دکتر پیدا نشد.');
+  return doctor;
  }
  async findAll() {
   return this.doctors.find();
