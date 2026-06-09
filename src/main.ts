@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import { AuditLogsMedical } from './modules/auditLogs_Medical/auditLogsMedical.entity';
+import { AuditLogsMedical } from './modules/auditLogsMedical/auditLogsMedical.entity';
 import { ConvertNumberPersionToNumberLatinPipe } from './shared/pipes/convert-number-persion-to-number-latin.pipe';
 async function bootstrap() {
  const app = await NestFactory.create(AppModule);

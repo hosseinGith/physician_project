@@ -92,7 +92,7 @@ export class AppointmentsService {
   return appointment;
  }
  async createAppointment(body: ActiveTurn, userId: string) {
-  const doctor = await this.doctors.findOne(body.doctorId);
+  const doctor = await this.doctors.findOne({ id: body.doctorId });
   if (!doctor)
    throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
 
@@ -139,7 +139,7 @@ export class AppointmentsService {
  async create(body: AppointmentsDtoAdd) {
   const [patient, doctor] = await Promise.all([
    this.patients.findOne(body.patientId),
-   this.doctors.findOne(body.doctorId),
+   this.doctors.findOne({ id: body.doctorId }),
   ]);
   if (!doctor) throw new NotFoundException('Doctor not found');
   if (!patient) throw new NotFoundException('Patient not found');

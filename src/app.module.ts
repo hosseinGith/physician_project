@@ -10,7 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dotenv from 'dotenv';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
-import { AuditLogsMedicalModule } from './modules/auditLogs_Medical/auditLogsMedical.module';
+import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedical.module';
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
 
 import { PatientModule } from './modules/users/patient/patient.module';
