@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedical.module';
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
-import { SnakeNamingStrategy } from 'typeorm-snake-naming-strategy';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 dotenv.config();
 
 @Module({

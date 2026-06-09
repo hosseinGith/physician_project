@@ -10,7 +10,8 @@ import { Appointments } from 'src/modules/appointments/appointments.entity';
 @Module({
  imports: [
   TypeOrmModule.forFeature([Appointments]),
-  PatientModule,
+  forwardRef(() => PatientModule),
+
   UsersModule,
   forwardRef(() => DoctorModule),
  ],

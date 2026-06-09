@@ -1,14 +1,18 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { BlockedTimesController } from './blockedTimes.controller';
 import { BlockedTimesService } from './blockedTimes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BlockedTimes } from './blockedTimes.entity';
+import { BlockedTimes } from './entities/blockedTimes.entity';
 import { DoctorModule } from '../doctor.module';
 
 @Module({
- imports: [TypeOrmModule.forFeature([BlockedTimes]), DoctorModule],
+ imports: [
+  TypeOrmModule.forFeature([BlockedTimes]),
+  forwardRef(() => DoctorModule),
+ ],
 
  controllers: [BlockedTimesController],
  providers: [BlockedTimesService],
+ exports: [BlockedTimesService],
 })
 export class BlockedTimesModule {}

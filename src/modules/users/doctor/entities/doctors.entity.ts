@@ -15,7 +15,7 @@ import { Rates } from './rates.entity';
 import { ChatRequests } from '../../../../entities/chatRequests.entity';
 import { SpecialtyDoctors } from './specialtyDoctors.entity';
 
-import { BlockedTimes } from '../blockedTimes/blockedTimes.entity';
+import { BlockedTimes } from '../blockedTimes/entities/blockedTimes.entity';
 
 @Entity()
 export class Doctors {

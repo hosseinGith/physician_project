@@ -11,9 +11,9 @@ import { BlockedTimesModule } from './blockedTimes/blockedTimes.module';
 @Module({
  imports: [
   TypeOrmModule.forFeature([Doctors, Specialties, SpecialtyDoctors]),
-  UsersModule,
+  forwardRef(() => UsersModule),
   forwardRef(() => AppointmentsModule),
-  BlockedTimesModule,
+  forwardRef(() => BlockedTimesModule),
  ],
  controllers: [DoctorController],
  providers: [DoctorService],

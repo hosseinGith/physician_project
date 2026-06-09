@@ -2,8 +2,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BlockedTimes } from './blockedTimes.entity';
+import { BlockedTimes } from './entities/blockedTimes.entity';
 import { DoctorService } from '../doctor.service';
+import CreateBlockedTimeDto from './dtos/create.dto';
 
 @Injectable()
 export class BlockedTimesService {
@@ -32,6 +33,10 @@ export class BlockedTimesService {
    where: { doctor: { id: doctor.id } },
   });
   return blockedItem;
+ }
+ async create(body: CreateBlockedTimeDto, id: string) {
+  const doctor = await this.doctors.findOne({ user: { id } });
+  return this.BlockedTimes.save(this.BlockedTimes.create({ doctor, ...body }));
  }
 
  async remove(id: string, userId: string) {
