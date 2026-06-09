@@ -7,7 +7,14 @@ import {
  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {
+ FindOptionsRelationByString,
+ FindOptionsRelations,
+ FindOptionsSelect,
+ FindOptionsSelectByString,
+ FindOptionsWhere,
+ Repository,
+} from 'typeorm';
 import { Doctors } from 'src/modules/users/doctor/doctors.entity';
 import AddDoctorDto from './dtos/add.dto';
 import { Specialties } from 'src/modules/users/doctor/specialties.entity';
@@ -30,7 +37,15 @@ export class DoctorService {
   if (!doctor) throw new NotFoundException('Doctor not found');
   return doctor;
  }
- async findOne(id: string) {
+ async findOne(
+  where?: FindOptionsWhere<Doctors> | FindOptionsWhere<Doctors>[],
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Doctors>,
+  select?: FindOptionsSelect<Doctors> | FindOptionsSelectByString<Doctors>,
+ ) {
+  return this.doctors.findOne({ where, relations, select });
+ }
+
+ async findOneBy(id: string) {
   return this.doctors.findOneBy({ id });
  }
  async findAll() {
