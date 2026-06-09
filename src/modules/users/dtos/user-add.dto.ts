@@ -9,7 +9,7 @@ import {
  ValidateIf,
  ValidateNested,
 } from 'class-validator';
-import { Doctors } from 'src/modules/users/doctor/doctors.entity';
+import { Doctors } from 'src/modules/users/doctor/entities/doctors.entity';
 import { Patients } from 'src/modules/users/patient/patients.entity';
 import { numberRegx } from 'src/shared/utils';
 import { AccessType } from 'src/types';

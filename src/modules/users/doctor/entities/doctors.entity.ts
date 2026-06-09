@@ -9,13 +9,13 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Users } from '../users.entity';
+import { Users } from '../../users.entity';
 
 import { Rates } from './rates.entity';
-import { ChatRequests } from '../../../entities/chatRequests.entity';
+import { ChatRequests } from '../../../../entities/chatRequests.entity';
 import { SpecialtyDoctors } from './specialtyDoctors.entity';
 
-import { BlockedTimes } from './blockedTimes/blockedTimes.entity';
+import { BlockedTimes } from '../blockedTimes/blockedTimes.entity';
 
 @Entity()
 export class Doctors {

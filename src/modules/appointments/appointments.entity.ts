@@ -10,7 +10,7 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Patients } from '../users/patient/patients.entity';
-import { Doctors } from '../users/doctor/doctors.entity';
+import { Doctors } from '../users/doctor/entities/doctors.entity';
 import { Prescriptions } from '../prescriptions/prescriptions.entity';
 export enum StatusAppointmentsEnum {
  SCHEDULED = 'scheduled',

@@ -8,7 +8,7 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Doctors } from './doctors.entity';
-import { Patients } from '../patient/patients.entity';
+import { Patients } from '../../patient/patients.entity';
 
 @Entity()
 export class Rates {
