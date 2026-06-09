@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedical.module';
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
-
+import { SnakeNamingStrategy } from 'typeorm-snake-naming-strategy';
 import { PatientModule } from './modules/users/patient/patient.module';
 import { DoctorModule } from './modules/users/doctor/doctor.module';
 dotenv.config();
@@ -36,6 +36,7 @@ dotenv.config();
    database: process.env?.db_database,
    entities: [__dirname + '/**/*.entity{.ts,.js}'],
 
+   namingStrategy: new SnakeNamingStrategy(),
    synchronize: true,
   }),
 
@@ -57,4 +58,3 @@ dotenv.config();
  ],
 })
 export class AppModule {}
-
