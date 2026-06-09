@@ -6,15 +6,14 @@ import { UsersModule } from '../users/users.module';
 import { DoctorModule } from '../users/doctor/doctor.module';
 import { PatientModule } from '../users/patient/patient.module';
 import { Appointments } from 'src/modules/appointments/appointments.entity';
-import { HoursModule } from '../users/doctor/hours/hours.module';
 
 @Module({
  imports: [
   TypeOrmModule.forFeature([Appointments]),
-  PatientModule,
+  forwardRef(() => PatientModule),
+
   UsersModule,
   forwardRef(() => DoctorModule),
-  HoursModule,
  ],
  controllers: [AppointmentsController],
  providers: [AppointmentsService],

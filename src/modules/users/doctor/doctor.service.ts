@@ -7,10 +7,17 @@ import {
  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Doctors } from 'src/modules/users/doctor/doctors.entity';
+import {
+ FindOptionsRelationByString,
+ FindOptionsRelations,
+ FindOptionsSelect,
+ FindOptionsSelectByString,
+ FindOptionsWhere,
+ Repository,
+} from 'typeorm';
+import { Doctors } from 'src/modules/users/doctor/entities/doctors.entity';
 import AddDoctorDto from './dtos/add.dto';
-import { Specialties } from 'src/modules/users/doctor/specialties.entity';
+import { Specialties } from 'src/modules/users/doctor/entities/specialties.entity';
 import { UsersService } from '../users.service';
 import { AppointmentsService } from 'src/modules/appointments/appointments.service';
 
@@ -30,11 +37,23 @@ export class DoctorService {
   if (!doctor) throw new NotFoundException('Doctor not found');
   return doctor;
  }
- async findOne(id: string) {
-  return this.doctors.findOneBy({ id });
+ async findOne(
+  where?: FindOptionsWhere<Doctors> | FindOptionsWhere<Doctors>[],
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Doctors>,
+  select?: FindOptionsSelect<Doctors> | FindOptionsSelectByString<Doctors>,
+ ) {
+  const doctor = await this.doctors.findOne({ where, relations, select });
+  if (!doctor) throw new NotFoundException('دکتر پیدا نشد.');
+  return doctor;
+ }
+
+ async findOneBy(id: string) {
+  const doctor = await this.doctors.findOneBy({ id });
+  if (!doctor) throw new NotFoundException('دکتر پیدا نشد.');
+  return doctor;
  }
  async findAll() {
-  return this.doctors.find({ select: ['doctorHours'] });
+  return this.doctors.find();
  }
  async searchDoctors(q: string = '', specialty: string = '') {
   const queryBuilder = this.doctors
@@ -97,7 +116,6 @@ export class DoctorService {
    {
     appointment_date: true,
     created_at: true,
-    hour: true,
     id: true,
     patient: {
      allergies: true,

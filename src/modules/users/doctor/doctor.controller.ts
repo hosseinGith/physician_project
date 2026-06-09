@@ -64,7 +64,7 @@ export class DoctorController {
  @SkipAuth()
  @Get(':id')
  findOne(@Param('id') id: string) {
-  return this.service.findOne(id);
+  return this.service.findOne({ id });
  }
  @Access(AccessType.DOCTOR)
  @UseGuards(AuthGuard, AccessGuard)

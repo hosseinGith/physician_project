@@ -20,7 +20,6 @@ import AppointmentsUpdateDto from './dtos/appointments-update.dto';
 
 import { DoctorService } from '../users/doctor/doctor.service';
 import { PatientService } from '../users/patient/patient.service';
-import { HoursService } from '../users/doctor/hours/hours.service';
 import ActiveTurn from './dtos/turn.dto';
 import { AccessType } from 'src/types';
 import { UsersService } from '../users/users.service';
@@ -33,7 +32,6 @@ export class AppointmentsService {
   @Inject(forwardRef(() => DoctorService))
   private readonly doctors: DoctorService,
   private readonly patients: PatientService,
-  private readonly doctorHours: HoursService,
   private readonly users: UsersService,
  ) {}
  async findOne(id?: string) {
@@ -75,7 +73,6 @@ export class AppointmentsService {
      medical_license_number: true,
      specialties: true,
     },
-    hour: { hour: true },
     prescriptions: {
      diagnosis: true,
      doctor_digital_signature: true,
@@ -95,7 +92,7 @@ export class AppointmentsService {
   return appointment;
  }
  async createAppointment(body: ActiveTurn, userId: string) {
-  const doctor = await this.doctors.findOne(body.doctorId);
+  const doctor = await this.doctors.findOne({ id: body.doctorId });
   if (!doctor)
    throw new NotFoundException('دکتر مورد نظر پیدا نشد.', 'Doctor not found');
 
@@ -109,14 +106,14 @@ export class AppointmentsService {
   if (!patient)
    throw new NotFoundException('کاربر پیدا نشد.', 'User not found');
 
-  const doctorHour = await this.doctorHours.findOne(body.hourId, {
-   doctor: { id: doctor.id },
-  });
-  if (!doctorHour)
-   throw new NotFoundException(
-    'ساعت مورد نظر پیدا نشد.',
-    'Doctor hour not found',
-   );
+  // const doctorHour = await this.doctorHours.findOne(body.hourId, {
+  //  doctor: { id: doctor.id },
+  // });
+  // if (!doctorHour)
+  //  throw new NotFoundException(
+  //   'ساعت مورد نظر پیدا نشد.',
+  //   'Doctor hour not found',
+  //  );
 
   const dateOnly_string = new Date(body.date).toISOString().split('T')[0];
   const dateOnly = new Date(dateOnly_string);
@@ -124,7 +121,6 @@ export class AppointmentsService {
   const appointment = await this.appointments.findOneBy({
    doctor: { id: doctor.id },
    appointment_date: dateOnly,
-   hour: { id: doctorHour.id },
   });
 
   if (appointment)
@@ -135,7 +131,6 @@ export class AppointmentsService {
   const save_appointment = this.appointments.create({
    appointment_date: dateOnly,
    doctor: { id: doctor.id },
-   hour: doctorHour,
    patient: { id: patient.id },
   });
   const new_appointment = this.appointments.save(save_appointment);
@@ -144,21 +139,20 @@ export class AppointmentsService {
  async create(body: AppointmentsDtoAdd) {
   const [patient, doctor] = await Promise.all([
    this.patients.findOne(body.patientId),
-   this.doctors.findOne(body.doctorId),
+   this.doctors.findOne({ id: body.doctorId }),
   ]);
   if (!doctor) throw new NotFoundException('Doctor not found');
   if (!patient) throw new NotFoundException('Patient not found');
 
-  const doctorHour = await this.doctorHours.findOne(body.hourId, {
-   doctor: { id: doctor.id },
-  });
+  // const doctorHour = await this.doctorHours.findOne(body.hourId, {
+  //  doctor: { id: doctor.id },
+  // });
 
   const dateOnly = new Date(body.date).toISOString().split('T')[0];
 
   const appointment = await this.appointments.findOneBy({
    doctor: { id: doctor.id },
    appointment_date: new Date(dateOnly),
-   hour: { id: doctorHour.id },
   });
 
   if (appointment)
@@ -172,7 +166,6 @@ export class AppointmentsService {
    appointment_date: dateOnly,
    doctor: { id: doctor.id },
    patient: { id: patient.id },
-   hour: { id: body.hourId },
    status: body.status,
    visit_type: body.visit_type,
    symptoms: body.symptoms,

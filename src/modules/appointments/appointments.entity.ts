@@ -6,15 +6,12 @@ import {
  CreateDateColumn,
  ManyToOne,
  OneToMany,
- OneToOne,
- JoinColumn,
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
 import { Patients } from '../users/patient/patients.entity';
-import { Doctors } from '../users/doctor/doctors.entity';
+import { Doctors } from '../users/doctor/entities/doctors.entity';
 import { Prescriptions } from '../prescriptions/prescriptions.entity';
-import { DoctorHours } from '../users/doctor/hours/doctorHours.entity';
 export enum StatusAppointmentsEnum {
  SCHEDULED = 'scheduled',
  COMPLETED = 'completed',
@@ -31,7 +28,7 @@ export enum VisitTypeAppointmentsEnum {
 @Entity()
 export class Appointments {
  @PrimaryColumn()
- id: string;
+ id!: string;
  @BeforeInsert()
  private generateId() {
   this.id = nanoid();
@@ -39,39 +36,37 @@ export class Appointments {
  // ارجاع به Patients
 
  @ManyToOne(() => Patients, (patient) => patient.appointments)
- patient: Patients;
+ patient!: Patients;
  // ارجاع به Doctors
  @ManyToOne(() => Doctors)
- doctor: Doctors;
+ doctor!: Doctors;
  @OneToMany(() => Prescriptions, (prescription) => prescription.appointment)
- prescriptions: Prescriptions[];
+ prescriptions!: Prescriptions[];
 
  // تاریخ نوبت
  @Column({ type: 'date' })
- appointment_date: Date;
+ appointment_date!: Date;
  // ساعت نوبت
- @OneToOne(() => DoctorHours)
- @JoinColumn()
- hour: DoctorHours;
+
  @Column({
   type: 'enum',
   enum: StatusAppointmentsEnum,
   default: StatusAppointmentsEnum.SCHEDULED,
  })
- status: string;
+ status!: string;
 
  @Column({
   type: 'enum',
   enum: VisitTypeAppointmentsEnum,
  })
- visit_type: string;
+ visit_type!: string;
  // شرح علائم (قبل از ویزیت)
  @Column()
- symptoms: string;
+ symptoms!: string;
  // زمان ثبت نوبت
  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- created_at: Date;
+ created_at!: Date;
  // یادآوری ارسال شده؟
  @Column({ type: 'boolean', default: false })
- reminder_sent: boolean;
+ reminder_sent!: boolean;
 }

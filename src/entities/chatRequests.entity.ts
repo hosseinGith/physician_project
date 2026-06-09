@@ -8,7 +8,7 @@ import {
 import { nanoid } from 'nanoid';
 
 import { Patients } from '../modules/users/patient/patients.entity';
-import { Doctors } from '../modules/users/doctor/doctors.entity';
+import { Doctors } from '../modules/users/doctor/entities/doctors.entity';
 enum ChatRequestStatusEnum {
  REJECTED = 'rejected',
  ACCEPTED = 'accepted',

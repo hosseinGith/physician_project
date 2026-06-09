@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { nanoid } from 'nanoid';
 
-import { Doctors } from '../doctors.entity';
-@Entity()
+import { Doctors } from '../../entities/doctors.entity';
+@Entity('doctorBlockedTimes')
 export class BlockedTimes {
  @PrimaryColumn()
  id!: string;
