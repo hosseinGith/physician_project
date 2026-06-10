@@ -12,14 +12,14 @@ import { Users } from 'src/modules/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import LoginDto from './dtos/login.dto';
 import OtpDto from './dtos/otp.dto';
-import { OtpCodes } from 'src/modules/auth/otpCodes.entity';
+import { OtpCodes } from './entities/otpCodes.entity';
 
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
 import { randomInt } from 'node:crypto';
 import { baseTimeOtpExpire } from 'src/shared/settings';
 import { Request, Response } from 'express';
 import { TokenType } from 'src/types';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class AuthService {
