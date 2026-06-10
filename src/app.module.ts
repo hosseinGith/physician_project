@@ -6,7 +6,6 @@ import { UsersModule } from './modules/users/users.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthModule } from './modules/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedical.module';
@@ -38,7 +37,6 @@ dotenv.config();
   }),
 
   UsersModule,
-  AuthModule,
   AppointmentsModule,
   AuditLogsMedicalModule,
   PrescriptionsModule,
