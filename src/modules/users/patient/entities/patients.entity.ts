@@ -12,7 +12,7 @@ import {
 import { Users } from '../../entities/users.entity';
 import { randomInt } from 'node:crypto';
 import { ChatRequests } from '../../../../entities/chatRequests.entity';
-import { Prescriptions } from '../../../prescriptions/prescriptions.entity';
+import { Prescriptions } from '../../../prescriptions/entities/prescriptions.entity';
 import { Appointments } from '../../../appointments/entities/appointments.entity';
 @Entity()
 export class Patients {

@@ -8,7 +8,7 @@ import { AccessType } from 'src/types';
 import { Repository } from 'typeorm';
 import { Patients } from 'src/modules/users/patient/entities/patients.entity';
 import PatientUpdateDto from './dtos/update.dto';
-import { StatusPrescriptions } from 'src/modules/prescriptions/prescriptions.entity';
+import { StatusPrescriptions } from 'src/modules/prescriptions/entities/prescriptions.entity';
 import { SortedByEnum } from './types';
 import { UsersService } from '../users.service';
 import { PrescriptionsService } from 'src/modules/prescriptions/prescriptions.service';

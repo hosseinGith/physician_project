@@ -11,7 +11,7 @@ import {
 
 import { Patients } from '../../users/patient/entities/patients.entity';
 import { Doctors } from '../../users/doctor/entities/doctors.entity';
-import { Prescriptions } from '../../prescriptions/prescriptions.entity';
+import { Prescriptions } from '../../prescriptions/entities/prescriptions.entity';
 export enum StatusAppointmentsEnum {
  SCHEDULED = 'scheduled',
  COMPLETED = 'completed',
