@@ -12,7 +12,7 @@ import { Appointments } from 'src/modules/appointments/appointments.entity';
   TypeOrmModule.forFeature([Appointments]),
   forwardRef(() => PatientModule),
 
-  UsersModule,
+  forwardRef(() => UsersModule),
   forwardRef(() => DoctorModule),
  ],
  controllers: [AppointmentsController],

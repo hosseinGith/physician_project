@@ -4,11 +4,13 @@ import { BlockedTimesService } from './blockedTimes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlockedTimes } from './entities/blockedTimes.entity';
 import { DoctorModule } from '../doctor.module';
+import { UsersModule } from '../../users.module';
 
 @Module({
  imports: [
   TypeOrmModule.forFeature([BlockedTimes]),
   forwardRef(() => DoctorModule),
+  forwardRef(() => UsersModule),
  ],
 
  controllers: [BlockedTimesController],

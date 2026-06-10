@@ -1,28 +1,21 @@
 {
  "compilerOptions": {
-  "module": "node16",
-  "moduleResolution": "node16",
-  "esModuleInterop": true,
-  "isolatedModules": true,
+  "module": "commonjs",
   "declaration": true,
   "removeComments": true,
   "emitDecoratorMetadata": true,
   "experimentalDecorators": true,
   "allowSyntheticDefaultImports": true,
-  "target": "ES2023",
+  "target": "ES2021",
   "sourceMap": true,
-  "rootDir": "./src",
   "outDir": "./dist",
+  "baseUrl": "./",
   "incremental": true,
   "skipLibCheck": true,
-  "strictNullChecks": true,
-  "forceConsistentCasingInFileNames": true,
-  "noImplicitAny": true,
-  "strictBindCallApply": true,
-  "noFallthroughCasesInSwitch": false,
-  "paths": {
-   "src/*": ["./src/*"]
-  }
- },
- "include": ["src/**/*"]
+  "strictNullChecks": false,
+  "noImplicitAny": false,
+  "strictBindCallApply": false,
+  "forceConsistentCasingInFileNames": false,
+  "noFallthroughCasesInSwitch": false
+ }
 }

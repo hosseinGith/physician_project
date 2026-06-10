@@ -8,13 +8,13 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import dotenv from 'dotenv';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedical.module';
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-dotenv.config();
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 @Module({
  imports: [
   ThrottlerModule.forRoot([
@@ -35,7 +35,6 @@ dotenv.config();
    entities: [__dirname + '/**/*.entity{.ts,.js}'],
 
    namingStrategy: new SnakeNamingStrategy(),
-   synchronize: true,
   }),
 
   UsersModule,
