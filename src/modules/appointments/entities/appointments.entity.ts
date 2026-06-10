@@ -8,7 +8,6 @@ import {
  OneToMany,
 } from 'typeorm';
 
-
 import { Patients } from '../../users/patient/entities/patients.entity';
 import { Doctors } from '../../users/doctor/entities/doctors.entity';
 import { Prescriptions } from '../../prescriptions/entities/prescriptions.entity';
@@ -30,7 +29,6 @@ export class Appointments {
  @PrimaryColumn()
  id!: string;
  @BeforeInsert()
-
  private async generateId() {
   const { nanoid } = await import('nanoid');
   this.id = nanoid();
@@ -55,13 +53,13 @@ export class Appointments {
   enum: StatusAppointmentsEnum,
   default: StatusAppointmentsEnum.SCHEDULED,
  })
- status!: string;
+ status!: StatusAppointmentsEnum;
 
  @Column({
   type: 'enum',
   enum: VisitTypeAppointmentsEnum,
  })
- visit_type!: string;
+ visit_type!: VisitTypeAppointmentsEnum;
  // شرح علائم (قبل از ویزیت)
  @Column()
  symptoms!: string;
