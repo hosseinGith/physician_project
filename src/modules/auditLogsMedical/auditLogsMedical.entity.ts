@@ -9,7 +9,7 @@ import {
 
 
 import { Patients } from '../users/patient/entities/patients.entity';
-import { Users } from '../users/users.entity';
+import { Users } from '../users/entities/users.entity';
 export enum AccessTypeAuditLogsMedicalEnum {
  VIEW = 'view',
  EDIT = 'edit',

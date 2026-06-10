@@ -9,8 +9,8 @@ import {
  OneToOne,
 } from 'typeorm';
 
-import { Doctors } from './doctor/entities/doctors.entity';
-import { Patients } from './patient/entities/patients.entity';
+import { Doctors } from '../doctor/entities/doctors.entity';
+import { Patients } from '../patient/entities/patients.entity';
 
 @Entity()
 export class Users {

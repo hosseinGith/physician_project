@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 
-import { Users } from '../../users.entity';
+import { Users } from '../../entities/users.entity';
 
 import { Rates } from './rates.entity';
 import { ChatRequests } from '../../../../entities/chatRequests.entity';

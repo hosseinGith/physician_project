@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 
-import { Users } from '../../users.entity';
+import { Users } from '../../entities/users.entity';
 import { randomInt } from 'node:crypto';
 import { ChatRequests } from '../../../../entities/chatRequests.entity';
 import { Prescriptions } from '../../../prescriptions/prescriptions.entity';
