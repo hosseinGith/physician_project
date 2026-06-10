@@ -7,8 +7,8 @@ import {
  Patch,
  UseGuards,
 } from '@nestjs/common';
-import { AppointmentsService } from './appointments.service';
-import AppointmentsUpdateDto from './dtos/appointments-update.dto';
+import { AppointmentsService } from '../appointments.service';
+import AppointmentsUpdateDto from '../dtos/appointments-update.dto';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessType } from 'src/types';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
