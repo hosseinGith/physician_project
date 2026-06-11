@@ -32,7 +32,12 @@ export class AuthGuard implements CanActivate {
   const res = (await this.jwtService.verify(token)) as TokenType;
 
   if (res?.id) {
-   const user = await this.users.findOne(res?.id, undefined, undefined, false);
+   const user = await this.users.findOne(
+    res?.id,
+    ['doctor', 'patient'],
+    undefined,
+    false,
+   );
    if (!user) throw new UnauthorizedException();
 
    if (!user?.is_active)
