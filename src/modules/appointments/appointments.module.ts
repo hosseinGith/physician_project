@@ -6,7 +6,6 @@ import { UsersModule } from '../users/users.module';
 import { DoctorModule } from '../doctor/doctor.module';
 import { PatientModule } from '../patient/patient.module';
 import { Appointments } from 'src/modules/appointments/entities/appointments.entity';
-import { DoctorsAppointmentService } from '../doctor/services/doctors-appointments.service';
 
 @Module({
  imports: [
@@ -16,7 +15,7 @@ import { DoctorsAppointmentService } from '../doctor/services/doctors-appointmen
   forwardRef(() => DoctorModule),
  ],
  controllers: [AppointmentsController],
- providers: [AppointmentsService, DoctorsAppointmentService],
+ providers: [AppointmentsService],
  exports: [AppointmentsService],
 })
 export class AppointmentsModule {}
