@@ -12,7 +12,7 @@ import {
  UsePipes,
 } from '@nestjs/common';
 import { DoctorService } from './services/doctor.service';
-import AddDoctorDto from './dtos/add.dto';
+import AddDoctorDto from './dto/add.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
@@ -23,7 +23,7 @@ import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import SkipAuth from '../../shared/decorators/skip-auth.decorator';
 import { DoctorsAppointmentService } from './services/doctors-appointments.service';
-import { UpdateDoctorsAppointments } from './dtos/update-doctors-appointments.dto';
+import { UpdateDoctorsAppointments } from './dto/update-doctors-appointments.dto';
 
 @Controller('/api/doctor')
 @UsePipes(HashUserData)

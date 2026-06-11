@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import LoginDto from './dtos/login.dto';
-import OtpDto from './dtos/otp.dto';
+import LoginDto from './dto/login.dto';
+import OtpDto from './dto/otp.dto';
 import { HashUserData } from '../../shared/pipes/hash-user-data.pipe';
 import { type Request, type Response } from 'express';
 

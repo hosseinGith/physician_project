@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AccessType } from 'src/types';
 import { Repository } from 'typeorm';
 import { Patients } from 'src/modules/patient/entities/patients.entity';
-import PatientUpdateDto from './dtos/update.dto';
+import PatientUpdateDto from './dto/update.dto';
 import { StatusPrescriptions } from 'src/modules/prescriptions/entities/prescriptions.entity';
 import { SortedByEnum } from './types';
 import { UsersService } from '../users/users.service';

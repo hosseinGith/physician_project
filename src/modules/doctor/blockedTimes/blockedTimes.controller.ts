@@ -19,7 +19,7 @@ import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.inter
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import type { Request } from 'express';
-import CreateBlockedTimeDto from './dtos/create.dto';
+import CreateBlockedTimeDto from './dto/create.dto';
 
 @UsePipes(HashUserData)
 @UseInterceptors(DecryptUserData)

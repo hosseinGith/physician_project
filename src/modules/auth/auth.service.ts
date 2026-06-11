@@ -10,8 +10,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Patients } from 'src/modules/patient/entities/patients.entity';
 import { Users } from 'src/modules/users/entities/users.entity';
 import { Repository } from 'typeorm';
-import LoginDto from './dtos/login.dto';
-import OtpDto from './dtos/otp.dto';
+import LoginDto from './dto/login.dto';
+import OtpDto from './dto/otp.dto';
 import { OtpCodes } from './entities/otpCodes.entity';
 
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';

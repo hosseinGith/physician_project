@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BlockedTimes } from './entities/blockedTimes.entity';
 import { DoctorService } from '../services/doctor.service';
-import CreateBlockedTimeDto from './dtos/create.dto';
+import CreateBlockedTimeDto from './dto/create.dto';
 
 @Injectable()
 export class BlockedTimesService {

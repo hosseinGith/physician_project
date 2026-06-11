@@ -3,7 +3,7 @@ import { AuditLogsMedicalService } from './auditLogsMedical.service';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
-import AuditLogsMedicalDtoAdd from './dtos/auditLogsMedical-add.dto';
+import AuditLogsMedicalDtoAdd from './dto/auditLogsMedical-add.dto';
 import { AuditLogsMedical } from 'src/modules/auditLogsMedical/entities/auditLogsMedical.entity';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
