@@ -1,53 +1,54 @@
 import {
  Entity,
  PrimaryColumn,
- BeforeInsert,
  Column,
  CreateDateColumn,
  ManyToOne,
+ BeforeInsert,
 } from 'typeorm';
 
-
-import { Patients } from '../../patient/entities/patients.entity';
 import { Users } from '../../users/entities/users.entity';
-export enum AccessTypeAuditLogsEnum {
+export enum ActionEnum {
+ CREATE = 'create',
+ UPDATE = 'update',
+ DELETE = 'delete',
  VIEW = 'view',
- EDIT = 'edit',
- DOWNLOAD = 'download',
- PRINT = 'print',
+ ACCESS_DENIED = 'access_denied',
 }
-
-@Entity()
+export enum TargetTypeEnum {
+ PATIENT = 'patient',
+ DOCTOR = 'doctor',
+ APPOINTMENT = 'appointment',
+ PRESCRIPTION = 'prescription',
+}
+@Entity('audit_logs')
 export class AuditLogs {
  @PrimaryColumn()
- id!: string;
+ id: string;
  @BeforeInsert()
-
  private async generateId() {
   const { nanoid } = await import('nanoid');
   this.id = nanoid();
  }
- // چه کسی دسترسی داشته
  @ManyToOne(() => Users)
- accessed_by!: Users;
+ userId!: Users;
+ @Column({ nullable: true })
+ targetId: number;
 
- // پرونده چه بیماری دیده شده
- @ManyToOne(() => Patients)
- patient!: Patients;
- // ارجاع به Doctors
+ @Column({ type: 'enum', enum: TargetTypeEnum })
+ targetType: TargetTypeEnum;
 
- @Column({
-  type: 'enum',
-  enum: AccessTypeAuditLogsEnum,
- })
- access_type!: AccessTypeAuditLogsEnum;
- // دلیل دسترسی (مثلاً "ویزیت پزشک")
- @Column({ length: 200 })
- access_reason!: string;
- // IP کاربر
- @Column({ length: 45 })
- ip_address!: string;
- // زمان دسترسی
- @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
- accessed_at!: Date;
+ @Column({ type: 'enum', enum: ActionEnum })
+ action: ActionEnum;
+
+ @Column({ type: 'text', nullable: true })
+ oldValue: string;
+ @Column({ type: 'text', nullable: true })
+ newValue: string;
+ @Column({ nullable: true })
+ ipAddress: string;
+ @Column({ nullable: true })
+ userAgent: string;
+ @CreateDateColumn()
+ createdAt: Date;
 }
