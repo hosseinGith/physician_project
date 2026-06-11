@@ -1,14 +1,10 @@
-import {
- BadRequestException,
- Injectable,
- NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Repository } from 'typeorm';
 import { AuditLogsMedical } from 'src/modules/auditLogsMedical/entities/auditLogsMedical.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import AuditLogsMedicalDtoAdd from './dto/auditLogsMedical-add.dto';
 import { PatientService } from '../patient/patient.service';
+import AuditLogsMedicalCreateDto from './dto/create.dto';
 
 @Injectable()
 export class AuditLogsMedicalService {
@@ -27,7 +23,7 @@ export class AuditLogsMedicalService {
  async findAll() {
   return await this.AuditLogsMedicalRep.find();
  }
- async create(body: AuditLogsMedicalDtoAdd) {
+ async create(body: AuditLogsMedicalCreateDto) {
   const patient = await this.patients.findOne(body.patientId);
   if (!patient) throw new NotFoundException();
 
@@ -39,34 +35,5 @@ export class AuditLogsMedicalService {
    await this.AuditLogsMedicalRep.save(create_status);
   return auditLogsMedicalRep;
  }
- async update(id: string, body: AuditLogsMedicalDtoAdd) {
-  if (!id) throw new BadRequestException('', 'id');
-
-  const auditLogsMedicalRep = await this.AuditLogsMedicalRep.findOneBy({
-   id,
-  });
-  const fieldsToUpdate = Object.keys(body).length;
-
-  if (fieldsToUpdate === 0) {
-   throw new BadRequestException('هیچ فیلدی برای به‌روزرسانی ارسال نشده است.');
-  }
-  const patient = await this.patients.findOne(body.patientId);
-  if (!patient) throw new NotFoundException();
-  if (auditLogsMedicalRep)
-   return (
-    (
-     await this.AuditLogsMedicalRep.update(
-      { id: auditLogsMedicalRep.id },
-      { ...{ ...body, patientId: undefined }, patient },
-     )
-    ).affected === 1
-   );
-  throw new NotFoundException();
- }
- async delete(id: string) {
-  if (!id) throw new BadRequestException('id not found', 'id');
-  const res = await this.AuditLogsMedicalRep.delete({ id });
-  if (!res.affected) throw new NotFoundException();
-  return true;
- }
+ 
 }
