@@ -12,6 +12,9 @@ import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedi
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import * as dotenv from 'dotenv';
+import { AuthModule } from './modules/auth/auth.module';
+import { DoctorModule } from './modules/doctor/doctor.module';
+import { PatientModule } from './modules/patient/patient.module';
 
 dotenv.config();
 @Module({
@@ -32,10 +35,12 @@ dotenv.config();
    password: process.env?.db_password,
    database: process.env?.db_database,
    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-
    namingStrategy: new SnakeNamingStrategy(),
   }),
 
+  AuthModule,
+  DoctorModule,
+  PatientModule,
   UsersModule,
   AppointmentsModule,
   AuditLogsMedicalModule,
