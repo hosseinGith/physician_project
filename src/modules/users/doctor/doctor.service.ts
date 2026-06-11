@@ -19,7 +19,7 @@ import { Doctors } from 'src/modules/users/doctor/entities/doctors.entity';
 import AddDoctorDto from './dtos/add.dto';
 import { Specialties } from 'src/modules/users/doctor/entities/specialties.entity';
 import { UsersService } from '../users.service';
-import { AppointmentsService } from 'src/modules/appointments/appointments.service';
+import { AppointmentsService } from 'src/modules/appointments/services/appointments.service';
 
 @Injectable()
 export class DoctorService {

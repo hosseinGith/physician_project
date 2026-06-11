@@ -6,6 +6,7 @@ import {
  NotFoundException,
 } from '@nestjs/common';
 import {
+ FindOneOptions,
  FindOptionsRelationByString,
  FindOptionsRelations,
  FindOptionsSelect,
@@ -15,14 +16,14 @@ import {
 } from 'typeorm';
 import { Appointments } from 'src/modules/appointments/entities/appointments.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import AppointmentsDtoAdd from './dtos/appointments-add.dto';
-import AppointmentsUpdateDto from './dtos/appointments-update.dto';
+import AppointmentsDtoAdd from '../dtos/appointments-add.dto';
+import AppointmentsUpdateDto from '../dtos/appointments-update.dto';
 
-import { DoctorService } from '../users/doctor/doctor.service';
-import { PatientService } from '../users/patient/patient.service';
-import ActiveTurn from './dtos/turn.dto';
+import { DoctorService } from '../../users/doctor/doctor.service';
+import { PatientService } from '../../users/patient/patient.service';
+import ActiveTurn from '../dtos/turn.dto';
 import { AccessType } from 'src/types';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class AppointmentsService {
@@ -36,6 +37,11 @@ export class AppointmentsService {
  ) {}
  async findOne(id?: string) {
   const res = await this.appointments.findOneBy({ id });
+  if (res) return res;
+  throw new NotFoundException();
+ }
+ async findOneByOption(options?: FindOneOptions<Appointments>) {
+  const res = await this.appointments.findOne(options);
   if (res) return res;
   throw new NotFoundException();
  }

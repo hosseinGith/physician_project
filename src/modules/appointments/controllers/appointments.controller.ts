@@ -7,7 +7,7 @@ import {
  Req,
  UseGuards,
 } from '@nestjs/common';
-import { AppointmentsService } from '../appointments.service';
+import { AppointmentsService } from '../services/appointments.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
