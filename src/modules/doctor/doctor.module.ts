@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { DoctorController } from './doctor.controller';
-import { DoctorService } from './doctor.service';
+import { DoctorService } from './services/doctor.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Doctors } from 'src/modules/doctor/entities/doctors.entity';
 import { Specialties } from 'src/modules/doctor/entities/specialties.entity';

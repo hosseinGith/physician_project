@@ -19,7 +19,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import AppointmentsDtoAdd from '../dtos/appointments-add.dto';
 import AppointmentsUpdateDto from '../dtos/appointments-update.dto';
 
-import { DoctorService } from '../../doctor/doctor.service';
+import { DoctorService } from '../../doctor/services/doctor.service';
 import { PatientService } from '../../patient/patient.service';
 import ActiveTurn from '../dtos/turn.dto';
 import { AccessType } from 'src/types';

@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BlockedTimes } from './entities/blockedTimes.entity';
-import { DoctorService } from '../doctor.service';
+import { DoctorService } from '../services/doctor.service';
 import CreateBlockedTimeDto from './dtos/create.dto';
 
 @Injectable()

@@ -11,7 +11,7 @@ import {
  UseInterceptors,
  UsePipes,
 } from '@nestjs/common';
-import { DoctorService } from './doctor.service';
+import { DoctorService } from './services/doctor.service';
 import AddDoctorDto from './dtos/add.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';

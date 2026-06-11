@@ -16,9 +16,9 @@ import {
  Repository,
 } from 'typeorm';
 import { Doctors } from 'src/modules/doctor/entities/doctors.entity';
-import AddDoctorDto from './dtos/add.dto';
+import AddDoctorDto from '../dtos/add.dto';
 import { Specialties } from 'src/modules/doctor/entities/specialties.entity';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../users/users.service';
 import { AppointmentsService } from 'src/modules/appointments/services/appointments.service';
 
 @Injectable()
