@@ -8,7 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
-import { AuditLogsMedicalModule } from './modules/auditLogsMedical/auditLogsMedical.module';
+import { AuditLogsModule } from './modules/auditLogs/auditLogs.module';
 import { PrescriptionsModule } from './modules/prescriptions/prescriptions.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import * as dotenv from 'dotenv';
@@ -43,7 +43,7 @@ dotenv.config();
   PatientModule,
   UsersModule,
   AppointmentsModule,
-  AuditLogsMedicalModule,
+  AuditLogsModule,
   PrescriptionsModule,
  ],
  controllers: [AppController],

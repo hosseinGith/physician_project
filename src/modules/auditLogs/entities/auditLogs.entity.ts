@@ -10,7 +10,7 @@ import {
 
 import { Patients } from '../../patient/entities/patients.entity';
 import { Users } from '../../users/entities/users.entity';
-export enum AccessTypeAuditLogsMedicalEnum {
+export enum AccessTypeAuditLogsEnum {
  VIEW = 'view',
  EDIT = 'edit',
  DOWNLOAD = 'download',
@@ -18,7 +18,7 @@ export enum AccessTypeAuditLogsMedicalEnum {
 }
 
 @Entity()
-export class AuditLogsMedical {
+export class AuditLogs {
  @PrimaryColumn()
  id!: string;
  @BeforeInsert()
@@ -38,9 +38,9 @@ export class AuditLogsMedical {
 
  @Column({
   type: 'enum',
-  enum: AccessTypeAuditLogsMedicalEnum,
+  enum: AccessTypeAuditLogsEnum,
  })
- access_type!: string;
+ access_type!: AccessTypeAuditLogsEnum;
  // دلیل دسترسی (مثلاً "ویزیت پزشک")
  @Column({ length: 200 })
  access_reason!: string;
