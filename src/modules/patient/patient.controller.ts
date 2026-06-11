@@ -15,7 +15,7 @@ import { AccessType } from 'src/types';
 import type { Request } from 'express';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
-import PatientUpdateDto from './dtos/update.dto';
+import PatientUpdateDto from './dto/update.dto';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessGuard } from 'src/shared/guards/access.guard';

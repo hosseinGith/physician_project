@@ -14,12 +14,12 @@ import { AppointmentsService } from './services/appointments.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
-import AppointmentsDtoAdd from './dtos/appointments-add.dto';
+import AppointmentsDtoAdd from './dto/appointments-add.dto';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
-import ActiveTurn from './dtos/turn.dto';
+import ActiveTurn from './dto/turn.dto';
 import type { Request } from 'express';
-import AppointmentsUpdateDto from './dtos/appointments-update.dto';
+import AppointmentsUpdateDto from './dto/appointments-update.dto';
 @Controller('/api/appointments')
 @Access(AccessType.ADMIN)
 @UseGuards(AuthGuard, AccessGuard)

@@ -11,15 +11,15 @@ import {
  UseInterceptors,
  UsePipes,
 } from '@nestjs/common';
-import { AdminAddUser } from './dtos/user-add.dto';
+import { AdminAddUser } from './dto/user-add.dto';
 import { UsersService } from './users.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
-import UserUpdateDto from './dtos/user-update.dto';
+import UserUpdateDto from './dto/user-update.dto';
 import { HashUserData } from 'src/shared/pipes/hash-user-data.pipe';
 import { DecryptUserData } from 'src/shared/interceptors/decrypt-user-data.interceptor';
-import UserUpdatePublicDto from './dtos/user-update-public.dto';
+import UserUpdatePublicDto from './dto/user-update-public.dto';
 import type { Request } from 'express';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';

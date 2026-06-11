@@ -15,10 +15,10 @@ import {
  FindOptionsWhere,
  Repository,
 } from 'typeorm';
-import { AdminAddUser } from './dtos/user-add.dto';
-import UserUpdateDto from './dtos/user-update.dto';
+import { AdminAddUser } from './dto/user-add.dto';
+import UserUpdateDto from './dto/user-update.dto';
 import { AccessType } from 'src/types';
-import UserUpdatePublicDto from './dtos/user-update-public.dto';
+import UserUpdatePublicDto from './dto/user-update-public.dto';
 @Injectable()
 export class UsersService {
  constructor(

@@ -12,8 +12,8 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
 import { PrescriptionsService } from './prescriptions.service';
-import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
-import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
+import PrescriptionsDtoAdd from './dto/prescriptions-add.dto';
+import PrescriptionsUpdateDto from './dto/prescriptions-update.dto';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 

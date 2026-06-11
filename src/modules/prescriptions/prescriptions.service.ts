@@ -6,8 +6,8 @@ import {
 import { FindManyOptions, Repository } from 'typeorm';
 import { Prescriptions } from 'src/modules/prescriptions/entities/prescriptions.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import PrescriptionsDtoAdd from './dtos/prescriptions-add.dto';
-import PrescriptionsUpdateDto from './dtos/prescriptions-update.dto';
+import PrescriptionsDtoAdd from './dto/prescriptions-add.dto';
+import PrescriptionsUpdateDto from './dto/prescriptions-update.dto';
 
 @Injectable()
 export class PrescriptionsService {
