@@ -9,10 +9,10 @@ import {
 } from 'typeorm';
 
 
-import { Users } from '../../entities/users.entity';
+import { Users } from '../../users/entities/users.entity';
 
 import { Rates } from './rates.entity';
-import { ChatRequests } from '../../../../entities/chatRequests.entity';
+import { ChatRequests } from '../../../entities/chatRequests.entity';
 import { SpecialtyDoctors } from './specialtyDoctors.entity';
 
 import { BlockedTimes } from '../blockedTimes/entities/blockedTimes.entity';

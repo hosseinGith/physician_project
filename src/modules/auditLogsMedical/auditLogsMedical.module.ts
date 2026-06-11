@@ -4,7 +4,7 @@ import { AuditLogsMedicalService } from './auditLogsMedical.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuditLogsMedical } from 'src/modules/auditLogsMedical/entities/auditLogsMedical.entity';
 import { UsersModule } from '../users/users.module';
-import { PatientModule } from '../users/patient/patient.module';
+import { PatientModule } from '../patient/patient.module';
 
 @Module({
  imports: [

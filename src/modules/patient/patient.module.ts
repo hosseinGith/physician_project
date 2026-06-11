@@ -2,8 +2,8 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientController } from './patient.controller';
 import { PatientService } from './patient.service';
-import { Patients } from 'src/modules/users/patient/entities/patients.entity';
-import { UsersModule } from '../users.module';
+import { Patients } from 'src/modules/patient/entities/patients.entity';
+import { UsersModule } from '../users/users.module';
 import { PrescriptionsModule } from 'src/modules/prescriptions/prescriptions.module';
 
 @Module({

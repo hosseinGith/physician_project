@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Doctors } from 'src/modules/users/doctor/entities/doctors.entity';
+import { Doctors } from 'src/modules/doctor/entities/doctors.entity';
 import { AppointmentsService } from './appointments.service';
-import { DoctorService } from 'src/modules/users/doctor/doctor.service';
+import { DoctorService } from 'src/modules/doctor/doctor.service';
 import { UpdateDoctorsAppointments } from '../dtos/update-doctors-appointments.dto';
 
 @Injectable()

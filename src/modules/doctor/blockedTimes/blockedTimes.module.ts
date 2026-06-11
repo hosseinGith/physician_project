@@ -4,7 +4,7 @@ import { BlockedTimesService } from './blockedTimes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlockedTimes } from './entities/blockedTimes.entity';
 import { DoctorModule } from '../doctor.module';
-import { UsersModule } from '../../users.module';
+import { UsersModule } from '../../users/users.module';
 
 @Module({
  imports: [
