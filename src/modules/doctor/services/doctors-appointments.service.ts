@@ -5,10 +5,6 @@ import { AppointmentsService } from '../../appointments/services/appointments.se
 import { DoctorService } from 'src/modules/doctor/services/doctor.service';
 import { UpdateDoctorsAppointments } from '../dto/update-doctors-appointments.dto';
 import { AuditLogsService } from 'src/modules/auditLogs/auditLogs.service';
-import {
- AuditLogsActionEnum,
- AuditLogsTargetTypeEnum,
-} from 'src/modules/auditLogs/entities/auditLogs.entity';
 
 @Injectable()
 export class DoctorsAppointmentService {
