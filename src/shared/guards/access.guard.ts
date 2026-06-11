@@ -21,10 +21,11 @@ export class AccessGuard implements CanActivate {
   if (!requiredAccess) return true;
 
   const request = context.switchToHttp().getRequest<Request>();
-  const userAccess = request.userAccess;
+  const userAccess = request.userAccess as AccessType;
 
   if (
    userAccess === AccessType.SYSTEM_ADMIN ||
+   userAccess === AccessType.PUBLIC ||
    requiredAccess.includes(userAccess as AccessType)
   )
    return true;

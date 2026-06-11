@@ -5,6 +5,7 @@ export enum AccessType {
  ADMIN = 'admin',
  FINANCIAL_MANAGER = 'financialManager',
  SYSTEM_ADMIN = 'system_admin',
+ PUBLIC = 'public',
 }
 export interface TokenType {
  id: string;
