@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
 import { OtpCodes } from './entities/otpCodes.entity';
 import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
-import { UsersModule } from '../../users/users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
  imports: [TypeOrmModule.forFeature([OtpCodes]), forwardRef(() => UsersModule)],

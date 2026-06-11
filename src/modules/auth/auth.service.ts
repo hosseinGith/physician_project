@@ -19,7 +19,7 @@ import { randomInt } from 'node:crypto';
 import { baseTimeOtpExpire } from 'src/shared/settings';
 import { Request, Response } from 'express';
 import { TokenType } from 'src/types';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
