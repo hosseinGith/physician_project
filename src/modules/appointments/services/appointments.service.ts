@@ -145,10 +145,10 @@ export class AppointmentsService {
   const new_appointment = this.appointments.save(save_appointment);
   return Boolean(new_appointment);
  }
- async create(body: AppointmentsDtoAdd) {
+ async create(patientId: string, doctorId: string, body: AppointmentsDtoAdd) {
   const [patient, doctor] = await Promise.all([
-   this.patients.findOne(body.patientId),
-   this.doctors.findOne({ id: body.doctorId }),
+   this.patients.findOne(patientId),
+   this.doctors.findOne({ id: doctorId }),
   ]);
   if (!doctor) throw new NotFoundException('Doctor not found');
   if (!patient) throw new NotFoundException('Patient not found');
@@ -157,7 +157,7 @@ export class AppointmentsService {
   //  doctor: { id: doctor.id },
   // });
 
-  const dateOnly = new Date(body.date).toISOString().split('T')[0];
+  const dateOnly = new Date(body.appointment_date).toISOString().split('T')[0];
 
   const appointment = await this.appointments.findOneBy({
    doctor: { id: doctor.id },
@@ -173,12 +173,12 @@ export class AppointmentsService {
   const newAppointment = this.appointments.create({
    ...body,
    appointment_date: dateOnly,
-   doctor: { id: doctor.id },
-   patient: { id: patient.id },
+   doctor,
+   patient,
    status: body.status,
    visit_type: body.visit_type,
    symptoms: body.symptoms,
-   reminder_sent: Boolean(body.reminderSent),
+   reminder_sent: body.reminder_sent,
   });
   return await this.appointments.save(newAppointment);
  }
