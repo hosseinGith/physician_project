@@ -37,6 +37,8 @@ dotenv.config();
    database: process.env?.db_database,
    entities: [__dirname + '/**/*.entity{.ts,.js}'],
    namingStrategy: new SnakeNamingStrategy(),
+   synchronize: true,
+   dropSchema: true,
   }),
 
   AuthModule,

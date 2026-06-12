@@ -9,7 +9,7 @@ export class OtpCodes {
   const { nanoid } = await import('nanoid');
   this.id = nanoid();
  }
- @Column({ length: process.env.OTP_CODE_LENGTH || 5 })
+ @Column()
  code!: string;
  @Column()
  number!: string;

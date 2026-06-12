@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
+import { createCipheriv, createDecipheriv, createHmac, randomBytes } from 'node:crypto';
 
 @Injectable()
 export class CryptoService {
@@ -32,5 +32,10 @@ export class CryptoService {
   let decrypted = decipher.update(encrypted, 'hex', 'utf8');
   decrypted += decipher.final('utf8');
   return decrypted;
+ }
+ hashForSearch(text: string): string {
+  return createHmac('sha256', process.env.SEARCH_HMAC_KEY)
+   .update(text.toLowerCase().trim())
+   .digest('hex');
  }
 }
