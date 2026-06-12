@@ -8,5 +8,7 @@ class CreatePatientAppointment {
  dayName: EnglishDaysEnum;
  @IsBoolean()
  reminder_sent: boolean;
+ @IsString()
+ symptoms: string;
 }
 export default CreatePatientAppointment;

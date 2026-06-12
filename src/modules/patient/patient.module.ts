@@ -6,13 +6,17 @@ import { Patients } from 'src/modules/patient/entities/patients.entity';
 import { UsersModule } from '../users/users.module';
 import { PrescriptionsModule } from 'src/modules/prescriptions/prescriptions.module';
 import { PatientAppointmentService } from './services/patient-appointments.service';
-import { Appointments } from '../appointments/entities/appointments.entity';
+import { DoctorModule } from '../doctor/doctor.module';
+import { AppointmentsModule } from '../appointments/appointments.module';
+import { AuditLogsModule } from '../auditLogs/auditLogs.module';
 
 @Module({
  imports: [
   TypeOrmModule.forFeature([Patients]),
   forwardRef(() => UsersModule),
-  Appointments,
+  forwardRef(() => DoctorModule),
+  forwardRef(() => AppointmentsModule),
+  AuditLogsModule,
 
   PrescriptionsModule,
  ],
