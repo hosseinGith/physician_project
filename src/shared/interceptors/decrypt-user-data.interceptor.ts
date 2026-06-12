@@ -7,8 +7,8 @@ import {
  NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { CryptoService } from '../services/cryptoHash.service';
 import { hashedUserCol } from '../settings';
+import { CryptoService } from 'src/modules/crypto/crypto.service';
 
 @Injectable()
 export class DecryptUserData implements NestInterceptor {

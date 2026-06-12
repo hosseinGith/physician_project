@@ -19,6 +19,7 @@ import { AuditLogsModule } from '../auditLogs/auditLogs.module';
    Specialties,
    SpecialtyDoctors,
   ]),
+
   forwardRef(() => UsersModule),
   forwardRef(() => AppointmentsModule),
   forwardRef(() => BlockedTimesModule),

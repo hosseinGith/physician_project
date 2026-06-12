@@ -15,6 +15,7 @@ import * as dotenv from 'dotenv';
 import { AuthModule } from './modules/auth/auth.module';
 import { DoctorModule } from './modules/doctor/doctor.module';
 import { PatientModule } from './modules/patient/patient.module';
+import { CryptoModule } from './modules/crypto/crypto.module';
 
 dotenv.config();
 @Module({
@@ -45,6 +46,7 @@ dotenv.config();
   AppointmentsModule,
   AuditLogsModule,
   PrescriptionsModule,
+  CryptoModule,
  ],
  controllers: [AppController],
  providers: [

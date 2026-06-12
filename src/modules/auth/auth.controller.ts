@@ -5,7 +5,6 @@ import {
  Post,
  Req,
  Res,
- UseInterceptors,
  UsePipes,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
