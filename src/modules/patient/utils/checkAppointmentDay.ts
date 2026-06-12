@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { EnglishDaysEnum } from './types';
+import { EnglishDaysEnum } from '../types';
 
 export default function getNextValidDate(targetDayName: EnglishDaysEnum) {
  const today = moment().startOf('day');
