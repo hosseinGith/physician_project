@@ -8,7 +8,6 @@ import {
  OneToMany,
 } from 'typeorm';
 
-
 import { Users } from '../../users/entities/users.entity';
 import { randomInt } from 'node:crypto';
 import { ChatRequests } from '../../../entities/chatRequests.entity';
@@ -19,7 +18,6 @@ export class Patients {
  @PrimaryColumn()
  id!: string;
  @BeforeInsert()
-
  private async generateId() {
   const { nanoid } = await import('nanoid');
   this.id = nanoid();
@@ -63,4 +61,6 @@ export class Patients {
  // شرکت بیمه
  @Column({ nullable: true })
  insurance_company?: string;
+ @Column({ nullable: true })
+ insurance_company_hash?: string;
 }
