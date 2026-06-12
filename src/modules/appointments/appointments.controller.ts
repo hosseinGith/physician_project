@@ -14,12 +14,12 @@ import { AppointmentsService } from './services/appointments.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
-import AppointmentsDtoAdd from './dto/appointments-add.dto';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
 import ActiveTurn from './dto/turn.dto';
 import type { Request } from 'express';
 import AppointmentsUpdateDto from './dto/appointments-update.dto';
+import AdminAppointmentsDtoAdd from './dto/admin-appointments-add.dto';
 @Controller('/api/appointments')
 @Access(AccessType.ADMIN)
 @UseGuards(AuthGuard, AccessGuard)
@@ -42,9 +42,11 @@ export class AppointmentsController {
  findAll() {
   return this.appointments.findAll();
  }
+
  @Post()
- create(@Body() body: AppointmentsDtoAdd) {
-  return this.appointments.create(body);
+ create(@Body() body: AdminAppointmentsDtoAdd) {
+  const { patientId, doctorId, ...appointmentData } = body;
+  return this.appointments.create(patientId, doctorId, appointmentData);
  }
  @Access(AccessType.PATIENT)
  @Post('/patient/turn')
