@@ -19,11 +19,15 @@ import { AdminAddUser } from './dto/user-add.dto';
 import UserUpdateDto from './dto/user-update.dto';
 import { AccessType } from 'src/types';
 import UserUpdatePublicDto from './dto/user-update-public.dto';
+import { Patients } from '../patient/entities/patients.entity';
+import { Doctors } from '../doctor/entities/doctors.entity';
+import { CryptoService } from '../crypto/crypto.service';
 @Injectable()
 export class UsersService {
  constructor(
   @InjectRepository(Users)
-  private users: Repository<Users>,
+  private readonly users: Repository<Users>,
+  private readonly cryptoService: CryptoService,
  ) {}
 
  async findOne(
@@ -93,21 +97,42 @@ export class UsersService {
   await queryRunner.startTransaction();
 
   try {
-   const user = this.users.create({
+   const user = queryRunner.manager.create(Users, {
     ...body.user,
     is_active,
-    ...(body.user.access === AccessType.PATIENT && { patient: body.patient }),
-    ...(body.user.access === AccessType.DOCTOR && { doctor: body.doctor }),
+    number_hash: this.cryptoService.hashForSearch(body.user.number),
    });
-
    const savedUser = await queryRunner.manager.save(Users, user);
+
+   if (body.user.access === AccessType.PATIENT) {
+    await queryRunner.manager.save(
+     Patients,
+     queryRunner.manager.create(Patients, {
+      ...body.patient,
+      user: savedUser,
+      insurance_company_hash: this.cryptoService.hashForSearch(
+       body.patient.insurance_company,
+      ),
+     }),
+    );
+   } else if (body.user.access === AccessType.DOCTOR) {
+    await queryRunner.manager.save(
+     Doctors,
+     queryRunner.manager.create(Doctors, {
+      ...body.doctor,
+      user: savedUser,
+     }),
+    );
+   }
 
    await queryRunner.commitTransaction();
 
    return {
     user: { ...savedUser, number: body.user.number, password: undefined },
    };
-  } catch {
+  } catch (e) {
+   console.error(e);
+
    await queryRunner.rollbackTransaction();
    throw new BadRequestException('خطا در ثبت‌نام. لطفاً دوباره تلاش کنید.');
   } finally {
