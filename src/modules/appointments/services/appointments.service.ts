@@ -20,7 +20,7 @@ import AppointmentsDtoAdd from '../dto/appointments-add.dto';
 import AppointmentsUpdateDto from '../dto/appointments-update.dto';
 
 import { DoctorService } from '../../doctor/services/doctor.service';
-import { PatientService } from '../../patient/patient.service';
+import { PatientService } from '../../patient/services/patient.service';
 import ActiveTurn from '../dto/turn.dto';
 import { AccessType } from 'src/types';
 import { UsersService } from '../../users/users.service';

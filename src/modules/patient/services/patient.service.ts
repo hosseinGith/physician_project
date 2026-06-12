@@ -4,13 +4,12 @@ import {
  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccessType } from 'src/types';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { Patients } from 'src/modules/patient/entities/patients.entity';
-import PatientUpdateDto from './dto/update.dto';
+import PatientUpdateDto from '../dto/update.dto';
 import { StatusPrescriptions } from 'src/modules/prescriptions/entities/prescriptions.entity';
-import { SortedByEnum } from './types';
-import { UsersService } from '../users/users.service';
+import { SortedByEnum } from '../types';
+import { UsersService } from '../../users/users.service';
 import { PrescriptionsService } from 'src/modules/prescriptions/prescriptions.service';
 
 @Injectable()
@@ -52,6 +51,11 @@ export class PatientService {
  }
  async findOne(id: string): Promise<Patients> {
   const patient = await this.patients.findOneBy({ id });
+  if (!patient) throw new NotFoundException('Patient not found');
+  return patient;
+ }
+ async findOneByOptions(options?: FindOneOptions<Patients>): Promise<Patients> {
+  const patient = await this.patients.findOne(options);
   if (!patient) throw new NotFoundException('Patient not found');
   return patient;
  }
@@ -98,24 +102,6 @@ export class PatientService {
   });
  }
 
- async findActiveDoctors() {
-  return await this.users.findAllByWhere(
-   {
-    access: AccessType.DOCTOR,
-    is_active: true,
-   },
-   ['doctor'],
-   {
-    access: true,
-    doctor: {
-     id: true,
-     bio: true,
-     consultation_fee: true,
-     specialties: true,
-    },
-   },
-  );
- }
  async search(q: string, patientId: string, specialty?: string) {
   const queryBuilder = this.patients
    .createQueryBuilder('patient')
