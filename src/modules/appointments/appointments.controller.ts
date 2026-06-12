@@ -3,11 +3,9 @@ import {
  Controller,
  Delete,
  Get,
- NotFoundException,
  Param,
  Patch,
  Post,
- Req,
  UseGuards,
 } from '@nestjs/common';
 import { AppointmentsService } from './services/appointments.service';
@@ -16,7 +14,6 @@ import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { AccessType } from 'src/types';
 import { Access } from 'src/shared/decorators/access.decorator';
 import { AccessGuard } from 'src/shared/guards/access.guard';
-import ActiveTurn from './dto/turn.dto';
 import type { Request } from 'express';
 import AppointmentsUpdateDto from './dto/appointments-update.dto';
 import AdminAppointmentsDtoAdd from './dto/admin-appointments-add.dto';
