@@ -17,7 +17,5 @@ export class OtpCodes {
  created_at!: Date;
 
  @Column()
- code_hash!: string;
- @Column()
  number_hash!: string;
 }
