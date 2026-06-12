@@ -4,11 +4,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable, PipeTransform } from '@nestjs/common';
 
-import { CryptoHash } from '../utils/cryptoHash.service';
 import { hashedUserCol } from '../settings';
+import { CryptoService } from 'src/modules/crypto/crypto.service';
 
 @Injectable()
 export class HashUserData implements PipeTransform {
+ constructor(private readonly cryptoService: CryptoService) {}
  transform(value: any) {
   if (!value || typeof value !== 'object') return value;
   return this.deepSearchAndEncrypt(value, hashedUserCol);
@@ -24,7 +25,7 @@ export class HashUserData implements PipeTransform {
    for (const [key, value] of Object.entries(result)) {
     try {
      if (typeof value === 'string' && hashedCol.includes(key)) {
-      result[key] = new CryptoHash().encrypt(value);
+      result[key] = this.cryptoService.encrypt(value);
      } else if (
       typeof value === 'object' &&
       value !== null &&

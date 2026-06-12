@@ -14,12 +14,12 @@ import LoginDto from './dto/login.dto';
 import OtpDto from './dto/otp.dto';
 import { OtpCodes } from './entities/otpCodes.entity';
 
-import { CryptoHash } from 'src/shared/utils/cryptoHash.service';
 import { randomInt } from 'node:crypto';
 import { baseTimeOtpExpire } from 'src/shared/settings';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { TokenType } from 'src/types';
 import { UsersService } from '../users/users.service';
+import { CryptoService } from '../crypto/crypto.service';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
   @InjectRepository(OtpCodes)
   private readonly otpCodes: Repository<OtpCodes>,
   private readonly jwtService: JwtService,
-  private readonly cryptoHash: CryptoHash,
+  private readonly cryptoHash: CryptoService,
  ) {}
  createTokens(tokenConfig: any, response: Response) {
   try {
@@ -51,8 +51,12 @@ export class AuthService {
   }
  }
  async sendOtp(body: OtpDto) {
+  const hashedNumber = this.cryptoHash.hashForSearch(
+   this.cryptoHash.decrypt(body.number),
+  );
+
   const existingNumber = await this.otpCodes.findOne({
-   where: { number: body.number },
+   where: { number_hash: hashedNumber },
   });
   if (existingNumber) {
    const delta = (Date.now() - existingNumber.created_at.getTime()) / 1000;
@@ -75,11 +79,14 @@ export class AuthService {
   const code = randomInt(min, max + 1).toString();
 
   const encrypted_code = this.cryptoHash.encrypt(code);
+  console.log(encrypted_code);
+
   try {
    await this.otpCodes.save(
     this.otpCodes.create({
      code: encrypted_code,
      number: body.number,
+     number_hash: hashedNumber,
     }),
    );
    return { code, time: baseTimeOtpExpire };
@@ -89,7 +96,11 @@ export class AuthService {
  }
 
  async verifyCode(body: LoginDto) {
-  const otp = await this.otpCodes.findOneBy({ number: body.number });
+  const hashedNumber = this.cryptoHash.hashForSearch(
+   this.cryptoHash.decrypt(body.number),
+  );
+
+  const otp = await this.otpCodes.findOneBy({ number_hash: hashedNumber });
   if (!otp)
    throw new NotFoundException(
     'شماره موبایل اشتباه است. لطفا دوباره تلاش کنید.',
@@ -105,24 +116,29 @@ export class AuthService {
     'Time',
    );
   }
-  // code decrypted by interception
-  if (otp.code !== body.code)
+
+  if (this.cryptoHash.decrypt(otp.code) !== this.cryptoHash.decrypt(body.code))
    throw new BadRequestException(
     'کد اشتباه است. لطفا دوباره تلاش کنید.',
     'Code incorrect',
    );
 
-  const user = await this.users.findOneByWhere({
-   number: body.number,
-  });
-  if (user) {
-   await this.otpCodes.delete({ number: body.number });
-   return {
-    userId: user.id,
-   };
+  try {
+   const user = await this.users.findOneByWhere({
+    number_hash: hashedNumber,
+   });
+   // without create patient
+   if (user) {
+    await this.otpCodes.delete({ number_hash: hashedNumber });
+    return {
+     userId: user.id,
+    };
+   }
+  } catch {
+   /* empty */
   }
+  // create patient for new accounts
   const queryRunner = this.otpCodes.manager.connection.createQueryRunner();
-
   try {
    await queryRunner.connect();
    await queryRunner.startTransaction();
@@ -130,6 +146,7 @@ export class AuthService {
     Users,
     queryRunner.manager.create(Users, {
      number: body.number,
+     number_hash: body.number,
     }),
    );
    const patient = queryRunner.manager.create(Patients, {

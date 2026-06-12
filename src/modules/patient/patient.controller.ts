@@ -33,7 +33,7 @@ import {
  AuditLogsActionEnum,
  AuditLogsTargetTypeEnum,
 } from '../auditLogs/entities/auditLogs.entity';
-import getNextValidDate from './checkAppointmentDay';
+import getNextValidDate from './utils/checkAppointmentDay';
 @Controller('/api/patient')
 @ApiBearerAuth()
 @UsePipes(HashUserData)

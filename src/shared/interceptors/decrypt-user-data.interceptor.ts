@@ -7,11 +7,12 @@ import {
  NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { CryptoHash } from '../utils/cryptoHash.service';
 import { hashedUserCol } from '../settings';
+import { CryptoService } from 'src/modules/crypto/crypto.service';
 
 @Injectable()
 export class DecryptUserData implements NestInterceptor {
+ constructor(private readonly cryptoHash: CryptoService) {}
  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
   return next.handle().pipe(
    map((data) => {
@@ -41,7 +42,7 @@ export class DecryptUserData implements NestInterceptor {
     try {
      if (typeof value === 'string' && hashedUserCol.includes(key)) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      result[key] = new CryptoHash().decrypt(value);
+      result[key] = this.cryptoHash.decrypt(value);
      } else if (
       typeof value === 'object' &&
       value !== null &&

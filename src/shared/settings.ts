@@ -5,10 +5,6 @@ export const hashedUserCol = [
  'last_name',
  'national_id',
  'number',
- 'bio',
- 'emergency_contact_name',
- 'emergency_contact_phone',
- 'insurance_company',
  'code',
 ];
 
