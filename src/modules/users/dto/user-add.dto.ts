@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { Doctors } from 'src/modules/doctor/entities/doctors.entity';
 import { Patients } from 'src/modules/patient/entities/patients.entity';
-import { numberRegx } from 'src/shared/utils';
+import { numberPattern } from 'src/shared/utils';
 import { AccessType } from 'src/types';
 
 export class UserDtoAdd {
@@ -21,7 +21,7 @@ export class UserDtoAdd {
  lastname?: string;
 
  @IsString()
- @Matches(numberRegx, { message: 'فرمت شماره موبایل اشتباه است' })
+ @Matches(numberPattern, { message: 'فرمت شماره موبایل اشتباه است' })
  number: string;
 
  @IsNotEmpty()

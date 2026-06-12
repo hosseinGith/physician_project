@@ -1,10 +1,10 @@
 import { IsString, Length, Matches } from 'class-validator';
-import { numberRegx } from 'src/shared/utils';
+import { numberPattern } from 'src/shared/utils';
 
 // user-data.dto.ts
 export class UserDataDto {
  @IsString()
- @Matches(numberRegx, { message: 'فرمت شماره موبایل اشتباه است' })
+ @Matches(numberPattern, { message: 'فرمت شماره موبایل اشتباه است' })
  number: string;
 
  @IsString()
@@ -13,7 +13,7 @@ export class UserDataDto {
 // signup.dto.ts
 export default class LoginDto {
  @IsString()
- @Matches(numberRegx, { message: 'فرمت شماره موبایل اشتباه است' })
+ @Matches(numberPattern, { message: 'فرمت شماره موبایل اشتباه است' })
  number: string;
  @IsString()
  @Length(

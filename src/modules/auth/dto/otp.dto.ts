@@ -1,8 +1,8 @@
 import { IsString, Matches } from 'class-validator';
-import { numberRegx } from 'src/shared/utils';
+import { numberPattern } from 'src/shared/utils';
 
 export default class OtpDto {
  @IsString()
- @Matches(numberRegx, { message: 'فرمت شماره موبایل اشتباه است' })
+ @Matches(numberPattern, { message: 'فرمت شماره موبایل اشتباه است' })
  number: string;
 }
