@@ -4,4 +4,6 @@ import { Appointments } from 'src/modules/appointments/entities/appointments.ent
 export default class AppointmentsDtoAdd extends OmitType(Appointments, [
  'created_at',
  'id',
+ 'patient',
+ 'doctor',
 ]) {}
