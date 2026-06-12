@@ -49,6 +49,9 @@ export class AuditLogs {
  ipAddress?: string;
  @Column({ nullable: true })
  userAgent?: string;
+ @Column({ nullable: true })
+ description?: string;
+
  @CreateDateColumn()
  createdAt: Date;
 }

@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+ FindOneOptions,
  FindOptionsRelationByString,
  FindOptionsRelations,
  FindOptionsSelect,
@@ -53,6 +54,11 @@ export class DoctorService {
   const doctor = await this.doctors.findOneBy({ id });
   if (!doctor) throw new NotFoundException('دکتر پیدا نشد.');
   return doctor;
+ }
+ async findOneByOptions(options?: FindOneOptions<Doctors>): Promise<Doctors> {
+  const patient = await this.doctors.findOne(options);
+  if (!patient) throw new NotFoundException('Patient not found');
+  return patient;
  }
  async findAll() {
   return this.doctors.find();
